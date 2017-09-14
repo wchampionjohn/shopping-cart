@@ -23,3 +23,4 @@ Gemfile.lock
 .rspec
 yarn.lock
 node_modules
+public/packs/manifest.json
