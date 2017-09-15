@@ -37,6 +37,7 @@ gem 'mysql2'
 gem 'faker'
 gem 'kaminari'
 gem 'active_model_serializers'
+gem 'bootstrap-sass'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
