@@ -1,8 +1,13 @@
 import { combineReducers } from 'redux'
-import products from './products'
+import { products, keyword, isEditMode, selectedProductIds, editingProducts, pagination } from './products'
 
 const rootReducer = combineReducers({
-  products
+  products,
+  keyword,
+  isEditMode,
+  editingProducts,
+  selectedProductIds,
+  pagination
 })
 
 export default rootReducer
