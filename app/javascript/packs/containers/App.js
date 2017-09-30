@@ -4,22 +4,7 @@ import { connect } from 'react-redux'
 import Toolbar from '../components/ToolBar'
 import Table from '../components/Table'
 import Page from '../components/Page'
-
-import {
-  fetchPosts,
-  searchKeyword,
-  clearKeyword,
-  switchEditMode,
-  closeEditMode,
-  selectProduct,
-  triggerSelectAllProducts,
-  setEditingProducts,
-  changeProduct,
-  saveProducts,
-  deleteProduct,
-  deleteProducts,
-  clearSelectedProductIds
-} from '../actions'
+import * as actions from '../actions'
 
 class App extends Component {
 
@@ -29,7 +14,7 @@ class App extends Component {
 
   componentDidMount() {
     const { dispatch, products } = this.props
-    dispatch(fetchPosts())
+    dispatch(actions.fetchPosts())
   }
 
   handleSearch = keyword => {
@@ -39,43 +24,43 @@ class App extends Component {
     clearTimeout(this.timer);
 
     this.timer = setTimeout(function () {
-      dispatch(fetchPosts({keyword: keyword}))
-      dispatch(searchKeyword(keyword))
+      dispatch(actions.fetchPosts({keyword: keyword}))
+      dispatch(actions.searchKeyword(keyword))
     }, 1000);
   }
 
   handleSwitchPage = page => {
-    this.props.dispatch(fetchPosts({page: page, keyword: this.props.keyword}))
+    this.props.dispatch(actions.fetchPosts({page: page, keyword: this.props.keyword}))
   }
 
   handleRefresh = () => {
 
     const { dispatch } = this.props
 
-    dispatch(clearKeyword())
-    dispatch(fetchPosts())
+    dispatch(actions.clearKeyword())
+    dispatch(actions.fetchPosts())
   }
 
   handleSwitchEditMode = () => {
 
     const { dispatch } = this.props
 
-    dispatch(switchEditMode())
+    dispatch(actions.switchEditMode())
   }
 
   handleCloseEditMode = () => {
 
     const { dispatch } = this.props
 
-    dispatch(closeEditMode())
-      dispatch(setEditingProducts({}))
+    dispatch(actions.closeEditMode())
+    dispatch(actions.setEditingProducts({}))
   }
 
   handleProductSelect = (productId) => {
 
     const { dispatch } = this.props
 
-    dispatch(selectProduct(productId))
+    dispatch(actions.selectProduct(productId))
   }
 
   handleSelectAll = (isChecked) => {
@@ -89,7 +74,7 @@ class App extends Component {
       })
     }
 
-    dispatch(triggerSelectAllProducts(ids))
+    dispatch(actions.triggerSelectAllProducts(ids))
   }
 
   handleSetEditingProducts = () => {
@@ -106,11 +91,11 @@ class App extends Component {
       }
     }, {})
 
-    dispatch(setEditingProducts(editingProducts))
+    dispatch(actions.setEditingProducts(editingProducts))
   }
 
   handleProductChange = (product) => {
-    this.props.dispatch(changeProduct(product))
+    this.props.dispatch(actions.changeProduct(product))
   }
 
   handleSaveProducts = () => {
@@ -125,18 +110,18 @@ class App extends Component {
 
     })
 
-    dispatch(saveProducts(newProdcuts))
+    dispatch(actions.saveProducts(newProdcuts))
 
   }
 
   handleDeleteProduct = (id) => {
-    this.props.dispatch(deleteProduct(id))
+    this.props.dispatch(actions.deleteProduct(id))
   }
 
   handleDeleteProducts = (ids) => {
-    this.props.dispatch(deleteProducts(ids))
-    this.props.dispatch(setEditingProducts({}))
-    this.props.dispatch(clearSelectedProductIds())
+    this.props.dispatch(actions.deleteProducts(ids))
+    this.props.dispatch(actions.setEditingProducts({}))
+    this.props.dispatch(actions.clearSelectedProductIds())
   }
 
   render() {
