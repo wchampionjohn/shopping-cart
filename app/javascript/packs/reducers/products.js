@@ -29,9 +29,9 @@ export const selectedProductIds = (state = [], action) => {
 
 export const isEditMode = (state = false, action) => {
   switch (action.type) {
-    case types.SWITCH_EDIT_MODE:
+    case types.TURN_ON_EDIT_MODE:
       return true
-    case types.CLOSE_EDIT_MODE:
+    case types.TURN_OFF_EDIT_MODE:
       return false
     default:
       return state;

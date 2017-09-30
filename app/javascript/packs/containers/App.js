@@ -45,14 +45,14 @@ class App extends Component {
 
     const { dispatch } = this.props
 
-    dispatch(actions.switchEditMode())
+    dispatch(actions.turnOnEditMode())
   }
 
   handleCloseEditMode = () => {
 
     const { dispatch } = this.props
 
-    dispatch(actions.closeEditMode())
+    dispatch(actions.turnOffEditMode())
     dispatch(actions.setEditingProducts({}))
   }
 

@@ -25,16 +25,13 @@ export const selectProduct = (productId) => ({
   productId
 })
 
-export const clearAllSelectedProudcts = () => ({
-  type: types.CLEAR_ALL_SELECTED_PRODUCTS
+export const turnOffEditMode = () => ({
+  type: types.TURN_OFF_EDIT_MODE
+})
+export const turnOnEditMode = () => ({
+  type: types.TURN_ON_EDIT_MODE
 })
 
-export const closeEditMode = () => ({
-  type: types.CLOSE_EDIT_MODE
-})
-export const switchEditMode = () => ({
-  type: types.SWITCH_EDIT_MODE
-})
 export const searchKeyword = keyword => ({
   type: types.SEARCH_KEYWORD,
   keyword
@@ -44,10 +41,10 @@ export const clearKeyword = () => ({
   type: types.CLEAR_KEYWORD
 })
 
-export const receivePosts = (json) => ({
+export const receivePosts = (reponseData) => ({
   type: types.RECEIVE_PRODUCTS,
-  products: json.products,
-  pagination: json.meta.pagination
+  products: reponseData.products,
+  pagination: reponseData.meta.pagination
 })
 
 export const updateProducts = (products) => ({
@@ -91,7 +88,7 @@ export const deleteProducts = (ids) => (dispatch) => {
     }
   }).then((res) => {
     dispatch({type: types.PRODUCTS_DELETE_SUCCESS, ids});
-    dispatch(closeEditMode())
+    dispatch(turnOffEditMode())
     dispatch(setEditingProducts({}))
   });
 }
@@ -105,11 +102,10 @@ export const saveProducts = (products) => dispatch => {
     }
   }).then((res) => {
     dispatch(updateProducts(products))
-    dispatch(closeEditMode())
+    dispatch(turnOffEditMode())
     dispatch(setEditingProducts({}))
     alert('儲存成功')
   }).catch((error) => {
-    console.log(products)
     const messages = error.response.data
     let result = ''
     for (const id in messages) {
