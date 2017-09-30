@@ -1,72 +1,57 @@
-import {
-  RECEIVE_PRODUCTS,
-  SEARCH_KEYWORD,
-  CLEAR_KEYWORD,
-  CLOSE_EDIT_MODE,
-  SWITCH_EDIT_MODE,
-  SELECT_PRODUCT,
-  TRIGGLE_SELECT_ALL_PRODUCTS,
-  SET_EDITING_PRODUCTS,
-  CHANGE_PRODUCT,
-  SAVE_PRODUCTS,
-  PRODUCT_DELETE_SUCCESS,
-  PRODUCTS_DELETE_SUCCESS,
-  UPDATE_PRODUCTS,
-  CLEAR_SELECTED_PRODUCT_IDS
-} from '../constants/ActionTypes'
+import * as types from '../constants/ActionTypes'
 import axios from 'axios';
 
 export const setEditingProducts = (editingProducts) => ({
-  type: SET_EDITING_PRODUCTS,
+  type: types.SET_EDITING_PRODUCTS,
   editingProducts
 })
 
 export const changeProduct = (editedProduct) => ({
-  type: CHANGE_PRODUCT,
+  type: types.CHANGE_PRODUCT,
   editedProduct
 })
 
 export const triggerSelectAllProducts = (productIds) => ({
-  type: TRIGGLE_SELECT_ALL_PRODUCTS,
+  type: types.TRIGGLE_SELECT_ALL_PRODUCTS,
   productIds
 })
 
 export const clearSelectedProductIds = () => ({
-  type: CLEAR_SELECTED_PRODUCT_IDS
+  type: types.CLEAR_SELECTED_PRODUCT_IDS
 })
 
 export const selectProduct = (productId) => ({
-  type: SELECT_PRODUCT,
+  type: types.SELECT_PRODUCT,
   productId
 })
 
 export const clearAllSelectedProudcts = () => ({
-  type: CLEAR_ALL_SELECTED_PRODUCTS
+  type: types.CLEAR_ALL_SELECTED_PRODUCTS
 })
 
 export const closeEditMode = () => ({
-  type: CLOSE_EDIT_MODE
+  type: types.CLOSE_EDIT_MODE
 })
 export const switchEditMode = () => ({
-  type: SWITCH_EDIT_MODE
+  type: types.SWITCH_EDIT_MODE
 })
 export const searchKeyword = keyword => ({
-  type: SEARCH_KEYWORD,
+  type: types.SEARCH_KEYWORD,
   keyword
 })
 
 export const clearKeyword = () => ({
-  type: CLEAR_KEYWORD
+  type: types.CLEAR_KEYWORD
 })
 
 export const receivePosts = (json) => ({
-  type: RECEIVE_PRODUCTS,
+  type: types.RECEIVE_PRODUCTS,
   products: json.products,
   pagination: json.meta.pagination
 })
 
 export const updateProducts = (products) => ({
-  type: UPDATE_PRODUCTS,
+  type: types.UPDATE_PRODUCTS,
   products: products
 })
 
@@ -93,7 +78,7 @@ export const deleteProduct = (id) => (dispatch) => {
       format: 'json'
     }
   }).then((res) => {
-    dispatch({type: PRODUCT_DELETE_SUCCESS, id});
+    dispatch({type: types.PRODUCT_DELETE_SUCCESS, id});
   });
 }
 
@@ -105,7 +90,7 @@ export const deleteProducts = (ids) => (dispatch) => {
       ids: ids
     }
   }).then((res) => {
-    dispatch({type: PRODUCTS_DELETE_SUCCESS, ids});
+    dispatch({type: types.PRODUCTS_DELETE_SUCCESS, ids});
     dispatch(closeEditMode())
     dispatch(setEditingProducts({}))
   });

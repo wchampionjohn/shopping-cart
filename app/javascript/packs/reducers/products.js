@@ -1,26 +1,10 @@
-import {
-  RECEIVE_PRODUCTS,
-  SEARCH_KEYWORD,
-  CLEAR_KEYWORD,
-  CLOSE_EDIT_MODE,
-  SWITCH_EDIT_MODE,
-  SELECT_PRODUCT,
-  TRIGGLE_SELECT_ALL_PRODUCTS,
-  SET_EDITING_PRODUCTS,
-  CHANGE_PRODUCT,
-  SAVE_PRODUCTS,
-  PRODUCT_DELETE_SUCCESS,
-  PRODUCTS_DELETE_SUCCESS,
-  UPDATE_PRODUCTS,
-  CLEAR_SELECTED_PRODUCT_IDS
-} from '../constants/ActionTypes'
-
+import * as types from '../constants/ActionTypes'
 
 export const editingProducts = (state = {}, action) => {
   switch (action.type) {
-    case SET_EDITING_PRODUCTS:
+    case types.SET_EDITING_PRODUCTS:
       return action.editingProducts
-    case CHANGE_PRODUCT:
+    case types.CHANGE_PRODUCT:
       return Object.assign(state, action.editedProduct)
     default:
       return state
@@ -29,14 +13,14 @@ export const editingProducts = (state = {}, action) => {
 
 export const selectedProductIds = (state = [], action) => {
   switch (action.type) {
-    case SELECT_PRODUCT:
+    case types.SELECT_PRODUCT:
       if(state.indexOf(action.productId) !== -1) {
         return state.filter(productId => productId !== action.productId)
       }
       return [...state, action.productId]
-    case TRIGGLE_SELECT_ALL_PRODUCTS:
+    case types.TRIGGLE_SELECT_ALL_PRODUCTS:
       return action.productIds
-    case CLEAR_SELECTED_PRODUCT_IDS:
+    case types.CLEAR_SELECTED_PRODUCT_IDS:
       return []
     default:
       return state
@@ -45,9 +29,9 @@ export const selectedProductIds = (state = [], action) => {
 
 export const isEditMode = (state = false, action) => {
   switch (action.type) {
-    case SWITCH_EDIT_MODE:
+    case types.SWITCH_EDIT_MODE:
       return true
-    case CLOSE_EDIT_MODE:
+    case types.CLOSE_EDIT_MODE:
       return false
     default:
       return state;
@@ -56,9 +40,9 @@ export const isEditMode = (state = false, action) => {
 
 export const keyword = (state = '', action) => {
   switch (action.type) {
-    case SEARCH_KEYWORD:
+    case types.SEARCH_KEYWORD:
       return action.keyword
-    case CLEAR_KEYWORD:
+    case types.CLEAR_KEYWORD:
       return ''
     default:
       return state
@@ -67,14 +51,14 @@ export const keyword = (state = '', action) => {
 
 export const products = (state = [], action) => {
   switch (action.type) {
-    case RECEIVE_PRODUCTS:
-    case UPDATE_PRODUCTS:
+    case types.RECEIVE_PRODUCTS:
+    case types.UPDATE_PRODUCTS:
       return action.products
-    case PRODUCT_DELETE_SUCCESS:
+    case types.PRODUCT_DELETE_SUCCESS:
       return state.filter(product =>
         product.id !== action.id
       )
-    case PRODUCTS_DELETE_SUCCESS:
+    case types.PRODUCTS_DELETE_SUCCESS:
       return state.filter(product =>
         action.ids.indexOf(product.id) === -1
       )
@@ -85,7 +69,7 @@ export const products = (state = [], action) => {
 
 export const pagination = (state = { total_count: 10 } , action) => {
   switch (action.type) {
-    case RECEIVE_PRODUCTS:
+    case types.RECEIVE_PRODUCTS:
       return action.pagination
     default:
       return state
