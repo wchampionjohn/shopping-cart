@@ -51,8 +51,18 @@ class ProductsController < ResourcesController
     end
   end
 
+
+  def new
+    @current_object = collection_scope.new
+    @current_object.specs.build  if current_object.specs.blank?
+  end
+
   private
   def products_params
     params.require(:products)
+  end
+
+  def object_params
+    params.require(:product).permit(:title, :price, :status, :calculate, :description, {specs_attributes: [:id, :name, :_destroy]} )
   end
 end

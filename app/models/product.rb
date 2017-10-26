@@ -8,6 +8,10 @@ class Product < ApplicationRecord
     numericality: { only_integer: true },
     length: { maximum: 8 }
 
+  has_many :specs
+
+  accepts_nested_attributes_for :specs, allow_destroy: true
+
   enum status: { 'insufficient' => 1, 'supplement' => 2, 'sufficient' => 3 }
 
   scope :filter_with, -> (keyword) do
