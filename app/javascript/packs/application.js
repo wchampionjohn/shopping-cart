@@ -8,3 +8,9 @@
 // layout file, like app/views/layouts/application.html.erb
 
 console.log('Hello World from Webpacker')
+// Support component names relative to this directory:
+var componentRequireContext = require.context("components", true)
+var ReactRailsUJS = require("react_ujs")
+var React = window.React = global.React = require('react');
+var ReactDOM = window.ReactDOM = global.ReactDOM = require('react-dom');
+ReactRailsUJS.useContext(componentRequireContext)

@@ -1,0 +1,23 @@
+#form-columns {
+  .form-group {
+
+    .fa-bars {
+      cursor: move;
+    }
+
+    .radio-list, .checkbox-list {
+      label {
+        margin-bottom: 7px;
+
+        input {
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .item-remove {
+      width: 30px;
+      text-align: center;
+    }
+  }
+}

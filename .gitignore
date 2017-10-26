@@ -24,3 +24,6 @@ Gemfile.lock
 yarn.lock
 node_modules
 public/packs/manifest.json
+/public/packs
+/public/packs-test
+/node_modules
