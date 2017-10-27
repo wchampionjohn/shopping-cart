@@ -2,21 +2,22 @@
   "name": "shopping-cart",
   "private": true,
   "dependencies": {
-    "@rails/webpacker": "^3.0.1",
+    "@rails/webpacker": "^3.0.2",
     "axios": "^0.16.2",
     "babel-preset-react": "^6.24.1",
-    "prop-types": "^15.5.10",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "prop-types": "^15.6.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "react-js-pagination": "^2.2.0",
     "react-redux": "^5.0.5",
     "react-scripts": "^1.0.2",
+    "react_ujs": "^2.3.1",
     "redux": "^3.6.0",
     "redux-actions": "^0.10.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.1.0"
   },
   "devDependencies": {
-    "webpack-dev-server": "^2.7.1"
+    "webpack-dev-server": "^2.9.2"
   }
 }

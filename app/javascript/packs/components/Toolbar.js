@@ -9,7 +9,8 @@ export default class Toolbar extends Component {
 
   handleRefresh = () => {
     this.setState({ keyword: '' })
-    this.props.onRefresh()
+    this.props.clearKeyword()
+    this.props.fetchPosts()
   }
 
   handleChange = e => {
@@ -40,7 +41,7 @@ export default class Toolbar extends Component {
       return (
         <button
           disabled={!this.isSelectedProudcts()}
-          className="btn btn-default btn-xs"
+          className="btn btn-default"
           onClick={this.handleSwitchEditMode}
           type="buttton" >
           <i className="glyphicon glyphicon-pencil"></i>
@@ -55,7 +56,7 @@ export default class Toolbar extends Component {
       return (
         <button
           disabled={!this.isSelectedProudcts()}
-          className="btn btn-default btn-xs"
+          className="btn btn-default"
           onClick={() => this.handleDelete(this.props.selectedProductIds)}
           type="buttton" >
           <i className="glyphicon glyphicon glyphicon-trash" alt="刪除"></i>
@@ -72,7 +73,7 @@ export default class Toolbar extends Component {
       return (
         <button
           onClick={this.props.onSaveProducts}
-          className="btn btn-default btn-xs"
+          className="btn btn-default"
           type="buttton">
           <i className="glyphicon glyphicon-floppy-disk" alt="確認修改"></i>
         </button>
@@ -88,7 +89,7 @@ export default class Toolbar extends Component {
       return (
         <button
           onClick={this.props.onCloseEditMode}
-          className="btn btn-default btn-xs"
+          className="btn btn-default"
           type="buttton">
           <i className="glyphicon glyphicon-floppy-remove" alt="取消修改"></i>
         </button>
@@ -108,13 +109,11 @@ export default class Toolbar extends Component {
   render() {
 
     return (
-      <div className="btn-toolbar">
-        <div className="pull-left btn-group btn-group-sm">
-          <button className="btn btn-default" type="buttton" name="refresh" title="Refresh">
-            <i className="glyphicon glyphicon glyphicon-plus"></i>
-          </button>
+      <div className="table-toolbar">
+        <div className="btn-group pull-left">
+          <a href="products/new" className="btn blue"> <i className="glyphicon glyphicon glyphicon-plus"></i> </a>
         </div>
-        <div className="pull-right btn-group btn-group-sm">
+        <div className="btn-group pull-right">
           <button
             className="btn btn-default"
             type="buttton"
@@ -131,7 +130,7 @@ export default class Toolbar extends Component {
 
         <div className="pull-right search">
           <input
-            className="form-control input-sm"
+            className="form-control"
             type="text"
             placeholder="Search"
             title="Please enter description or title to search"

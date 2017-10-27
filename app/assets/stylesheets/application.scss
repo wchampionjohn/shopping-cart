@@ -11,13 +11,14 @@
  * It is generally better to create a new file per style scope.
  *
  *= require font-awesome
- *= require ./metronic/layout
+ *= require ./metronic/layout.min
+ *= require ./metronic//themes/darkblue.min
+ *= require ./metronic/custom.min
  *= require_directory ./metronic/global/
- *= require_tree .
- *= require_self
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
 
 .btn-toolbar {
   margin-top: 5px;
@@ -25,4 +26,22 @@
 }
 .ui-helper-center {
     text-align: center;
+}
+
+table.table.table-nonfluid {
+  width: auto !important;
+}
+
+table.table-list {
+  thead {
+    th {
+      white-space: nowrap;
+    }
+  }
+  tbody {
+    td {
+      white-space: nowrap;
+      text-overflow : ellipsis;
+    }
+  }
 }

@@ -71,12 +71,11 @@ export default class Product extends Component {
         }
         {!isEditMode &&
           <td className="ui-helper-center">
-            <button
+            <a
               className="btn btn-default btn-xs"
-              type="buttton"
-              onClick={() => this.handleDelete(product.id)}>
+              href={`products/${product.id}/edit`}>
               <i className="glyphicon glyphicon-pencil"></i>
-            </button>
+            </a>
             <button
               className="btn btn-default btn-xs"
               type="buttton"

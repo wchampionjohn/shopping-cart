@@ -21,7 +21,6 @@ export default class Page extends Component {
     const { pagination } = this.props
 
     return (
-      <div>
         <Pagination
           activePage={this.state.activePage}
           itemsCountPerPage={pagination.per_page}
@@ -29,7 +28,6 @@ export default class Page extends Component {
           pageRangeDisplayed={5}
           onChange={this.onSwitchPage}
         />
-      </div>
     );
   }
 }

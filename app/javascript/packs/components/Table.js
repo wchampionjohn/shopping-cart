@@ -24,7 +24,8 @@ export default class Table extends Component {
     } = this.props
 
     return (
-      <table className="grid table table-bordered table-sortable">
+      <div className="table-scrollable">
+      <table className="table table-striped table-bordered table-advance table-hover table-list">
         <Thead isEditMode={isEditMode} onSelectAllProducts={onSelectAllProducts} />
 
         <tbody>
@@ -42,6 +43,7 @@ export default class Table extends Component {
           )}
         </tbody>
       </table>
+    </div>
     )
   }
 }

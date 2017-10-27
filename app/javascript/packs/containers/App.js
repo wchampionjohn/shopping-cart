@@ -12,10 +12,6 @@ class App extends Component {
     this.timer = null;
   }
 
-  componentDidMount() {
-    const { dispatch, products } = this.props
-    dispatch(actions.fetchPosts())
-  }
 
   handleSearch = keyword => {
 
@@ -31,14 +27,6 @@ class App extends Component {
 
   handleSwitchPage = page => {
     this.props.dispatch(actions.fetchPosts({page: page, keyword: this.props.keyword}))
-  }
-
-  handleRefresh = () => {
-
-    const { dispatch } = this.props
-
-    dispatch(actions.clearKeyword())
-    dispatch(actions.fetchPosts())
   }
 
   handleSwitchEditMode = () => {
@@ -94,10 +82,6 @@ class App extends Component {
     dispatch(actions.setEditingProducts(editingProducts))
   }
 
-  handleProductChange = (product) => {
-    this.props.dispatch(actions.changeProduct(product))
-  }
-
   handleSaveProducts = () => {
     const { dispatch, products, editingProducts, selectedProductIds } = this.props
 
@@ -114,10 +98,6 @@ class App extends Component {
 
   }
 
-  handleDeleteProduct = (id) => {
-    this.props.dispatch(actions.deleteProduct(id))
-  }
-
   handleDeleteProducts = (ids) => {
     this.props.dispatch(actions.deleteProducts(ids))
     this.props.dispatch(actions.setEditingProducts({}))
@@ -126,31 +106,50 @@ class App extends Component {
 
   render() {
 
-    const { dispatch, products, keyword, isEditMode, selectedProductIds, editingProducts, pagination } = this.props
+    const {
+      dispatch,
+      products,
+      keyword,
+      isEditMode,
+      selectedProductIds,
+      editingProducts,
+      pagination,
+      handleProductChange,
+      handleDeleteProduct,
+      clearKeyword,
+      fetchPosts
+    } = this.props
 
     return (
       <div>
-        <Toolbar
-          onSearch={this.handleSearch}
-          onRefresh={this.handleRefresh}
-          onSwitchEditMode={this.handleSwitchEditMode}
-          onCloseEditMode={this.handleCloseEditMode}
-          onSetEditingProducts={this.handleSetEditingProducts}
-          onSaveProducts={this.handleSaveProducts}
-          onDeleteProducts={this.handleDeleteProducts}
-          selectedProductIds={selectedProductIds}
-          isEditMode={isEditMode} />
-        <Table
-          onProductSelect={this.handleProductSelect}
-          onSelectAllProducts={this.handleSelectAll}
-          onChangeProduct={this.handleProductChange}
-          onDeleteProduct={this.handleDeleteProduct}
-          selectedProductIds={selectedProductIds}
-          products={products}
-          keyword={keyword}
-          isEditMode={isEditMode}
-          editingProducts={editingProducts} />
-        <Page pagination={pagination} onSwitchPage={this.handleSwitchPage}/>
+          <Toolbar
+            onSearch={this.handleSearch}
+            clearKeyword={() => clearKeyword()}
+            fetchPosts={() => fetchPosts()}
+            onSwitchEditMode={this.handleSwitchEditMode}
+            onCloseEditMode={this.handleCloseEditMode}
+            onSetEditingProducts={this.handleSetEditingProducts}
+            onSaveProducts={this.handleSaveProducts}
+            onDeleteProducts={this.handleDeleteProducts}
+            selectedProductIds={selectedProductIds}
+            isEditMode={isEditMode} />
+          <Table
+            onProductSelect={this.handleProductSelect}
+            onSelectAllProducts={this.handleSelectAll}
+            onChangeProduct={(product) => handleProductChange(product)}
+            onDeleteProduct={(id) => handleDeleteProduct(id)}
+            selectedProductIds={selectedProductIds}
+            products={products}
+            keyword={keyword}
+            isEditMode={isEditMode}
+            editingProducts={editingProducts} />
+        <div className="row">
+          <div className="col-md-12">
+            <div className="pull-left">
+              <Page pagination={pagination} onSwitchPage={this.handleSwitchPage}/>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
@@ -165,6 +164,22 @@ const mapStateToProps = state => ({
   pagination: state.pagination
 })
 
+const mapDispatchToProps = (dispatch) => ({
+  dispatch: dispatch,
+  handleProductChange: (product) => {
+    dispatch(actions.changeProduct(product))
+  },
+  handleDeleteProduct: (id) => {
+    dispatch(actions.deleteProduct(id))
+  },
+  clearKeyword: () => {
+    dispatch(actions.clearKeyword())
+  },
+  fetchPosts: () => {
+    dispatch(actions.fetchPosts())
+  }
+})
+
 export default connect(
-  mapStateToProps
+  mapStateToProps, mapDispatchToProps
 )(App)

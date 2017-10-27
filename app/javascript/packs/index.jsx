@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import rootReducer from './reducers'
 import App from './containers/App'
+import { fetchPosts } from './actions'
 
 const middleware = [ thunk ]
 if (process.env.NODE_ENV !== 'production') {
@@ -17,6 +18,7 @@ const store = createStore(
   applyMiddleware(...middleware)
 )
 
+store.dispatch(fetchPosts())
 
 render(
   <Provider store={store}>
