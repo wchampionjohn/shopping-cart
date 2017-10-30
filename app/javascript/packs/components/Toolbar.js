@@ -31,7 +31,7 @@ export default class Toolbar extends Component {
 
     if(isSure) {
       this.props.onDeleteProducts(ids)
-      alert('刪除成功')
+      toastr.success('刪除成功', 'Success');
     }
   }
 

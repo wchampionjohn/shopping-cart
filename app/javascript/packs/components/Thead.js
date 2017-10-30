@@ -16,7 +16,7 @@ export default class Thead extends Component {
         <tr>
           { !isEditMode &&
             <th className="ui-helper-center">
-              <input type="checkbox" onClick={this.handleSelectAll}/>
+              <input type="checkbox" className="md-check" value="" onChange={this.handleSelectAll} />
             </th>
           }
           { !isEditMode && <th></th> }

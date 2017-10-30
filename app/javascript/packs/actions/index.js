@@ -104,16 +104,16 @@ export const saveProducts = (products) => dispatch => {
     dispatch(updateProducts(products))
     dispatch(turnOffEditMode())
     dispatch(setEditingProducts({}))
-    alert('儲存成功')
+    toastr.success('儲存成功', 'Success');
   }).catch((error) => {
     const messages = error.response.data
     let result = ''
     for (const id in messages) {
-      result += `id: ${id}  \n`;
+      result = `id: ${id}  <br />`;
       messages[id].forEach((message) => {
-        result += ` ${message} \n`
+        result += ` ${message} <br />`
       })
+      toastr.error(result, 'Error');
     }
-    alert (result)
   });
 }

@@ -1,0 +1,19 @@
+<script type="text/javascript" charset="utf-8">
+
+  $(document).on('ready page:load', function() {
+
+    <% unless flash[:alert].nil? %>
+      toastr.error('<%= j flash[:alert] %>', 'Error');
+    <% end %>
+
+    <% unless flash[:notice].nil? %>
+      toastr.info('<%= j flash[:notice] %>', 'Info');
+    <% end %>
+
+    <% unless flash[:success].nil? %>
+      toastr.success('<%= j flash[:success] %>', 'Success');
+    <% end %>
+
+  });
+
+</script>

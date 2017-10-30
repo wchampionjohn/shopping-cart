@@ -15,6 +15,7 @@
  *= require ./metronic//themes/darkblue.min
  *= require ./metronic/custom.min
  *= require_directory ./metronic/global/
+ *= require_directory ../../../vendor/assets/stylesheets/.
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";

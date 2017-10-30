@@ -4,9 +4,12 @@
     <title>ShoppingCart</title>
     <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application'%>
   </head>
+
+  <%= render partial: 'shares/toastr' %>
 
   <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white page-full-width">
     <div class="page-wrapper">

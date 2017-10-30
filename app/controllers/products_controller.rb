@@ -54,7 +54,7 @@ class ProductsController < ResourcesController
 
   def new
     @current_object = collection_scope.new
-    @current_object.specs.build  if current_object.specs.blank?
+    @current_object.specs.build if current_object.specs.blank?
   end
 
   private
