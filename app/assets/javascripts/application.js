@@ -16,8 +16,6 @@
 //= require_tree ./metronic/
 //= require_tree ../../../vendor/assets/javascripts/
 //= require rails-ujs
-//= require turbolinks
-//= require_tree .
 //
 
 toastr.options = {

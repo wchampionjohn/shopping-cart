@@ -20,29 +20,8 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
-
-.btn-toolbar {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
 .ui-helper-center {
-    text-align: center;
+  text-align: center;
 }
 
-table.table.table-nonfluid {
-  width: auto !important;
-}
-
-table.table-list {
-  thead {
-    th {
-      white-space: nowrap;
-    }
-  }
-  tbody {
-    td {
-      white-space: nowrap;
-      text-overflow : ellipsis;
-    }
-  }
-}
+.no-records-found { text-align: center; }

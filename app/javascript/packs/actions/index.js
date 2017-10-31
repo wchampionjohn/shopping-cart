@@ -53,7 +53,6 @@ export const updateProducts = (products) => ({
 })
 
 export const fetchPosts = (conditions = {}) => dispatch => {
-
   let url = 'http://localhost:3000/products.json'
 
   if(Object.keys(conditions).length > 0) {

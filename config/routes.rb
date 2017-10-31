@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root 'index#index'
+
   resources :products do
     collection do
       post   'batch_update'

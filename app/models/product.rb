@@ -1,7 +1,7 @@
 class Product < ApplicationRecord
   paginates_per 10
 
-  #validates :title, :status, presence: true
+  validates :title, :status, presence: true
 
   validates :price, :calculate,
     presence: true,

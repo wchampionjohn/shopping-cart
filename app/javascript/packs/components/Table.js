@@ -9,8 +9,7 @@ export default class Table extends Component {
     return this.props.selectedProductIds.indexOf(productId) !== -1
   }
 
-  render() {
-
+  renderProducts = () => {
     const {
       products,
       editingProducts,
@@ -23,24 +22,42 @@ export default class Table extends Component {
       onDeleteProduct
     } = this.props
 
+    if(products.length > 0) {
+      return (
+        products.map((product,index) =>
+                     <Product
+                       key={index}
+                       product={product}
+                       editingProduct={editingProducts[product.id]}
+                       keyword={keyword}
+                       isEditMode={isEditMode}
+                       selectedProductIds={selectedProductIds}
+                       onProductSelect={onProductSelect}
+                       onChangeProduct={onChangeProduct}
+                       onDeleteProduct={onDeleteProduct} />
+                    )
+      )
+    } else {
+      return (<tr className="no-records-found"><td colSpan="10">No matching records found</td></tr>)
+    }
+
+
+  }
+
+  render() {
+
+    const {
+      onSelectAllProducts,
+      isEditMode
+    } = this.props
+
     return (
       <div className="table-scrollable">
       <table className="table table-striped table-bordered table-advance table-hover table-list">
         <Thead isEditMode={isEditMode} onSelectAllProducts={onSelectAllProducts} />
 
         <tbody>
-          {products.map(product =>
-                        <Product
-                          key={product.id}
-                          product={product}
-                          editingProduct={editingProducts[product.id]}
-                          keyword={keyword}
-                          isEditMode={isEditMode}
-                          selectedProductIds={selectedProductIds}
-                          onProductSelect={onProductSelect}
-                          onChangeProduct={onChangeProduct}
-                          onDeleteProduct={onDeleteProduct} />
-          )}
+          {this.renderProducts()}
         </tbody>
       </table>
     </div>
