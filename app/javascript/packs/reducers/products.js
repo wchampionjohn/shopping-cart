@@ -67,6 +67,15 @@ export const products = (state = [], action) => {
   }
 }
 
+export const statuses = (state = {}, action) => {
+  switch (action.type) {
+    case types.RECEIVE_PRODUCTS:
+      return action.statuses
+    default:
+  return state
+  }
+}
+
 export const pagination = (state = { total_count: 10 } , action) => {
   switch (action.type) {
     case types.RECEIVE_PRODUCTS:

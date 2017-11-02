@@ -12,7 +12,7 @@ class Product < ApplicationRecord
 
   accepts_nested_attributes_for :specs, allow_destroy: true
 
-  enum status: { 'insufficient' => 1, 'supplement' => 2, 'sufficient' => 3 }
+  enum status: [:all_new, :like_new, :used]
 
   scope :filter_with, -> (keyword) do
     where("title LIKE ? OR description LIKE ?", "%#{keyword}%", "%#{keyword}%")

@@ -114,6 +114,7 @@ class App extends Component {
       selectedProductIds,
       editingProducts,
       pagination,
+      statuses,
       handleProductChange,
       handleDeleteProduct,
       clearKeyword,
@@ -140,6 +141,7 @@ class App extends Component {
             onDeleteProduct={(id) => handleDeleteProduct(id)}
             selectedProductIds={selectedProductIds}
             products={products}
+            statuses={statuses}
             keyword={keyword}
             isEditMode={isEditMode}
             editingProducts={editingProducts} />
@@ -161,6 +163,7 @@ const mapStateToProps = state => ({
   isEditMode: state.isEditMode,
   selectedProductIds: state.selectedProductIds,
   editingProducts: state.editingProducts,
+  statuses: state.statuses,
   pagination: state.pagination
 })
 

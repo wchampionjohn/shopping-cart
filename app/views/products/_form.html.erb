@@ -6,7 +6,7 @@
 <div class="form-body">
   <%= f.input :title, placeholder: '商品名稱' %>
   <%= f.input :price, placeholder: '價格', input_html: { class: 'input-small' } %>
-  <%= f.input :status, collection: Product.statuses, label_method: :first, value_method: :first, input_html: { class: 'input-small' } %>
+  <%= f.input :status, collection: Product.human_attribute_enum('status'), label_method: :last, value_method: :first, input_html: { class: 'input-small' } %>
   <%= f.input :calculate, placeholder: '數量', input_html: { class: 'input-small' }  %>
   <%= react_component("specs", { items: current_object.specs }) %>
   <%= f.input :description, placeholder: '商品描述' %>

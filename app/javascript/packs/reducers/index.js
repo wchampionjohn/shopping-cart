@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { products, keyword, isEditMode, selectedProductIds, editingProducts, pagination } from './products'
+import { products, keyword, isEditMode, selectedProductIds, editingProducts, statuses, pagination } from './products'
 
 const rootReducer = combineReducers({
   products,
@@ -7,6 +7,7 @@ const rootReducer = combineReducers({
   isEditMode,
   editingProducts,
   selectedProductIds,
+  statuses,
   pagination
 })
 

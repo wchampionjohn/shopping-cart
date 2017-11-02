@@ -16,6 +16,7 @@ class ResourcesController < ApplicationController
           flash[:success] = '新增成功'
           redirect_to url_after_create
         else
+          flash[:alert] = '新增失敗'
           render :new
         end
       end
@@ -50,6 +51,7 @@ class ResourcesController < ApplicationController
     else
       respond_to do |f|
         f.html do |f|
+          flash[:alert] = '更新失敗'
           render action: :edit
         end
         f.json

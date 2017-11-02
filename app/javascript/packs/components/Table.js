@@ -12,6 +12,7 @@ export default class Table extends Component {
   renderProducts = () => {
     const {
       products,
+      statuses,
       editingProducts,
       keyword,
       isEditMode,
@@ -28,6 +29,7 @@ export default class Table extends Component {
                      <Product
                        key={index}
                        product={product}
+                       statuses={statuses}
                        editingProduct={editingProducts[product.id]}
                        keyword={keyword}
                        isEditMode={isEditMode}

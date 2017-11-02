@@ -44,7 +44,8 @@ export const clearKeyword = () => ({
 export const receivePosts = (reponseData) => ({
   type: types.RECEIVE_PRODUCTS,
   products: reponseData.products,
-  pagination: reponseData.meta.pagination
+  pagination: reponseData.meta.pagination,
+  statuses: reponseData.meta.statuses
 })
 
 export const updateProducts = (products) => ({

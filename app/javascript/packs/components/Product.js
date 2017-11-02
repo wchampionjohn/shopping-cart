@@ -48,6 +48,19 @@ export default class Product extends Component {
     return filteredText;
   }
 
+  renderStatusSelect = (selectedStatus) => {
+
+    const options = Object.keys(this.props.statuses).map((status, index) => (
+      <option key={index} value={status} >{this.props.statuses[status]}</option>
+    ))
+
+    return (
+      <select className="form-control select" name="status" value={selectedStatus} onChange={this.handleChange}>
+        { options }
+      </select>
+    )
+  }
+
   isEditing =  (productId) => {
     const { selectedProductIds, isEditMode } = this.props
     return (selectedProductIds.indexOf(productId) !== -1 && isEditMode)
@@ -55,7 +68,7 @@ export default class Product extends Component {
 
   render() {
 
-    const { product, keyword, selectedProductIds, isEditMode, editingProduct } = this.props
+    const { product, statuses, keyword, selectedProductIds, isEditMode, editingProduct } = this.props
 
     this.state = { product: this.props.editingProduct || {} }
 
@@ -122,13 +135,8 @@ export default class Product extends Component {
         </td>
         <td className="ui-helper-center">
           {this.isEditing(product.id)
-            ? <input
-              type="text"
-              name="status"
-              value={this.state.product.status}
-              onChange={this.handleChange}
-              size="12" />
-            : product.status}
+            ? this.renderStatusSelect(this.state.product.status)
+            : statuses[product.status]}
         </td>
         <td>
           {this.isEditing(product.id)

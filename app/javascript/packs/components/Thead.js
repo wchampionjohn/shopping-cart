@@ -21,21 +21,21 @@ export default class Thead extends Component {
           }
           { !isEditMode && <th></th> }
           { !isEditMode && <th>#</th> }
-          <th>Name
+          <th>名稱
             { isEditMode && <span>*</span> }
           </th>
-          <th>Description</th>
-          <th>Price
+          <th>商品描述</th>
+          <th>價格
             { isEditMode && <span>*</span> }
           </th>
-          <th>Status
+          <th>商品保存狀態
             { isEditMode && <span>*</span> }
           </th>
-          <th>Calculate
+          <th>數量
             { isEditMode && <span>*</span> }
           </th>
-          { !isEditMode && <th>Created at</th> }
-          { !isEditMode && <th>Updated at</th> }
+          { !isEditMode && <th>最後更新</th> }
+          { !isEditMode && <th>建立時間</th> }
         </tr>
       </thead>
     )

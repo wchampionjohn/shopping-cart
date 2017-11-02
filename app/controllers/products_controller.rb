@@ -15,7 +15,7 @@ class ProductsController < ResourcesController
               status: :ok,
               meta: {
                 pagination: pagination_dict(collection_scope),
-                statuses: Product.statuses
+                statuses: Product.human_attribute_enum('status')
               }
       end
     end
