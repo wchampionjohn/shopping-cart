@@ -1,18 +1,26 @@
 <%= simple_form_for current_object, html: {class: 'form-horizontal'} do |f| %>
-<div class="form-actions top">
-  <%= f.button :submit, '儲存', class: 'btn green' %>
-  <%= link_to("取消", products_path, class: "btn default") %>
-</div>
+<%= render partial: 'save', locals: { f: f} %>
 <div class="form-body">
   <%= f.input :title, placeholder: '商品名稱' %>
   <%= f.input :price, placeholder: '價格', input_html: { class: 'input-small' } %>
   <%= f.input :status, collection: Product.human_attribute_enum('status'), label_method: :last, value_method: :first, input_html: { class: 'input-small' } %>
-  <%= f.input :calculate, placeholder: '數量', input_html: { class: 'input-small' }  %>
-  <%= react_component("specs", { items: current_object.specs }) %>
+  <%= f.input :calculate, placeholder: '數量', readonly: (current_object.specs.present?), input_html: { class: 'input-small', type: 'number', min: 1 }  %>
+  <%= react_component("specs", { items: current_object.specs, errors: @specs_mseeages || [] }) %>
   <%= f.input :description, placeholder: '商品描述' %>
 </div>
-<div class="form-actions">
-  <%= f.button :submit, '儲存', class: 'btn green' %>
-  <%= link_to("取消", products_path, class: "btn default") %>
-</div>
+<%= render partial: 'save', locals: { f: f} %>
 <% end %>
+<script type="text/javascript" charset="utf-8">
+  function disableCalculate() {
+    $("#product_calculate").prop('readonly', true);
+  }
+
+  function enableCalculate() {
+    $("#product_calculate").prop('readonly', false);
+  }
+
+  function updateCalculate(num) {
+    $("#product_calculate").val(num)
+  }
+
+</script>

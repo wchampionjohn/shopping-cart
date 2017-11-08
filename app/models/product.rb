@@ -1,4 +1,5 @@
 class Product < ApplicationRecord
+
   paginates_per 10
 
   validates :title, :status, presence: true
@@ -8,7 +9,7 @@ class Product < ApplicationRecord
     numericality: { only_integer: true },
     length: { maximum: 8 }
 
-  has_many :specs
+  has_many :specs, validate: true
 
   accepts_nested_attributes_for :specs, allow_destroy: true
 
@@ -16,6 +17,17 @@ class Product < ApplicationRecord
 
   scope :filter_with, -> (keyword) do
     where("title LIKE ? OR description LIKE ?", "%#{keyword}%", "%#{keyword}%")
+  end
+
+  after_save :update_calculate
+
+
+private
+  def update_calculate
+    if specs.present?
+      calculate = specs.reduce(0) { |result, spec| result += spec.quantity }
+      update_column(:calculate, calculate)
+    end
   end
 
 end

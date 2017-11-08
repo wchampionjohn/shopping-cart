@@ -6,7 +6,7 @@ export default class Specs extends React.Component {
     let items = []
 
     items = this.props.items.map(item =>
-                                 (item.name === "" && item.id)
+                                 (item.name === "" && item.id) // server驗證沒過時還原已刪除的item
                                  ? { ...item, _destroy: true }
                                  : item
                                 )
@@ -17,9 +17,21 @@ export default class Specs extends React.Component {
   }
 
   handleAdd = () => {
-    let item = { id: "", index: this.state.items.length + 1, name: "" }
-    this.state.items.push(item)
-    this.setState({ items: this.state.items })
+    const item = { id: "", index: this.state.items.length + 1, name: "", quantity: 1 }
+    const items = [ ...this.state.items, item]
+
+    const amount = items.reduce(function(result, item) {
+      if(!item._destroy) {
+        result += parseInt(item.quantity)
+      }
+
+      return result
+    }, 0)
+
+    this.setState({ items: items })
+
+    disableCalculate()
+    updateCalculate(amount)
   }
 
   handleRemove(delIndex){
@@ -27,46 +39,87 @@ export default class Specs extends React.Component {
       if(delIndex !== index) {
         return item
       } else {
-        return { ...item, _destroy: true }
+        return { ...item, _destroy: true, name: '' }
       }
     })
 
+    // 清除新增後又刪除遺留空item
+    items = items.filter(function(item){
+      return (!item._destroy || item.id !== "")
+    })
+
     this.setState({items: items})
+
+    const activeItems = items.reduce(function(result, item){
+      if(!item._destroy) {
+        result.amount += parseInt(item.quantity)
+        result.size += 1
+      }
+      return result
+    }, {amount: 0, size: 0})
+
+    if (activeItems.size == 0) {
+      enableCalculate()
+    }
+
+    updateCalculate(activeItems.amount)
   }
 
-  handleChange = (idx) => (evt) => {
+  handleChange = (idx, column) => (e) => {
     const newItems = this.state.items.map((item, sidx) => {
-      if (idx !== sidx) return item;
-      return { ...item, name: evt.target.value };
+      if (idx !== sidx){
+        return item;
+      } else {
+        return { ...item, [column] : e.target.value };
+      }
     });
+
+    if (column == 'quantity') {
+      const amount = newItems.reduce(function(result, item) {
+        if(!item._destroy || item._destroy === undefined) {
+          result += parseInt(item.quantity)
+        }
+
+        return result
+      }, 0)
+
+      updateCalculate(amount)
+
+    }
 
     this.setState({ items: newItems });
   }
 
-  renderDestroyInput = (id, index) => {
+  renderDestroyInput = (item, index) => {
     return (
       <div key={index}>
-      <input type="hidden" name="product[specs_attributes][][id]" value={id} />
-      <input type="hidden" name="product[specs_attributes][][name]" value=""  />
+      <input type="hidden" name="product[specs_attributes][][id]" value={item.id} />
+      <input type="hidden" name="product[specs_attributes][][name]" value={item.name}  />
       <input type="hidden" name="product[specs_attributes][][_destroy]" value={true} />
     </div>
     )
   }
 
   renderItems() {
-    return this.state.items.map((item, index) =>
-                                (item._destroy)
-                                ? this.renderDestroyInput(item.id, index)
-                                : <SpecItem
-                                  key={index}
-                                  index={index}
-                                  id={item.id}
-                                  name={item.name}
-                                  remove={this.handleRemove.bind(this)}
-                                  change={this.handleChange.bind(this)}
-                                  />
+    let showTitle = true
+    return this.state.items.map((item, index) => {
 
-                       )
+                                if (item._destroy) {
+                                  return this.renderDestroyInput(item, index);
+                                } else {
+                                  const spec = <SpecItem
+                                    key={index}
+                                    showTitle={showTitle}
+                                    index={index}
+                                    spec={item}
+                                    errors={this.props.errors[index]}
+                                    remove={this.handleRemove.bind(this)}
+                                    change={this.handleChange.bind(this)}
+                                  />;
+                                  showTitle = false
+                                  return spec
+                                }
+    })
   }
 
   render() {
@@ -81,9 +134,9 @@ export default class Specs extends React.Component {
           <div className="mt-repeater">
             {this.renderItems()}
             <hr />
-            <a href="javascript:;" className="btn btn-info mt-repeater-add" onClick={this.handleAdd}>
+            <button type="button" className="btn btn-info mt-repeater-add" onClick={this.handleAdd}>
               <i className="fa fa-plus"></i> 新增其他規格
-            </a>
+            </button>
             <br />
             <br />
           </div>
