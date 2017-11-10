@@ -32,9 +32,10 @@ class ProductsController < ResourcesController
           result[index] = spec.errors.to_h unless spec.valid?
           result
         end
-        flash[:alert] = '更新失敗'
-        render action: :edit
       end
+
+      flash[:alert] = '更新失敗'
+      render action: :edit
     end
   end
 
@@ -91,10 +92,15 @@ class ProductsController < ResourcesController
   end
 
   def object_params
-    params.require(:product).permit(:title, :price, :status, :calculate, :description, {specs_attributes: [:id, :name, :quantity, :_destroy]} )
+    params.require(:product)
+      .permit(:title, :price, :status, :calculate, :description, :is_launched, :image_path, {specs_attributes: [:id, :name, :quantity, :_destroy]} )
   end
 
   def url_after_update
     edit_product_path
+  end
+
+  def url_after_create
+    edit_product_path(Product.last)
   end
 end

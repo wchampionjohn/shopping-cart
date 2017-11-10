@@ -2,6 +2,8 @@ class Product < ApplicationRecord
 
   paginates_per 10
 
+  mount_uploader :image_path, ::ProductImageUploader
+
   validates :title, :status, presence: true
 
   validates :price, :calculate,
@@ -21,6 +23,9 @@ class Product < ApplicationRecord
 
   after_save :update_calculate
 
+  def extension_white_list
+    %w(jpg jpeg gif png)
+  end
 
 private
   def update_calculate

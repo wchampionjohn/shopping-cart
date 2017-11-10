@@ -9,6 +9,8 @@ zh-TW:
         status: '商品保存狀態'
         calculate: '數量'
         description: '商品描述'
+        is_launched: '上架'
+        image_path: '商品圖片'
       product/status:
         all_new: '全新'
         like_new: '幾乎全新'

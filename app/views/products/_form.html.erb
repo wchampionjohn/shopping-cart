@@ -1,7 +1,9 @@
-<%= simple_form_for current_object, html: {class: 'form-horizontal'} do |f| %>
+<%= simple_form_for current_object, html: {class: 'form-horizontal', multipart: true} do |f| %>
 <%= render partial: 'save', locals: { f: f} %>
 <div class="form-body">
   <%= f.input :title, placeholder: '商品名稱' %>
+  <%= f.input :image_path, as: :image %>
+  <%= f.input :is_launched, as: :boolean %>
   <%= f.input :price, placeholder: '價格', input_html: { class: 'input-small' } %>
   <%= f.input :status, collection: Product.human_attribute_enum('status'), label_method: :last, value_method: :first, input_html: { class: 'input-small' } %>
   <%= f.input :calculate, placeholder: '數量', readonly: (current_object.specs.present?), input_html: { class: 'input-small', type: 'number', min: 1 }  %>
@@ -15,12 +17,12 @@
     $("#product_calculate").prop('readonly', true);
   }
 
-  function enableCalculate() {
-    $("#product_calculate").prop('readonly', false);
-  }
+function enableCalculate() {
+  $("#product_calculate").prop('readonly', false);
+}
 
-  function updateCalculate(num) {
-    $("#product_calculate").val(num)
-  }
+function updateCalculate(num) {
+  $("#product_calculate").val(num)
+}
 
 </script>
