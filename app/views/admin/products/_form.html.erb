@@ -1,4 +1,4 @@
-<%= simple_form_for current_object, html: {class: 'form-horizontal', multipart: true} do |f| %>
+<%= simple_form_for [:admin, current_object], html: {class: 'form-horizontal', multipart: true} do |f| %>
 <%= render partial: 'save', locals: { f: f} %>
 <div class="form-body">
   <%= f.input :title, placeholder: '商品名稱' %>

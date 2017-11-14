@@ -1,7 +1,26 @@
+<ul class="nav navbar-nav pull-right">
+  <li class="dropdown dropdown-user">
+    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+      <img alt="" class="img-circle" src="https://ih0.redbubble.net/image.363620920.6389/st%2Csmall%2C215x235-pad%2C210x230%2Cf8f8f8.lite-1u2.jpg" style="width:20px; height:20px">
+      <span class="username username-hide-on-mobile"> <%= current_admin.try(:email) %> </span>
+      <i class="fa fa-angle-down"></i>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-default">
+      <li>
+        <%= link_to('登出', destroy_admin_session_path, method: :delete) %>
+      </li>
+    </ul>
+  </li>
+  <li class="dropdown dropdown-quick-sidebar-toggler">
+    <a href="javascript:;" class="dropdown-toggle">
+      <i class="icon-logout"></i>
+    </a>
+  </li>
+</ul>
 <div class="hor-menu   hidden-sm hidden-xs">
   <ul class="nav navbar-nav">
-    <li class="classic-menu-dropdown <%= current_item?(products_path) ? 'active' : '' %>" aria-haspopup="true">
-      <a href="<%= products_path %>"> 商品
+    <li class="classic-menu-dropdown <%= current_item?(admin_products_path) ? 'active' : '' %>" aria-haspopup="true">
+      <a href="<%= admin_products_path %>"> 商品
         <span class="selected"> </span>
       </a>
     </li>

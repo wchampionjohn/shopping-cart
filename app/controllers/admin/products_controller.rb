@@ -1,6 +1,10 @@
-class ProductsController < ResourcesController
+class Admin::ProductsController < ResourcesController
 
   include Paginationable
+
+  protect_from_forgery except: :batch_update
+
+  before_action :authenticate_admin!
 
   helper_method :params
 
@@ -97,10 +101,10 @@ class ProductsController < ResourcesController
   end
 
   def url_after_update
-    edit_product_path
+    edit_admin_product_path
   end
 
   def url_after_create
-    edit_product_path(Product.last)
+    edit_admin_product_path(Product.last)
   end
 end

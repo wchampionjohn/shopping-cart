@@ -54,7 +54,7 @@ export const updateProducts = (products) => ({
 })
 
 export const fetchPosts = (conditions = {}) => dispatch => {
-  let url = 'http://localhost:3000/products.json'
+  let url = 'http://localhost:3000/admin/products.json'
 
   if(Object.keys(conditions).length > 0) {
     url += '?'
@@ -70,7 +70,7 @@ export const fetchPosts = (conditions = {}) => dispatch => {
 export const deleteProduct = (id) => (dispatch) => {
   return axios({
     method: 'delete',
-    url: `/products/${id}`,
+    url: `/admin/products/${id}`,
     data: {
       format: 'json'
     }
@@ -82,7 +82,7 @@ export const deleteProduct = (id) => (dispatch) => {
 export const deleteProducts = (ids) => (dispatch) => {
   return axios({
     method: 'delete',
-    url: '/products/batch_delete.json',
+    url: '/admin/products/batch_delete.json',
     data: {
       ids: ids
     }
@@ -96,8 +96,9 @@ export const deleteProducts = (ids) => (dispatch) => {
 export const saveProducts = (products) => dispatch => {
   return axios({
     method: 'post',
-    url: '/products/batch_update',
+    url: '/admin/products/batch_update',
     data: {
+      format: 'json',
       products: products
     }
   }).then((res) => {

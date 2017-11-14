@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ShoppingCart</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag 'devise', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'devise', 'data-turbolinks-track': 'reload' %>
+
+    <%= javascript_pack_tag 'application'%>
+  </head>
+  <%= render partial: 'shares/toastr' %>
+
+  <body class=" login">
+    <div class="logo">
+      <a href="index.html">
+        <%= image_tag('logo-big.png', alt: "") %>
+      </a>
+    </div>
+    <div class="content">
+      <%= yield %>
+    </div>
+  </body>
+</html>

@@ -62,7 +62,6 @@ class ResourcesController < ApplicationController
   private
 
   def url_after_create
-    debugger
     request.env['HTTP_REFERER'] || url_for(action: :index)
   end
 
