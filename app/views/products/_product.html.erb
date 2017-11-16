@@ -1,0 +1,18 @@
+<div class="col-sm-6 col-md-3 product">
+  <%= link_to(product_path(product)) do %>
+    <%= image product %>
+    <p><%= render_title product.title %></p>
+  <% end %>
+    <div class="caption">
+      <div class="number">
+        <h5 class="font-red-haze">
+          <small class="font-red-haze">$</small>
+          <span><%= product.price %></span>
+        </h5>
+        <a href="javascript:;" class="btn btn-sm red"> 加入購物車
+          <i class="fa fa-cart-plus"></i>
+        </a>
+      </div>
+    </div>
+    <br />
+</div>

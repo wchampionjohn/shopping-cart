@@ -1,0 +1,58 @@
+<div class="portlet light bordered">
+  <div class="portlet-title">
+    <div class="caption">
+      <i class="icon-share font-green-sharp"></i>
+      <span class="caption-subject font-green-sharp bold uppercase">Shopping mall</span>
+    </div>
+  </div>
+  <div id="products" class="portlet-body">
+    <h4 class="block">熱門商品</h4>
+    <div id="listing-infinite-scrolling" class="row page">
+      <%= render current_collection %>
+    </div>
+  </div>
+  <div>
+    <% if current_collection.next_page.present? %>
+      <%= render_ajax_next_page_link(current_collection) %>
+    <% end %>
+  </div>
+</div>
+
+<script>
+
+$( document ).ready(function() {
+
+  //infinite scrolling
+  var timer;
+
+  if ($('.loading-next-page').size() > 0) {
+    $(window).on('scroll', function() {
+      if(timer) {
+        window.clearTimeout(timer);
+      }
+
+    timer = window.setTimeout(function() {
+
+      url = $('.loading-next-page').attr('href');
+      if (url && ($(window).scrollTop() > $(document).height() - $(window).height() - 60)) {
+        var last = $('.loading-next-page').data('total')
+        var next = $('.loading-next-page').data('next')
+
+        // 未到最後一頁
+        if (next <= last) {
+          $.getScript(url);
+          // 替換網址 ex > ?page={num} => ?page={num + 1}
+          var pageStrPosition = parseInt(url.lastIndexOf('=')) + 1
+          var next_url = url.substr(0, pageStrPosition)
+          next_url += next + 1
+
+          $('.loading-next-page').attr('href', next_url)
+          $('.loading-next-page').data('next', next + 1)
+        }
+      }
+    }, 500);
+    });
+  };
+
+});
+</script>

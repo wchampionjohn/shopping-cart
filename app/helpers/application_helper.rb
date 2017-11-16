@@ -1,5 +1,16 @@
 module ApplicationHelper
 
+  def render_ajax_next_page_link(products)
+    link_to(
+      "next page",
+      products_path(page: products.next_page),
+      remote: true,
+      class: 'btn btn-primary loading-next-page hidden',
+      "data-total": products.total_pages,
+      "data-next": products.next_page
+    )
+  end
+
   def breadcrumb *items
     content_tag(:ul, class: 'page-breadcrumb') do
       s = ''
@@ -18,6 +29,10 @@ module ApplicationHelper
 
       s.html_safe
     end
+  end
+
+  def is_admin_page?
+    controller_path.split('/').first == 'admin'
   end
 
 end

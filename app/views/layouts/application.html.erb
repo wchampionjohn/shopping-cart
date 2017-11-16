@@ -19,7 +19,7 @@
               <%= image_tag('logo.png', style: "max-width: 50px") %>
             </a>
           </div>
-          <%= render partial: 'shares/menu' %>
+          <%= render partial: 'shares/menu' if is_admin_page? %>
         </div>
       </div>
       <div class="clearfix"> </div>

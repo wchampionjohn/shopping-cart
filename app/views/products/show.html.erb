@@ -1,0 +1,63 @@
+<h1 class="page-title"> <%= current_object.title %></h1>
+<div class="profile">
+
+  <div class="row">
+    <div class="col-md-4">
+
+      <a data-toggle="modal" href="#long">
+      <%= image(current_object, 380, 250, false)  %>
+      </a>
+      <hr />
+      <%= link_to("回商品頁", products_path ,class: "btn default") %>
+    </div>
+    <div class="col-md-7 profile-info">
+      <h1 class="font-red sbold">$ <%= current_object.price %></h1>
+      <p class="block">
+        <strong>商品保存狀況:</strong>
+        <%= Product.human_attribute_enum('status')[current_object.status] %>
+      </p>
+      <p class="block">
+        <strong>規格:</strong>
+      </p>
+      <ul class="list-inline">
+        <% current_object.specs.each do | spec| %>
+        <li>
+          <button type="button" class="btn btn-default" data-toggle="button" aria-pressed="true"> <%= spec.name %> </button>
+        </li>
+        <% end %>
+      </ul>
+      <p class="block">
+        <strong>數量:</strong>
+        <%= current_object.calculate %>
+      </p>
+      <ul class="list-inline">
+        <li>
+          <a href="javascript:;" class="btn red">
+            <i class="fa fa-cart-plus"></i> 加入購物車
+        </a>
+        </li>
+        <li>
+          <a href="javascript:;" class="btn red">
+            <i class="fa fa-credit-card"></i> 直接購買
+        </a>
+        </li>
+      </ul>
+      <p> <%= current_object.description.html_safe %></p>
+    </div>
+  </div>
+</div>
+<div id="long" class="modal fade modal-scroll" tabindex="-1" data-replace="true">
+  <div class="modal-dialog modal-full">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+      </div>
+      <div class="modal-body" align="center">
+        <%= image_tag(current_object.image_path.url) %>
+        </div>
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn dark btn-outline">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
