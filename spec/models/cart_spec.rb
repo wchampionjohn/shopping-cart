@@ -8,6 +8,10 @@ RSpec.describe Cart, type: :model do
     it "can create Cart" do
     end
 
+    context "can add item" do
+      it "Add a item to cart, then the cart won't be empty." do
+      end
+    end
   end
 
 end
