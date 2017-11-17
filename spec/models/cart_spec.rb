@@ -9,10 +9,10 @@ RSpec.describe Cart, type: :model do
     end
 
     context "can add item" do
-      let(:iphone) { create(:product, :iphone) }
       it "Add a item to cart, then the cart won't be empty." do
-        cart.add_item(iphone)
-        cart.items.first to be iphone
+        expect(cart).to be_empty
+        cart.add_item(1)
+        expect(cart).not_to be_empty
       end
     end
   end
