@@ -14,6 +14,18 @@ RSpec.describe Cart, type: :model do
         cart.add_item(1)
         expect(cart).not_to be_empty
       end
+
+      it "item added to cart, get the item back from the cart." do
+        iphone = create(:product, :iphone)
+        ipad = create(:product, :ipad)
+
+        cart.add_item(iphone.id)
+        cart.add_item(ipad.id)
+
+        expect(cart.items.first.id).to eq iphone.id
+        expect(cart.items.last.id).to eq ipad.id
+      end
+
     end
   end
 

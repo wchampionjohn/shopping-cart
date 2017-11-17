@@ -5,9 +5,8 @@ class Cart
     @items = items
   end
 
-
   def add_item(product_id, quantity = 1)
-    items << { id: product_id, quantity: quantity }
+    items << OpenStruct.new({id: product_id, quantity: quantity})
   end
 
   def empty?
