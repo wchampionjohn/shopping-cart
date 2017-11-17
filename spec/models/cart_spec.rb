@@ -26,6 +26,17 @@ RSpec.describe Cart, type: :model do
         expect(cart.items.last.id).to eq ipad.id
       end
 
+      it "Add more same items to cart, but item count won't change" do
+        1.times { cart.add_item(1) }
+        2.times { cart.add_item(2) }
+        3.times { cart.add_item(3) }
+
+        expect(cart.items.length).to be 3
+        expect(cart.items.first.quantity).to be 1
+        expect(cart.items.second.quantity).to be 2
+        expect(cart.items.last.quantity).to be 3
+      end
+
     end
   end
 
