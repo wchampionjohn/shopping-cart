@@ -1,23 +1,27 @@
 class Cart
-  attr_reader :items
 
-  def initialize(items = [])
-    @items = items
+  def initialize
+    @storage = CartStorage.new
   end
 
   def add_item(product_id, quantity = 1)
-    if items.all? { |item| item.id != product_id }
-      items << OpenStruct.new({id: product_id, quantity: quantity})
-    else
-      items.map! do |item|
-        item.id == product_id
-          ? OpenStruct.new({id: item.id, quantity: item.quantity + 1})
-          : item
-      end
-    end
+    new_item = OpenStruct.new({id: product_id, quantity: quantity})
+
+    item = @storage[product_id]
+
+    @storage[product_id] = if item.nil?
+                             new_item
+                           else
+                             item.quantity += new_item.quantity
+                             item
+                           end
+  end
+
+  def items
+    @storage.items
   end
 
   def empty?
-    items.empty?
+    @storage.empty?
   end
 end
