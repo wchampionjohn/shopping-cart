@@ -55,4 +55,25 @@ RSpec.describe Cart, type: :model do
     end
   end
 
+  describe "add items to cart and rebuild cart from items" do
+    context "cart to items" do
+      it "get items structure after add items" do
+        3.times { cart.add_item(2) }
+        4.times { cart.add_item(5) }
+        expect(cart.items).to eq build(:session_struct)
+      end
+    end
+
+    context "items to cart" do
+      it "rebuild cart from items structure" do
+        cart = Cart.new(build(:session_struct))
+
+        expect(cart.items.first.id).to be 2
+        expect(cart.items.first.quantity).to be 3
+        expect(cart.items.second.id).to be 5
+        expect(cart.items.second.quantity).to be 4
+      end
+    end
+  end
+
 end
