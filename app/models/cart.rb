@@ -5,7 +5,6 @@ class Cart
     @dao = CartDao.new # 抽離database
   end
 
-
   def set_dao(dao)
     @dao = dao
   end
