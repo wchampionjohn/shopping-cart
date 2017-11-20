@@ -33,4 +33,16 @@ class Cart
     @storage.empty?
   end
 
+  def total_price
+    @dao.find_all(product_ids).reduce(0) do |total, product|
+      quantity = @storage[product.id].quantity
+      total += product.price * quantity
+    end
+  end
+
+private
+  def product_ids
+    items.map(&:id)
+  end
+
 end
