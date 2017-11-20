@@ -2,7 +2,7 @@ class CartStorage
   include Enumerable
 
   def initialize
-   @contanier = {}
+    @contanier = {}
   end
 
   def each

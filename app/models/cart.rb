@@ -1,16 +1,20 @@
 class Cart
 
   def initialize init_items = {}
-    @storage = CartStorage.new # 抽離session
-    @dao = CartDao.new # 抽離database
+    @storage = ::CartStorage.new # 抽離session
+    @dao = ::CartDao.new # 抽離database
 
     init_items.each do |item|
       add_item(item.id, item.quantity)
     end
   end
 
-  def set_dao(dao)
+  def set_dao dao
     @dao = dao
+  end
+
+  def set_storage storage
+    @storage = storage
   end
 
   def add_item(product_id, quantity = 1)
