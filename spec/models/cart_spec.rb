@@ -66,6 +66,20 @@ RSpec.describe Cart, type: :model do
     end
   end
 
+  describe "remove item" do
+    it "remove cart item from exists items" do
+      3.times { cart.add_item(1) }
+      1.times { cart.add_item(2) }
+      2.times { cart.add_item(3) }
+
+      expect(cart.items.length).to be 3
+      cart.remove_item 1
+      expect(cart.items.length).to be 2
+      cart.remove_item 2
+      expect(cart.items.length).to be 1
+    end
+  end
+
   describe "add items to cart and rebuild cart from items" do
     context "cart to items" do
       it "get items structure after add items" do

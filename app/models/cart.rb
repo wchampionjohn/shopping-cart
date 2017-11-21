@@ -38,6 +38,10 @@ class Cart
     item.quantity -= quantity
   end
 
+  def remove_item product_id
+    @storage.delete product_id
+  end
+
   def items
     @storage.items
   end
