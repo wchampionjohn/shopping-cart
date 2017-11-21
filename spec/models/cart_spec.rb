@@ -55,6 +55,17 @@ RSpec.describe Cart, type: :model do
     end
   end
 
+  describe "reduce quantity" do
+    it "reduce cart item quantity" do
+      5.times { cart.add_item(1) }
+      expect(cart.items.first.quantity).to be 5
+      cart.reduce_quantity(1)
+      expect(cart.items.first.quantity).to be 4
+      cart.reduce_quantity(1, 2)
+      expect(cart.items.first.quantity).to be 2
+    end
+  end
+
   describe "add items to cart and rebuild cart from items" do
     context "cart to items" do
       it "get items structure after add items" do

@@ -33,6 +33,11 @@ class Cart
                            end
   end
 
+  def reduce_quantity(product_id, quantity = 1)
+    item = @storage[product_id]
+    item.quantity -= quantity
+  end
+
   def items
     @storage.items
   end
