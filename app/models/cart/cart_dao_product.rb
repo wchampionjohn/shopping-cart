@@ -5,7 +5,7 @@ class CartDaoProduct < CartDao
   end
 
   def find id
-    Product.find_by id
+    Product.find id
   end
 
   def find_all ids

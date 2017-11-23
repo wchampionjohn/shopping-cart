@@ -43,6 +43,7 @@ RSpec.describe Cart, type: :model do
   describe "calculator" do
     it "calculate total price of this cart" do
       cart.set_dao CartDaoProduct.new # 從db找product
+      cart.register_plugin('total')
         p1 = create(:product, price: 100)
         p2 = create(:product, price: 200)
 
@@ -51,7 +52,7 @@ RSpec.describe Cart, type: :model do
         cart.add_item(p2.id) # 600
       }
 
-      expect(cart.total_price).to be 900
+      expect(cart.get_total).to be 900
     end
   end
 

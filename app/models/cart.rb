@@ -3,9 +3,10 @@ class Cart
   def initialize init_items = {}
     @storage = ::CartStorage.new # 抽離session
     @dao = ::CartDao.new # 抽離database
+    @plugins = {}
 
     init_items.each do |item|
-      add_item(item.id, item.quantity)
+      add_item(item[:id], item[:quantity])
     end
   end
 
@@ -17,25 +18,47 @@ class Cart
     @storage = storage
   end
 
+  def register_plugin name
+    plugin_name =  '::CartPlugin' + name.capitalize
+
+    #raise excetipn if Object.const_defined? plugin_name
+
+    plugin_obj = plugin_name.constantize.new self
+    self.class.redefine_method("get_#{name}") do
+      plugin_obj.get_value
+    end
+
+    @plugins[name] = plugin_obj
+  end
+
   def add_item(product_id, quantity = 1)
 
+    # TODO raise excetion
     return false unless @dao.exists? product_id
 
-    new_item = OpenStruct.new({id: product_id, quantity: quantity})
+    @plugins.values.each do |plugin|
+      plugin.before_add_item product_id
+    end
+
+    new_item = { id: product_id, quantity: quantity }
 
     item = @storage[product_id]
 
     @storage[product_id] = if item.nil?
                              new_item
                            else
-                             item.quantity += new_item.quantity
+                             item[:quantity] += new_item[:quantity]
                              item
                            end
+
+    @plugins.values.each do |plugin|
+      plugin.after_add_item product_id
+    end
   end
 
   def reduce_quantity(product_id, quantity = 1)
     item = @storage[product_id]
-    item.quantity -= quantity
+    item[:quantity] -= quantity
   end
 
   def remove_item product_id
@@ -43,23 +66,17 @@ class Cart
   end
 
   def items
-    @storage.items
+    @storage.items.map do |item|
+      OpenStruct.new(
+        id: item[:id],
+        quantity: item[:quantity],
+        product: @dao.find(item[:id])
+      )
+    end
   end
 
   def empty?
     @storage.empty?
-  end
-
-  def total_price
-    @dao.find_all(product_ids).reduce(0) do |total, product|
-      quantity = @storage[product.id].quantity
-      total += product.price * quantity
-    end
-  end
-
-private
-  def product_ids
-    items.map(&:id)
   end
 
 end
