@@ -5,9 +5,6 @@ RSpec.describe Cart, type: :model do
 
 
   describe "add or get item from cart" do
-    it "can create Cart" do
-    end
-
     context "can add item" do
       it "Add a item to cart, then the cart won't be empty." do
         expect(cart).to be_empty
@@ -37,22 +34,6 @@ RSpec.describe Cart, type: :model do
         expect(cart.items.last.quantity).to be 3
       end
 
-    end
-  end
-
-  describe "calculator" do
-    it "calculate total price of this cart" do
-      cart.set_dao CartDaoProduct.new # 從db找product
-      cart.register_plugin('total')
-        p1 = create(:product, price: 100)
-        p2 = create(:product, price: 200)
-
-      3.times {
-        cart.add_item(p1.id) # 300
-        cart.add_item(p2.id) # 600
-      }
-
-      expect(cart.get_total).to be 900
     end
   end
 

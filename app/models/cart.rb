@@ -21,11 +21,14 @@ class Cart
   def register_plugin name
     plugin_name =  '::CartPlugin' + name.capitalize
 
-    #raise excetipn if Object.const_defined? plugin_name
+    raise ArgumentError.new("找不到plugin") unless Object.const_defined? plugin_name
 
     plugin_obj = plugin_name.constantize.new self
-    self.class.redefine_method("get_#{name}") do
-      plugin_obj.get_value
+
+    if plugin_obj.respond_to? :get_value
+      self.class.redefine_method("get_#{name}") do
+        plugin_obj.get_value
+      end
     end
 
     @plugins[name] = plugin_obj
@@ -33,8 +36,7 @@ class Cart
 
   def add_item(product_id, quantity = 1)
 
-    # TODO raise excetion
-    return false unless @dao.exists? product_id
+    raise ArgumentError.new("找不到此商品") unless @dao.exists? product_id
 
     @plugins.values.each do |plugin|
       plugin.before_add_item product_id

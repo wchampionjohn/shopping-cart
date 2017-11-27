@@ -17,7 +17,7 @@ module ShoppingCart
 
     config.time_zone = 'Taipei'
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
-    config.autoload_paths += Dir[Rails.root.join("app", "models", "{*/}")]
+    config.autoload_paths += Dir[ Rails.root.join('app', 'models', '**/') ]
     config.i18n.default_locale = "zh-TW"
 
     # Settings in config/environments/* take precedence over those specified here.
