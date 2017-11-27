@@ -31,6 +31,12 @@ class Cart
       end
     end
 
+    if plugin_obj.respond_to? :set_value
+      self.class.redefine_method("set_#{name}") do |*args|
+        plugin_obj.set_value(*args)
+      end
+    end
+
     @plugins[name] = plugin_obj
   end
 

@@ -20,4 +20,8 @@ class CartPluginTotal < CartPlugin
     @total
   end
 
+  def set_value total
+    @total = total
+  end
+
 end
