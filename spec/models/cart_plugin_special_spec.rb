@@ -67,9 +67,7 @@ RSpec.describe CartPluginSpecial, type: :model do
       8.times { cart.add_item(p1.id) }
 
       expect(cart.get_total).to be 432 # 8 * 60 * 0.9
-
     end
   end
-
 
 end
