@@ -40,6 +40,10 @@ class Cart
     @plugins[name] = plugin_obj
   end
 
+  def plugin_exists? name
+    @plugins[name].present?
+  end
+
   def add_item(product_id, quantity = 1)
 
     raise ArgumentError.new("找不到此商品") unless @dao.exists? product_id

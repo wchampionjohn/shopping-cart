@@ -1,10 +1,6 @@
 # 滿XX折扣XX(可以是扣掉金額或者折扣原價的百分比)
 class CartPluginDiscount < CartPlugin
 
-  def initialize cart
-    @cart = cart
-  end
-
   def after_add_item item_key
     total_price = @cart.get_total
 

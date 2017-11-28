@@ -42,5 +42,4 @@ RSpec.describe CartPluginDiscount, type: :model do
     end
   end
 
-
 end
