@@ -7,7 +7,7 @@ class CartPluginCosts < CartPlugin
   end
 
   def after_refresh_item item_key
-    total_price = @cart.get_total
+    total_price = @cart.get_total.special
 
     after_sort_rules = @rules.sort { |rule1, rule2| rule2[:condition] <=> rule1[:condition] }
     current_rule = after_sort_rules.find do |rule|

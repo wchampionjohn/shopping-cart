@@ -23,11 +23,11 @@ RSpec.describe CartPluginDiscount, type: :model do
         cart.add_item p2.id # 800
       end
 
-      expect(cart.get_total).to be 1100 # 1200 - 100
+      expect(cart.get_total.special).to be 1100 # 1200 - 100
       cart.add_item p1.id # + 100
-      expect(cart.get_total).to be 1200 # 再測一次，確認沒有重複扣
+      expect(cart.get_total.special).to be 1200 # 再測一次，確認沒有重複扣
       cart.update_quantity(p1.id, 1) # 更新未達門檻
-      expect(cart.get_total).to be 900
+      expect(cart.get_total.special).to be 900
     end
 
     it "滿額X% off" do
@@ -40,10 +40,10 @@ RSpec.describe CartPluginDiscount, type: :model do
       cart.add_item(p1.id)
       cart.add_item(p2.id)
 
-      expect(cart.get_total).to be 2400 # 3000 - (3000 * 0.2) = 2400
+      expect(cart.get_total.special).to be 2400 # 3000 - (3000 * 0.2) = 2400
 
       cart.remove_item p1.id
-      expect(cart.get_total).to be 2000
+      expect(cart.get_total.special).to be 2000
     end
   end
 

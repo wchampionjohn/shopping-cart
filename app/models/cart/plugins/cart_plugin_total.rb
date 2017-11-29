@@ -17,14 +17,20 @@ class CartPluginTotal < CartPlugin
   end
 
   def get_value
-    @total
+    special_offer = if @cart.plugin_exists? 'discount'
+                      @total - @cart.get_discount
+                    else
+                      @total
+                    end
+    OpenStruct.new(
+      {
+        origin: @total,
+        special: special_offer
+      }
+    )
   end
 
-  def set_value total
-    @total = total
-  end
-
-private
+  private
   def calculate(price, id)
     if @cart.plugin_exists? 'special'
       special_offer_table = @cart.get_special

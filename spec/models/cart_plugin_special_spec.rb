@@ -26,9 +26,9 @@ RSpec.describe CartPluginSpecial, type: :model do
         cart.add_item p2.id # 800
       end
 
-      expect(cart.get_total).to be 1160 # 360 + 800
+      expect(cart.get_total.special).to be 1160 # 360 + 800
       cart.add_item p1.id # + 90
-      expect(cart.get_total).to be 1250
+      expect(cart.get_total.special).to be 1250
     end
 
     it "指定商品X% off" do
@@ -38,7 +38,7 @@ RSpec.describe CartPluginSpecial, type: :model do
       3.times { cart.add_item(p1.id) } # 80  * 3 = 240
       2.times { cart.add_item(p2.id) } # 200 * 2 = 400
 
-      expect(cart.get_total).to be 640
+      expect(cart.get_total.special).to be 640
     end
 
     it "指定商品X元" do
@@ -48,11 +48,11 @@ RSpec.describe CartPluginSpecial, type: :model do
       5.times { cart.add_item(p1.id) } # 100 * 5 = 500
       3.times { cart.add_item(p2.id) } # 120 * 3 = 360
 
-      expect(cart.get_total).to be 860
+      expect(cart.get_total.special).to be 860
       cart.update_quantity(p2.id, 1)  # 120
-      expect(cart.get_total).to be 620 # 500 + 120
+      expect(cart.get_total.special).to be 620 # 500 + 120
       cart.remove_item(p2.id)  # - 120
-      expect(cart.get_total).to be 500
+      expect(cart.get_total.special).to be 500
     end
   end
 
@@ -62,7 +62,7 @@ RSpec.describe CartPluginSpecial, type: :model do
       cart.set_discount(1000, 20, :percent) # total_price * 0.8 if total_price > 1000
       14.times { cart.add_item(p1.id) }
 
-      expect(cart.get_total).to be 896 # 14 * 80 * 0.8
+      expect(cart.get_total.special).to be 896 # 14 * 80 * 0.8
     end
 
     it "指定商品減50%，滿400再減10%" do
@@ -70,7 +70,7 @@ RSpec.describe CartPluginSpecial, type: :model do
       cart.set_discount(400, 10, :percent) # total_price * 0.9 if total_price > 400
       8.times { cart.add_item(p1.id) }
 
-      expect(cart.get_total).to be 432 # 8 * 60 * 0.9
+      expect(cart.get_total.special).to be 432 # 8 * 60 * 0.9
     end
   end
 

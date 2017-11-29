@@ -72,8 +72,8 @@ class Cart
 
   def update_quantity(product_id, quantity)
     @plugins.values.each do |plugin|
-      plugin.after_update_item product_id
-      plugin.after_refresh_item product_id
+      plugin.before_update_item product_id
+      plugin.before_refresh_item product_id
     end
 
     item = @storage[product_id]
@@ -87,8 +87,8 @@ class Cart
 
   def remove_item product_id
     @plugins.values.each do |plugin|
-      plugin.after_remove_item product_id
-      plugin.after_refresh_item product_id
+      plugin.before_remove_item product_id
+      plugin.before_refresh_item product_id
     end
 
     @storage.delete product_id
