@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Cart, type: :model do
   let(:cart) { Cart.new }
 
-
   describe "add or get item from cart" do
     context "can add item" do
       it "Add a item to cart, then the cart won't be empty." do
@@ -37,14 +36,14 @@ RSpec.describe Cart, type: :model do
     end
   end
 
-  describe "reduce quantity" do
-    it "reduce cart item quantity" do
+  describe "update quantity" do
+    it "update cart item quantity" do
       5.times { cart.add_item(1) }
       expect(cart.items.first.quantity).to be 5
-      cart.reduce_quantity(1)
-      expect(cart.items.first.quantity).to be 4
-      cart.reduce_quantity(1, 2)
-      expect(cart.items.first.quantity).to be 2
+      cart.update_quantity(1, 3)
+      expect(cart.items.first.quantity).to be 3
+      cart.update_quantity(1, 1)
+      expect(cart.items.first.quantity).to be 1
     end
   end
 

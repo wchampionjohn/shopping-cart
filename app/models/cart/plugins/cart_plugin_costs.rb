@@ -6,7 +6,7 @@ class CartPluginCosts < CartPlugin
     @rules = []
   end
 
-  def after_add_item item_key
+  def after_refresh_item item_key
     total_price = @cart.get_total
 
     after_sort_rules = @rules.sort { |rule1, rule2| rule2[:condition] <=> rule1[:condition] }

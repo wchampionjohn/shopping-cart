@@ -16,4 +16,16 @@ class CartPlugin
   def after_update_item item_key
   end
 
+  def before_remove_item item_key
+  end
+
+  def after_remove_item item_key
+  end
+
+  def before_refresh_item item_key
+  end
+
+  def after_refresh_item item_key
+  end
+
 end

@@ -49,6 +49,10 @@ RSpec.describe CartPluginSpecial, type: :model do
       3.times { cart.add_item(p2.id) } # 120 * 3 = 360
 
       expect(cart.get_total).to be 860
+      cart.update_quantity(p2.id, 1)  # 120
+      expect(cart.get_total).to be 620 # 500 + 120
+      cart.remove_item(p2.id)  # - 120
+      expect(cart.get_total).to be 500
     end
   end
 

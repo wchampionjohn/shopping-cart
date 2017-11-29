@@ -50,6 +50,7 @@ class Cart
 
     @plugins.values.each do |plugin|
       plugin.before_add_item product_id
+      plugin.before_refresh_item product_id
     end
 
     new_item = { id: product_id, quantity: quantity }
@@ -64,17 +65,38 @@ class Cart
                            end
 
     @plugins.values.each do |plugin|
-      plugin.after_add_item product_id
+      plugin.after_add_item product_id # triggle plugins after_add_item event
+      plugin.after_refresh_item product_id # triggle plugins after_refresh_item event
     end
   end
 
-  def reduce_quantity(product_id, quantity = 1)
+  def update_quantity(product_id, quantity)
+    @plugins.values.each do |plugin|
+      plugin.after_update_item product_id
+      plugin.after_refresh_item product_id
+    end
+
     item = @storage[product_id]
-    item[:quantity] -= quantity
+    item[:quantity] = quantity
+
+    @plugins.values.each do |plugin|
+      plugin.after_update_item product_id
+      plugin.after_refresh_item product_id
+    end
   end
 
   def remove_item product_id
+    @plugins.values.each do |plugin|
+      plugin.after_remove_item product_id
+      plugin.after_refresh_item product_id
+    end
+
     @storage.delete product_id
+
+    @plugins.values.each do |plugin|
+      plugin.after_remove_item product_id
+      plugin.after_refresh_item product_id
+    end
   end
 
   def items

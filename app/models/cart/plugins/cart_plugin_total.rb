@@ -5,24 +5,14 @@ class CartPluginTotal < CartPlugin
     @total = 0
   end
 
-  def before_add_item item_key
+  def before_refresh_item item_key
     @total = 0
   end
 
-  def after_add_item item_key
-
+  def after_refresh_item item_key
     @total = @cart.items.reduce(0) do |result, item|
       result += calculate(item.product.price, item.product.id)  * item.quantity
       result
-    end
-  end
-
-  def calculate(price, id)
-    if @cart.plugin_exists? 'special'
-      special_offer_table = @cart.get_special
-      special_offer_table.keys.include?(id) ? special_offer_table[id][:price] : price
-    else
-      price
     end
   end
 
@@ -32,6 +22,16 @@ class CartPluginTotal < CartPlugin
 
   def set_value total
     @total = total
+  end
+
+private
+  def calculate(price, id)
+    if @cart.plugin_exists? 'special'
+      special_offer_table = @cart.get_special
+      special_offer_table.keys.include?(id) ? special_offer_table[id][:price] : price
+    else
+      price
+    end
   end
 
 end

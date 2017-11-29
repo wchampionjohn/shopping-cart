@@ -27,6 +27,10 @@ class CartPluginSpecial < CartPlugin
     end
   end
 
+  def after_remove_item item_key
+    @offer_table.delete(item_key)
+  end
+
   def find id
     @settings.find { |setting| setting[:id] == id }
   end

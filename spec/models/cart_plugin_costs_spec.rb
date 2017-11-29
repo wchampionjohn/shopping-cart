@@ -51,6 +51,9 @@ RSpec.describe CartPluginCosts, type: :model do
       cart.add_item(p2.id)
       cart.add_item(p2.id)
       expect(cart.get_costs).to be 0
+
+      cart.remove_item p2.id
+      expect(cart.get_costs).to be 80
     end
 
   end
