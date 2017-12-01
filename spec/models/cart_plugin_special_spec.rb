@@ -73,5 +73,4 @@ RSpec.describe CartPluginSpecial, type: :model do
       expect(cart.get_total.special).to be 432 # 8 * 60 * 0.9
     end
   end
-
 end

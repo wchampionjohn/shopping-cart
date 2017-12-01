@@ -46,5 +46,4 @@ RSpec.describe CartPluginDiscount, type: :model do
       expect(cart.get_total.special).to be 2000
     end
   end
-
 end

@@ -11,7 +11,7 @@ class CartPluginSpecial < CartPlugin
     ids = @settings.map { |setting| setting[:id] }
 
     if ids.include? item_key
-      setting = find item_key
+      setting = find_setting item_key
       product = find_product item_key
 
       price = case setting[:type]
@@ -31,14 +31,6 @@ class CartPluginSpecial < CartPlugin
     @offer_table.delete(item_key)
   end
 
-  def find id
-    @settings.find { |setting| setting[:id] == id }
-  end
-
-  def find_product id
-    @cart.items.map(&:product).find { |product| product.id == id}
-  end
-
   def get_value
     @offer_table
   end
@@ -49,5 +41,14 @@ class CartPluginSpecial < CartPlugin
       discount: args.second,
       type: args.last
     })
+  end
+
+private
+  def find_setting id
+    @settings.find { |setting| setting[:id] == id }
+  end
+
+  def find_product id
+    @cart.items.map(&:product).find { |product| product.id == id}
   end
 end

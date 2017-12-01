@@ -2,9 +2,8 @@
 class CartPluginDiscount < CartPlugin
   def initialize cart
     @cart = cart
-    @discount  = 0
+    @discount  = 0 # 折扣的金額
   end
-
 
   def before_refresh_item item_key
     @discount  = 0
@@ -33,12 +32,13 @@ class CartPluginDiscount < CartPlugin
     @type = args.last # :percent(原價的百分之@offer) or # :off(直接折扣掉@offer)
   end
 
+
+private
   def above_condition?
     return false if @condition.nil?
     return false if @condition > @cart.get_total.origin
 
     true
   end
-
 end
 

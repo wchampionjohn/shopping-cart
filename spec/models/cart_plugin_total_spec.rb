@@ -33,14 +33,4 @@ RSpec.describe CartPluginTotal, type: :model do
       expect(cart.get_total.origin).to be 300
     end
   end
-
-  #describe "reset" do
-    #it "reset total price of this cart" do
-      #expect(cart.get_total).to be 900
-      #cart.set_total 800
-      #expect(cart.get_total).to be 800
-    #end
-  #end
-
-
 end

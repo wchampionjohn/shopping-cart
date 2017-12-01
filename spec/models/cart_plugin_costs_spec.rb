@@ -71,6 +71,4 @@ RSpec.describe CartPluginCosts, type: :model do
       cart.add_item(p1.id)
     end
   end
-
-
 end
