@@ -3,7 +3,7 @@ class ProductSerializer < ActiveModel::Serializer
   include ActionView::Helpers::TextHelper
 
   attributes :id, :title, :description, :price,
-             :status, :calculate, :created_at, :updated_at
+             :status, :remain, :created_at, :updated_at
 
   def title
     truncate(object.title, :length => 22)

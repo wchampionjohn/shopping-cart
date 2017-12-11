@@ -6,7 +6,7 @@ class Product < ApplicationRecord
 
   validates :title, :status, presence: true
 
-  validates :price, :calculate,
+  validates :price, :remain,
     presence: true,
     numericality: { only_integer: true },
     length: { maximum: 8 }
@@ -30,8 +30,8 @@ class Product < ApplicationRecord
 private
   def update_calculate
     if specs.present?
-      calculate = specs.reduce(0) { |result, spec| result += spec.quantity }
-      update_column(:calculate, calculate)
+      remain = specs.reduce(0) { |result, spec| result += spec.quantity }
+      update_column(:remain, remain)
     end
   end
 

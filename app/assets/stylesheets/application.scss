@@ -11,14 +11,13 @@
  * It is generally better to create a new file per style scope.
  *
  *= require font-awesome
+ *= require ./metronic/bootstrap.min
  *= require ./metronic/layout.min
  *= require ./metronic//themes/darkblue.min
  *= require ./metronic/custom.min
  *= require_directory ./metronic/global/
  *= require_directory ../../../vendor/assets/stylesheets/.
  */
-@import "bootstrap-sprockets";
-@import "bootstrap";
 
 .ui-helper-center {
   text-align: center;

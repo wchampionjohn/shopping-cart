@@ -30,8 +30,8 @@ export default class Specs extends React.Component {
 
     this.setState({ items: items })
 
-    disableCalculate()
-    updateCalculate(amount)
+    disableRemain()
+    updateRemain(amount)
   }
 
   handleRemove(delIndex){
@@ -59,10 +59,10 @@ export default class Specs extends React.Component {
     }, {amount: 0, size: 0})
 
     if (activeItems.size == 0) {
-      enableCalculate()
+      enableRemain()
     }
 
-    updateCalculate(activeItems.amount)
+    updateRemain(activeItems.amount)
   }
 
   handleChange = (idx, column) => (e) => {
@@ -83,7 +83,7 @@ export default class Specs extends React.Component {
         return result
       }, 0)
 
-      updateCalculate(amount)
+      updateRemain(amount)
 
     }
 

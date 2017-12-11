@@ -7,7 +7,7 @@ zh-TW:
         title: '名稱'
         price: '價格'
         status: '商品保存狀態'
-        calculate: '數量'
+        remain: '數量'
         description: '商品描述'
         is_launched: '上架'
         image_path: '商品圖片'

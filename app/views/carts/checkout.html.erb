@@ -1,0 +1,169 @@
+<div class="portlet light bordered">
+  <div class="portlet-title">
+    <div class="caption">
+      <i class="icon-share font-dark"></i>
+      <span class="caption-subject font-dark bold uppercase">目前已加入購物車的商品</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+      <div class="portlet red-sunglo box">
+        <div class="portlet-title">
+          <div class="caption">
+            <i class="fa fa-cogs"></i>購物車</div>
+          <div class="actions">
+            <a href="javascript:;" class="btn btn-default btn-sm">
+              <i class="fa fa-trash-o"></i> 清空 </a>
+          </div>
+        </div>
+        <div class="portlet-body">
+          <div class="table-responsive">
+            <table class="table table-hover table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th> 名稱 </th>
+                  <th> 數量 </th>
+                  <th> 價格 </th>
+                  <th> 小計 </th>
+                  <th> </th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @cart.items.each do |item| %>
+                <tr>
+                  <td> <%= item.product.title %> </td>
+                  <td width="130px">
+                    <input
+                    class="touchspin quantity form-control input-xs hide"
+                    onChange="updateQuantity(this)" data-id="<%= item.id %>"
+                    type="text" value="<%= item.quantity %>"
+                    data-max="<%= item.product.remain %>"
+                    max="<%= item.product.remain %>"
+                    data-title="<%= item.product.title %>"
+                    name="product[]" > </div>
+                </td>
+                <td> <%= currency(item.product.price) %> </td>
+                <td> <font id="amount-<%= item.id %>"><%= currency(item.product.price * item.quantity) %></font></td>
+                <td align="center">
+                  <%= link_to 'javascript:void(0)', class:'btn btn-danger', onClick:"showRemoveModal('#{item.product.title}', #{item.id})" do %>
+                  <i class="fa fa-trash-o"></i>
+                  <% end %>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <%= link_to("繼續購物", products_path, class:'btn blue') %>
+      <a class="btn green"> <i class="fa fa-credit-card"></i> 結帳 </a>
+      <br />
+    </div>
+    <div class="col-md-6">
+      <div class="well">
+        <div class="row static-info align-reverse">
+          <div class="col-md-8 name"> 消費金額: </div>
+          <div class="col-md-3 value"><%= currency(@cart.get_total.origin) %></div>
+        </div>
+        <div class="row static-info align-reverse">
+          <div class="col-md-8 name"> 折扣: </div>
+          <div class="col-md-3 value"> $0 </div>
+        </div>
+        <div class="row static-info align-reverse">
+          <div class="col-md-8 name"> 運費: </div>
+          <div class="col-md-3 value"> $0 </div>
+        </div>
+        <div class="row static-info align-reverse">
+          <div class="col-md-8 name"> 小記: </div>
+          <div class="col-md-3 value"> <font id="total" class="font-red"><%= currency(@cart.get_total.origin) %></font> </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div id="remove-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h4 class="modal-title">你確定要移除這個商品嗎？</h4>
+      </div>
+      <div class="modal-body">
+        <p id="remove-product"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn default" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button data-dismiss="modal" class="btn blue" onClick="sureRemove()">確定</button>
+        <input id="sureRemove" type="hidden" value="0" />
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+  var ComponentsBootstrapTouchSpin = function() {
+    $(".touchspin").each(function() {
+      $(this).TouchSpin({
+        min: 1,
+        max: $(this).data('max')
+      })
+      .on("touchspin.on.max", function () {
+        toastr.info('商品數量不足', 'Info');
+      })
+      .on("touchspin.on.min", function () {
+        var title = $(this).data('title')
+        var id = $(this).data('id')
+        showRemoveModal(title, id)
+      })
+    })
+  }
+
+  var timer
+  function updateQuantity(object) {
+    clearTimeout(timer);
+    var id = $(object).data('id')
+    var quantity = $(object).val()
+    timer = window.setTimeout(function() {
+      $.post( "/cart/update/" + id, { quantity:  quantity })
+      .done(function( data ) {
+        $("#total").html(data.total)
+        $("#amount-" + id).html(data.amount)
+      })
+      .fail(function(xhr, status, error) {
+        toastr.error(xhr.responseJSON.message, 'Error');
+        $(object).val(xhr.responseJSON.quantity)
+      })
+    }, 500);
+  }
+
+  function sureRemove(){
+    $("#sureRemove").val(1)
+  }
+
+  function showRemoveModal(title, id){
+    $("#remove-product").html(title)
+
+    $("#remove-modal").modal('show')
+    .on('hidden.bs.modal', function (e) {
+      if($("#sureRemove").val() == "1") {
+        $.ajax({
+          type: "DELETE",
+          url: "/cart/remove/" + id
+        })
+
+        setTimeout(location.reload.bind(location), 500);
+      }
+    })
+  }
+
+  $(document).ready(function() {
+    ComponentsBootstrapTouchSpin();
+    $(".touchspin").removeClass('hide')
+  });
+</script>

@@ -6,7 +6,7 @@ class Cart
     @plugins = {}
 
     init_items.each do |item|
-      add_item(item[:id], item[:quantity])
+      add_item(item['id'], item['quantity'])
     end
   end
 
@@ -103,7 +103,7 @@ class Cart
     @storage.items.map do |item|
       OpenStruct.new(
         id: item[:id],
-        quantity: item[:quantity],
+        quantity: item[:quantity].to_i,
         product: @dao.find(item[:id])
       )
     end

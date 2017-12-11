@@ -142,11 +142,11 @@ export default class Product extends Component {
           {this.isEditing(product.id)
             ? <input
               type="text"
-              name="calculate"
-              value={this.state.product.calculate}
+              name="remain"
+              value={this.state.product.remain}
               onChange={this.handleChange}
               size="6" />
-            : product.calculate}
+            : product.remain}
         </td>
         {!isEditMode &&
           <td>

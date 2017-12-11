@@ -31,6 +31,10 @@ module ApplicationHelper
     end
   end
 
+  def currency number
+    number_to_currency(number, unit: "$", precision: 0)
+  end
+
   def is_admin_page?
     controller_path.split('/').first == 'admin'
   end
