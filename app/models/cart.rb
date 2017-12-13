@@ -21,8 +21,6 @@ class Cart
   def register_plugin name
     plugin_name =  '::CartPlugin' + name.capitalize
 
-    raise ArgumentError.new("找不到plugin") unless Object.const_defined? plugin_name
-
     plugin_obj = plugin_name.constantize.new self
 
     if plugin_obj.respond_to? :get_value

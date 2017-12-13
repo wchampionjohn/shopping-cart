@@ -4,9 +4,6 @@ RSpec.describe CartPluginCosts, type: :model do
   let(:cart) do
     cart = Cart.new
     cart.set_dao CartDaoProduct.new # 從db找product
-    CartPluginTotal
-    CartPluginCosts
-    CartPluginDiscount
     cart.register_plugin('total')
     # 注意順序(會影響運費門檻計算)
     cart.register_plugin('discount')

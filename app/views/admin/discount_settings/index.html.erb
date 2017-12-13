@@ -1,0 +1,51 @@
+<div class="portlet light bordered">
+  <%= render partial: 'shares/form_title', locals: { icon: 'fa-dollar', title: '滿額折價' } %>
+  <div class="portlet-body form">
+    <%= simple_form_for [:admin, @function], url: admin_discount_setting_path(@function), method: :patch, html: {class: 'form-horizontal'} do |f| %>
+    <%= render partial: 'admin/functions/form', locals: { f: f, function: @function } %>
+    <div id="detail" class="<%= 'hide' unless @function.is_open %>">
+    <hr />
+    <h4><i class="fa fa-cog"></i> 設定內容</h4>
+    <%= render partial: 'form', locals: { f: f, setting: @function.setting } %>
+    <%= render partial: 'shares/static_p', locals: { label: '目前設定', content: summary(@function.setting) } %>
+  </div>
+    <%= render partial: 'shares/save', locals: { f: f, cancel_path: admin_functions_path } %>
+  </div>
+  <% end %>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+
+$("#cart_function_setting_attributes_discount_type").change(function(){
+  if($(this).val() == 'cut') {
+    $('.cart_function_setting_percent_off').addClass('hide')
+    $('.cart_function_setting_offer').removeClass('hide')
+  } else {
+    $('.cart_function_setting_offer').addClass('hide')
+    $('.cart_function_setting_percent_off').removeClass('hide')
+  }
+})
+
+$("#cart_function_is_open").change(function(){
+
+    var detail = $("#detail")
+
+    if($(this).prop("checked")) {
+      detail.removeClass('hide')
+    } else {
+      detail.addClass('hide')
+    }
+})
+
+$("#cart_function_setting_attributes_is_limited").change(function(){
+
+    var limited_date = $(".cart_function_setting_limited_start_date")
+
+    if($(this).prop("checked")) {
+      limited_date.removeClass('hide')
+    } else {
+      limited_date.addClass('hide')
+    }
+})
+
+</script>

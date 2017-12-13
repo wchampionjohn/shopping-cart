@@ -4,8 +4,6 @@ RSpec.describe CartPluginSpecial, type: :model do
   let(:cart) do
     cart = Cart.new
     cart.set_dao CartDaoProduct.new # 從db找product
-    CartPluginTotal
-    CartPluginDiscount
     cart.register_plugin('special')
     cart.register_plugin('total')
     cart.register_plugin('discount')

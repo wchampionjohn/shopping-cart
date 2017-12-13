@@ -1,7 +1,8 @@
 class ApplicationController < ActionController::Base
   layout :layout_by_resource
   protect_from_forgery with: :null_session
-  helper_method :current_item?
+  helper_method :function_item?
+  helper_method :product_item?
 
   # return Format [ { id => [message, message] }, id => [message, message] } ]
   def formated_of(error_records)
@@ -10,7 +11,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def current_item? path
+  def function_item? path
+    [
+      'admin/discount_settings',
+      'admin/functions',
+      'admin/costs'
+    ].include?(params[:controller])
+  end
+
+  def product_item? path
     path_params = Rails.application.routes.recognize_path path
     path_params[:controller] == params[:controller]
   end
@@ -34,4 +43,5 @@ class ApplicationController < ActionController::Base
     end
 
   end
+
 end

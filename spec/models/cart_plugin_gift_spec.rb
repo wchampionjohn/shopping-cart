@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe CartPluginGift, type: :model do
   let(:cart) do
     cart = Cart.new
-    CartPluginGift
     cart.register_plugin('gift')
 
     cart

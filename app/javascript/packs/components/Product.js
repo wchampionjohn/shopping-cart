@@ -87,13 +87,13 @@ export default class Product extends Component {
             <a
               className="btn btn-default btn-xs"
               href={`products/${product.id}/edit`}>
-              <i className="glyphicon glyphicon-pencil"></i>
+              <i className="fa fa-pencil"></i>
             </a>
             <button
               className="btn btn-default btn-xs"
               type="buttton"
               onClick={() => this.handleDelete(product.id)}>
-              <i className="glyphicon glyphicon glyphicon-trash"></i>
+              <i className="fa fa-trash-o"></i>
             </button>
           </td>
         }

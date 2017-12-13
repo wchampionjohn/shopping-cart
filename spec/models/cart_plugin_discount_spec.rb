@@ -4,7 +4,6 @@ RSpec.describe CartPluginDiscount, type: :model do
   let(:cart) do
     cart = Cart.new
     cart.set_dao CartDaoProduct.new # 從db找product
-    CartPluginTotal
     cart.register_plugin('total')
     cart.register_plugin('discount')
 

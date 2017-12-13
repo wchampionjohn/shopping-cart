@@ -44,7 +44,7 @@ export default class Toolbar extends Component {
           className="btn btn-default"
           onClick={this.handleSwitchEditMode}
           type="buttton" >
-          <i className="glyphicon glyphicon-pencil"></i>
+          <i className="fa fa-pencil"></i>
         </button>
       )
     }
@@ -59,7 +59,7 @@ export default class Toolbar extends Component {
           className="btn btn-default"
           onClick={() => this.handleDelete(this.props.selectedProductIds)}
           type="buttton" >
-          <i className="glyphicon glyphicon glyphicon-trash" alt="刪除"></i>
+          <i className="fa fa-trash-o" alt="刪除"></i>
         </button>
       )
     }
@@ -75,7 +75,7 @@ export default class Toolbar extends Component {
           onClick={this.props.onSaveProducts}
           className="btn btn-default"
           type="buttton">
-          <i className="glyphicon glyphicon-floppy-disk" alt="確認修改"></i>
+          <i className="fa fa-save" alt="確認修改"></i>
         </button>
       )
     }
@@ -91,7 +91,7 @@ export default class Toolbar extends Component {
           onClick={this.props.onCloseEditMode}
           className="btn btn-default"
           type="buttton">
-          <i className="glyphicon glyphicon-floppy-remove" alt="取消修改"></i>
+          <i className="fa fa-undo" alt="取消修改"></i>
         </button>
       )
     }
@@ -111,7 +111,7 @@ export default class Toolbar extends Component {
     return (
       <div className="table-toolbar">
         <div className="btn-group pull-left">
-          <a href="products/new" className="btn blue"> <i className="glyphicon glyphicon glyphicon-plus"></i> </a>
+          <a href="products/new" className="btn blue"> <i className="fa fa-plus"></i> </a>
         </div>
         <div className="btn-group pull-right">
           <button
@@ -120,7 +120,7 @@ export default class Toolbar extends Component {
             name="refresh"
             title="Refresh"
             onClick={this.handleRefresh}>
-            <i className="glyphicon glyphicon-refresh icon-refresh"></i>
+            <i className="fa fa-refresh"></i>
           </button>
           { this.renderEditButton() }
           { this.renderSaveButton() }

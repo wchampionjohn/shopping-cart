@@ -1,0 +1,8 @@
+zh-TW:
+  activerecord:
+    models:
+      cart_function: '功能'
+    attributes:
+      cart_function:
+        is_open: '是否開放'
+        memo: '備註'

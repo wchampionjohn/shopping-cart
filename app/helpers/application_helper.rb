@@ -39,4 +39,16 @@ module ApplicationHelper
     controller_path.split('/').first == 'admin'
   end
 
+  def check_icon is_checked
+    content_tag(:i, '', class: 'fa fa-check') if is_checked
+  end
+
+  def summary setting
+    if setting.cut?
+      "消費滿 #{currency(setting.condition)} 扣除 #{currency(setting.offer)}"
+    elsif setting.percent?
+      "消費滿 #{currency(setting.condition)} 打 #{ ((100 - (setting.percent_off)) / 10.0).round(1)} 折"
+    end
+  end
+
 end

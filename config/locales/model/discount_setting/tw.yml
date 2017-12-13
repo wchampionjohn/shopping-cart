@@ -1,0 +1,14 @@
+zh-TW:
+  activerecord:
+    models:
+      discount_setting: '滿額折價'
+    attributes:
+      discount_setting:
+        condition: '滿額條件'
+        offer: '扣除金額'
+        percent_off: '扣除百分比'
+        discount_type: '折扣方式'
+        is_limited: '限時開放'
+      discount_setting/discount_type:
+        cut: '金額'
+        percent: '百分比'

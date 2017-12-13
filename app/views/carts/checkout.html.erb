@@ -46,7 +46,7 @@
                 <td> <%= currency(item.product.price) %> </td>
                 <td> <font id="amount-<%= item.id %>"><%= currency(item.product.price * item.quantity) %></font></td>
                 <td align="center">
-                  <%= link_to 'javascript:void(0)', class:'btn btn-danger', onClick:"showRemoveModal('#{item.product.title}', #{item.id})" do %>
+                  <%= link_to 'javascript:void(0)', class:'btn btn-danger', onClick:"showRemoveModal('#{h(item.product.title)}', #{item.id})" do %>
                   <i class="fa fa-trash-o"></i>
                   <% end %>
                 </td>
@@ -71,16 +71,24 @@
           <div class="col-md-3 value"><%= currency(@cart.get_total.origin) %></div>
         </div>
         <div class="row static-info align-reverse">
-          <div class="col-md-8 name"> 折扣: </div>
-          <div class="col-md-3 value"> $0 </div>
+          <div class="col-md-8 name">
+            <i
+              class="fa fa-info-circle popovers"
+              data-container="body"
+              data-trigger="hover"
+              data-placement="left"
+              data-content="<%= summary @discount_setting %>" ></i>
+            折扣:
+          </div>
+          <div class="col-md-3 value"> <%= currency(@cart.get_discount) %> </div>
         </div>
         <div class="row static-info align-reverse">
           <div class="col-md-8 name"> 運費: </div>
-          <div class="col-md-3 value"> $0 </div>
+          <div class="col-md-3 value"> <%= currency(@cart.get_costs) %> </div>
         </div>
         <div class="row static-info align-reverse">
           <div class="col-md-8 name"> 小記: </div>
-          <div class="col-md-3 value"> <font id="total" class="font-red"><%= currency(@cart.get_total.origin) %></font> </div>
+          <div class="col-md-3 value"> <font id="total" class="font-red"><%= currency(@cart.get_total.special + @cart.get_costs) %></font> </div>
         </div>
       </div>
     </div>

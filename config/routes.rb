@@ -19,6 +19,15 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :functions do
+    end
+
+    resources :discount_settings do
+    end
+
+    resources :costs do
+    end
+
     resources :products do
       collection do
         post   'batch_update'

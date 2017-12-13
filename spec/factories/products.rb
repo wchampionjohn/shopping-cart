@@ -4,7 +4,7 @@ FactoryBot.define do
     title Faker::Lorem.word
     description Faker::Lorem.sentence
     price Faker::Number.between(1000, 9999)
-    calculate Faker::Number.between(1, 99)
+    remain Faker::Number.between(1, 99)
     status :all_new
 
     trait :iphone do

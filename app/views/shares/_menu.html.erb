@@ -19,7 +19,7 @@
 </ul>
 <div class="hor-menu   hidden-sm hidden-xs">
   <ul class="nav navbar-nav">
-    <li class="classic-menu-dropdown <%= current_item?(admin_products_path) ? 'active' : '' %>" aria-haspopup="true">
+    <li class="classic-menu-dropdown <%= product_item?(admin_products_path) ? 'active' : '' %>" aria-haspopup="true">
       <a href="<%= admin_products_path %>"> 商品
         <span class="selected"> </span>
       </a>
@@ -29,8 +29,8 @@
         <span class="selected"> </span>
       </a>
     </li>
-    <li class="classic-menu-dropdown" aria-haspopup="true">
-      <a href="javascript:void(0);"> 促銷活動
+    <li class="classic-menu-dropdown <%= function_item?(admin_functions_path) ? 'active' : '' %>"" aria-haspopup="true">
+      <a href="<%= admin_functions_path %>"> 功能設定
         <span class="selected"> </span>
       </a>
     </li>

@@ -5,6 +5,7 @@ class CartsController < ApplicationController
 
   def checkout
     @cart = current_cart
+    @discount_setting = CartFunction.find_by_name('discount').setting
   end
 
   def add
@@ -28,7 +29,7 @@ class CartsController < ApplicationController
 
     raise '數量必須為數字' if quantity == 0
 
-    if product.remain <= params[:quantity].to_i
+    if product.remain < params[:quantity].to_i
       item = cart.items.find { |item| item.id.to_i == params[:id].to_i }
       raise '商品數量不足'
     end

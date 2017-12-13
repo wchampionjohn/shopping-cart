@@ -1,0 +1,23 @@
+<%= f.simple_fields_for :setting do |c| %>
+  <%= c.input :is_limited, as: :boolean %>
+  <%= c.input :limited_start_date,
+    label: '開放期間',
+    input_html: {class: 'form-control'},
+    wrapper_html: {class: setting.is_limited ? 'form-group': 'form-group hide'} do %>
+    <div class="input-group input-large date-picker input-daterange" data-date-format="yyyy-mm-dd" data-date-start-date="+0d">
+      <%= c.input :limited_start_date, as: :string, input_html: {class: 'form-control'}, class: 'form-control', label: false, wrapper: :date_range %>
+        <span class="input-group-addon"> 至 </span>
+      <%= c.input :limited_end_date, as: :string, input_html: {class: 'form-control'}, class: 'form-control', label: false, wrapper: :date_range %>
+      </div>
+    <% end %>
+  <%= c.input :condition, input_html: { class: 'input-small' } %>
+  <%= c.input :id, as: :hidden %>
+  <%= c.input :discount_type,
+    collection: DiscountSetting.human_attribute_enum('discount_type'),
+    label_method: :last,
+    value_method: :first,
+    include_blank: false,
+    input_html: { class: 'input-small' } %>
+  <%= c.input :offer, input_html: { class: 'input-small'}, wrapper_html: { class: setting.percent? ? 'hide' : '' } %>
+  <%= c.input :percent_off, input_html: { class: 'input-small'}, wrapper_html: { class: setting.cut? ? 'hide' : '' } %>
+<% end %>
