@@ -19,13 +19,12 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :functions do
-    end
-
-    resources :discount_settings do
-    end
-
-    resources :costs do
+    resources :functions
+    resources :discount_settings
+    resources :costs, only:[:index, :update, :destroy] do
+      member do
+        post :switch, path: 'switch'
+      end
     end
 
     resources :products do

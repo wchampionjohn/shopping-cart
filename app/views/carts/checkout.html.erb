@@ -68,7 +68,7 @@
       <div class="well">
         <div class="row static-info align-reverse">
           <div class="col-md-8 name"> 消費金額: </div>
-          <div class="col-md-3 value"><%= currency(@cart.get_total.origin) %></div>
+          <div id="origin" class="col-md-3 value"> <%= currency(@cart.get_total.origin) %> </div>
         </div>
         <div class="row static-info align-reverse">
           <div class="col-md-8 name">
@@ -80,11 +80,22 @@
               data-content="<%= summary @discount_setting %>" ></i>
             折扣:
           </div>
-          <div class="col-md-3 value"> <%= currency(@cart.get_discount) %> </div>
+          <div id="discount" class="col-md-3 value"> <%= currency(@cart.get_discount) %> </div>
         </div>
         <div class="row static-info align-reverse">
-          <div class="col-md-8 name"> 運費: </div>
-          <div class="col-md-3 value"> <%= currency(@cart.get_costs) %> </div>
+          <div class="col-md-8 name">
+           <i class="fa fa-info-circle popovers"
+              data-html="true"
+              data-container="body"
+              data-trigger="hover"
+              data-placement="left"
+              data-content="<%= costs_summary @opening_rules %>" >
+            </i>
+            運費:
+          </div>
+          <div id="costs" class="col-md-3 value">
+            <%= currency(@cart.get_costs) %>
+          </div>
         </div>
         <div class="row static-info align-reverse">
           <div class="col-md-8 name"> 小記: </div>
@@ -141,7 +152,11 @@
       $.post( "/cart/update/" + id, { quantity:  quantity })
       .done(function( data ) {
         $("#total").html(data.total)
+        $("#costs").html(data.costs)
+        $("#discount").html(data.discount)
+        $("#origin").html(data.origin)
         $("#amount-" + id).html(data.amount)
+
       })
       .fail(function(xhr, status, error) {
         toastr.error(xhr.responseJSON.message, 'Error');

@@ -1,0 +1,78 @@
+<div class="portlet light bordered">
+  <%= render partial: 'shares/form_title', locals: { icon: 'fa-truck', title: '運費規則' } %>
+  <div class="portlet-body form">
+    <%= simple_form_for [:admin, @function], url: admin_cost_path(@function), method: :patch, html: {class: 'form-horizontal'} do |f| %>
+    <%= render partial: 'admin/functions/form', locals: { f: f, function: @function } %>
+    <input type="hidden" name="is_add_rule" id="is-add-rule" value="<%= @is_add_rule || '0' %>" />
+    <div class="form-group">
+      <label class="col-md-2 control-label">目前設定</label>
+      <div class="col-md-3">
+        <p id="summary" class="form-control-static">
+          <%= costs_summary @opening_rules %>
+        </p>
+      </div>
+    </div>
+    <div id="add-rule-block" class="form-group <%= 'hide' if @is_add_rule %>">
+      <div class="col-md-offset-2 col-md-10">
+        <button id="add-rule-button" type="button" class="btn green"><i class="fa fa-plus"></i> 新增運費規則</button>
+      </div>
+    </div>
+    <div id="new-rule-form" class="<%= 'hide' unless @is_add_rule %>">
+      <hr />
+      <h4><i class="fa fa-plus"></i> 新增運費規則</h4>
+      <%= render partial: 'form', locals: { f: f, function: @function } %>
+    </div>
+    <%= render partial: 'shares/save', locals: { f: f, cancel_path: admin_functions_path } %>
+  </div>
+  <% end %>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <!-- BEGIN SAMPLE TABLE PORTLET-->
+    <div class="portlet box green">
+      <div class="portlet-title">
+        <div class="caption">
+          <i class="fa fa-comments"></i>已存在的運費規則 </div>
+        <div class="tools">
+          <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+        </div>
+      </div>
+      <div class="portlet-body">
+        <div class="table-scrollable">
+          <%= render partial: 'table', locals: { rules: @rules } %>
+        </div>
+      </div>
+    </div>
+    <!-- END SAMPLE TABLE PORTLET-->
+  </div>
+</div>
+<script type="text/javascript" charset="utf-8">
+
+$("#add-rule-button").click(function(){
+    $("#add-rule-block").addClass('hide')
+    $("#new-rule-form").removeClass('hide')
+    $("#is-add-rule").val(1)
+})
+
+$('.switch-openness').on('switchChange.bootstrapSwitch', function(event, state) {
+  var id = $(this).data('id')
+  $.ajax({
+    type: "POST",
+    url: '/admin/costs/' + id + '/switch/'
+  }).done(function(data){
+    $("#summary").html(data.summary)
+  })
+})
+$("#cart_function_rules_attributes_0_is_limited").change(function(){
+
+    var limited_date = $(".cart_function_rules_limited_start_date")
+
+    if($(this).prop("checked")) {
+      limited_date.removeClass('hide')
+    } else {
+      limited_date.addClass('hide')
+    }
+})
+
+</script>

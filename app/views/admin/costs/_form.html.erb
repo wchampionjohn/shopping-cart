@@ -1,0 +1,17 @@
+<%= f.simple_fields_for(:rules, @current_rule || function.rules.build) do |c| %>
+  <%= c.input :is_open, as: :boolean %>
+  <%= c.input :is_limited, as: :boolean %>
+  <%= c.input :limited_start_date,
+    label: '開放期間',
+    input_html: { class: 'form-control'},
+    wrapper_html: { class: 'form-group hide' } do %>
+    <div class="input-group input-large date-picker input-daterange" data-date-format="yyyy-mm-dd" data-date-start-date="+0d">
+      <%= c.input :limited_start_date, as: :string, input_html: {class: 'form-control'}, class: 'form-control', label: false, wrapper: :date_range %>
+        <span class="input-group-addon"> 至 </span>
+      <%= c.input :limited_end_date, as: :string, input_html: {class: 'form-control'}, class: 'form-control', label: false, wrapper: :date_range %>
+      </div>
+    <% end %>
+  <%= c.input :id, as: :hidden %>
+  <%= c.input :reach, input_html: { class: 'input-small'} %>
+  <%= c.input :cost, input_html: { class: 'input-small'} %>
+<% end %>

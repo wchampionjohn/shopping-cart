@@ -42,6 +42,10 @@ ActiveRecord::Schema.define(version: 20171211063210) do
     t.integer "reach"
     t.integer "cost"
     t.integer "cart_function_id"
+    t.boolean "is_open"
+    t.boolean "is_limited"
+    t.date "limited_start_date"
+    t.date "limited_end_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -51,4 +51,24 @@ module ApplicationHelper
     end
   end
 
+  def costs_summary rules
+    return '無開放任何運費規則' if rules.blank?
+    return '一律免運' if rules.last.cost == 0 && rules.last.reach == 0
+    return "一律 $ #{rules.first.cost}" if rules.size == 1 && rules.first.reach == 0
+
+    rules.reduce([]) do |result, rule|
+      prefix_text = if rule.reach == 0
+                     "基本"
+                   else
+                     "消費滿 $ #{rule.reach} "
+                   end
+      post_text = if rule.cost == 0
+                    " 免運費"
+                  else
+                    "運費 $ #{rule.cost}"
+                  end
+      result <<  " #{prefix_text}#{post_text}"
+    end.join('<br />').html_safe
+  end
+
 end

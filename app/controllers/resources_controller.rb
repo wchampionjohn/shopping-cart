@@ -1,3 +1,4 @@
+# reference https://github.com/jodeci/shikigami
 class ResourcesController < ApplicationController
   helper_method :current_collection, :current_object
 

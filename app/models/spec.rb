@@ -11,6 +11,7 @@ class Spec < ApplicationRecord
 
     record.errors.add attr, :taken if names.count(name) > 1
   end
+
   belongs_to :product
 
 end

@@ -6,6 +6,7 @@ class CartsController < ApplicationController
   def checkout
     @cart = current_cart
     @discount_setting = CartFunction.find_by_name('discount').setting
+    @opening_rules = CostRule.opening_rules
   end
 
   def add
@@ -30,7 +31,6 @@ class CartsController < ApplicationController
     raise '數量必須為數字' if quantity == 0
 
     if product.remain < params[:quantity].to_i
-      item = cart.items.find { |item| item.id.to_i == params[:id].to_i }
       raise '商品數量不足'
     end
 
@@ -39,9 +39,16 @@ class CartsController < ApplicationController
     save_to_session
     amount = item.product.price * item.quantity
 
-    render json: { total: currency(cart.get_total.origin), amount: currency(amount) }, status: :ok
+    render json: {
+      origin: currency(cart.get_total.origin),
+      total: currency(cart.get_total.special),
+      amount: currency(amount) ,
+      costs: currency(cart.get_costs),
+      discount: cart.get_discount
+    }, status: :ok
 
   rescue Exception => msg
+    item = cart.items.find { |item| item.id.to_i == params[:id].to_i }
     render json: { message: msg, quantity: item.quantity }, status: 400
   end
 

@@ -1,0 +1,10 @@
+zh-TW:
+  activerecord:
+    models:
+      cost_rule: '運費規則'
+    attributes:
+      cost_rule:
+        is_open: '是否開放'
+        is_limited: '限時開放'
+        reach: '滿額條件'
+        cost: '運費'

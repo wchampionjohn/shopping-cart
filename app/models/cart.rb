@@ -1,3 +1,4 @@
+# reference https://www.slideshare.net/jaceju/ss-6312192
 class Cart
 
   def initialize init_items = {}
@@ -21,7 +22,11 @@ class Cart
   def register_plugin name
     plugin_name =  '::CartPlugin' + name.capitalize
 
-    plugin_obj = plugin_name.constantize.new self
+    begin
+      plugin_obj = plugin_name.constantize.new self
+    rescue NameError
+      raise ArgumentError.new("找不到plugin #{plugin_name}")
+    end
 
     if plugin_obj.respond_to? :get_value
       self.class.redefine_method("get_#{name}") do

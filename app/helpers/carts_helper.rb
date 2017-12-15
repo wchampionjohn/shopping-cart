@@ -11,7 +11,7 @@ module CartsHelper
       cart.register_plugin('costs')
 
       function = CartFunction.find_by_name('discount')
-      if function.setting.is_open? Date.today
+      if function.setting.is_opening?
         setting = function.setting
         discount = if setting.percent?
                      setting.percent_off
@@ -21,10 +21,12 @@ module CartsHelper
         cart.set_discount(setting.condition, discount, setting.discount_type.to_sym)
       end
 
-      CartFunction.find_by_name('costs').rules.each do |rule|
-        cart.set_costs(rule.cost, rule.reach)
+      function = CartFunction.find_by_name('costs')
+      if function.is_open
+        CostRule.opening_rules.each do |rule|
+          cart.set_costs(rule.cost, rule.reach)
+        end
       end
-
 
       current_items.each do |item|
         cart.add_item(item['id'], item['quantity'])
