@@ -1,0 +1,50 @@
+<h4>
+  <i class="fa fa-cog"></i> 特價中的商品
+  <%= link_to(admin_special_products_path, target: "_blank") do%>
+  <span class="badge badge-primary badge-roundless">
+    more <i class="fa fa-external-link"></i>
+  </span>
+  <% end%>
+</h4>
+<br />
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th> 商品名稱 </th>
+      <th> 原價 </th>
+      <th> 特價 </th>
+      <th> 開放時間 </th>
+      <th>  </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @detail.each do |special| %>
+      <tr>
+        <td>
+          <%= link_to(
+          special.product.title,
+          edit_admin_product_path(special.product_id),
+          target: "_blank"
+          ) %>
+        </td>
+        <td>
+          <%= special.product.price %>
+        </td>
+        <td>
+          <%= special.special_price %>
+        </td>
+        <td>
+          <%= during_of_open special %>
+        </td>
+        <td>
+          <%= link_to(edit_admin_special_product_path(special), class: 'btn btn-sm blue') do %>
+          <i class="fa fa-pencil"></i>
+          <% end %>
+          <%= link_to(admin_special_product_path(special),  method: :delete, class: 'btn btn-sm blue', data: { 'confirm-swal': '確定刪除嗎 ?' }) do %>
+          <i class="fa fa-trash"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -5,9 +5,15 @@
   <% end %>
     <div class="caption">
       <div class="number">
-        <h5 class="font-red-haze">
-          <small class="font-red-haze">$</small>
-          <span><%= product.price %></span>
+        <h5>
+          <%= special_hint(product) if product.special.try(:active?) %>
+          <span>
+            <span style="padding-right:5px;">
+            </span>
+            <font class="font-red-haze">$
+              <%= product.real_price %>
+            </font>
+          </span>
         </h5>
         <%= link_to add_cart_path(product.id), method: "post", :remote => true, class:'btn btn-danger add-item'  do %>
           加入購物車<i class="fa fa-cart-plus"></i>

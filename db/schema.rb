@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171211063210) do
+ActiveRecord::Schema.define(version: 20171215093943) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "email", default: "", null: false
@@ -71,6 +71,20 @@ ActiveRecord::Schema.define(version: 20171211063210) do
     t.integer "status"
     t.boolean "is_launched"
     t.string "image_path"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "special_products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "product_id"
+    t.boolean "is_limited"
+    t.date "limited_start_date"
+    t.date "limited_end_date"
+    t.integer "special_type"
+    t.integer "percent_off"
+    t.integer "cut_offer"
+    t.integer "specific_offer"
+    t.integer "cart_function_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

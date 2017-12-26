@@ -1,0 +1,16 @@
+zh-TW:
+  activerecord:
+    models:
+      special_product: '滿額折價'
+    attributes:
+      special_product:
+        product: '特價商品'
+        cut_offer: '扣除金額'
+        specific_offer: '指定金額'
+        percent_off: '扣除百分比'
+        special_type: '折扣方式'
+        is_limited: '限時開放'
+      special_product/special_type:
+        cut: '折扣金額'
+        specific: '指定金額'
+        percent: '折扣百分比'

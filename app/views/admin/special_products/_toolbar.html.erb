@@ -1,0 +1,23 @@
+<div class="fixed-table-toolbar">
+  <div class="btn-group pull-left">
+    <%= link_to(new_admin_special_product_path, class: 'btn blue' ) do %>
+    <i class="fa fa-plus"></i>
+    <% end %>
+  </div>
+  <div class="pull-right search">
+    <button id="search-btn" class="btn btn-default" type="buttton" name="search" title="search"><i class="fa fa-search"></i></button>
+  </div>
+  <div class="pull-right search">
+    <input id="keyword" class="form-control input-inline" type="text" value="<%= params[:title] %>" placeholder="過濾產品名稱">
+  </div>
+   <div class="columns columns-right btn-group pull-right" style="margin-right:10px">
+      <div class="keep-open btn-group" title="Columns">
+       折扣方式:
+      <%= select_tag "special-type-select",
+      options_from_collection_for_select(SpecialProduct.human_attribute_enum('special_type', true), "first", "last", params[:type]),
+      class: 'form-control input-small input-inline',
+      include_blank: true
+      %>
+      </div>
+   </div>
+</div>

@@ -1,16 +1,16 @@
 <div class="page-bar">
-  <%= breadcrumb(link_to('商品', admin_products_path), current_object.title) %>
+  <%= breadcrumb(link_to('指定商品特價', admin_products_path), current_object.product.title) %>
 </div>
 <div class="container">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-8">
       <h2 class="page-header">
-        修改商品
+        修改特價商品
       </h2>
       <div class="portlet box blue">
         <div class="portlet-title">
           <div class="caption">
-            <%= current_object.title %>
+            <%= current_object.product.title %>
           </div>
         </div>
         <div class="portlet-body form">

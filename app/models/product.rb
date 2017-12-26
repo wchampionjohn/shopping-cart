@@ -13,6 +13,8 @@ class Product < ApplicationRecord
 
   has_many :specs, validate: true
 
+  has_one :special, class_name: 'SpecialProduct'
+
   accepts_nested_attributes_for :specs, allow_destroy: true
 
   enum status: [:all_new, :like_new, :used]
@@ -21,7 +23,29 @@ class Product < ApplicationRecord
     where("title LIKE ? OR description LIKE ?", "%#{keyword}%", "%#{keyword}%")
   end
 
+  scope :available, -> { where(is_launched: 1) }
+
   after_save :update_calculate
+
+  def special_hint
+    if special.nil?
+      ''
+    else
+      special.hint
+    end
+  end
+
+  def real_price
+    if special.try(:active?)
+      special.special_price
+    else
+      price
+    end
+  end
+
+  def full_title
+    "#{title} $ #{price}"
+  end
 
   def extension_white_list
     %w(jpg jpeg gif png)

@@ -32,7 +32,6 @@ class CartPluginDiscount < CartPlugin
     @type = args.last # :percent(原價的百分之@offer) or # :off(直接折扣掉@offer)
   end
 
-
 private
   def above_condition?
     return false if @condition.nil?
@@ -41,4 +40,3 @@ private
     true
   end
 end
-

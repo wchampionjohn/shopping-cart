@@ -71,4 +71,11 @@ module ApplicationHelper
     end.join('<br />').html_safe
   end
 
+
+  def during_of_open record
+
+    return '永久' if !record.is_limited
+    return "#{record.limited_start_date} 至 #{record.limited_end_date}"
+
+  end
 end

@@ -1,17 +1,18 @@
 <%= simple_form_for [:admin, current_object], html: {class: 'form-horizontal', multipart: true} do |f| %>
-<%= render partial: 'save', locals: { f: f} %>
-<div class="form-body">
-  <%= f.input :title, placeholder: '商品名稱' %>
-  <%= f.input :image_path, as: :image %>
-  <%= f.input :is_launched, as: :boolean %>
-  <%= f.input :price, placeholder: '價格', input_html: { class: 'input-small' } %>
-  <%= f.input :status, collection: Product.human_attribute_enum('status'), label_method: :last, value_method: :first, input_html: { class: 'input-small' } %>
-  <%= f.input :remain, placeholder: '數量', readonly: (current_object.specs.present?), input_html: { class: 'input-small', type: 'number', min: 1 }  %>
-  <%= react_component("specs", { items: current_object.specs, errors: @specs_mseeages || [] }) %>
-  <%= f.input :description, placeholder: '商品描述' %>
-</div>
-<%= render partial: 'save', locals: { f: f} %>
+  <%= render partial: 'shares/save', locals: { f: f, cancel_path: admin_products_path } %>
+  <div class="form-body">
+    <%= f.input :title, placeholder: '商品名稱' %>
+    <%= f.input :image_path, as: :image %>
+    <%= f.input :is_launched, as: :boolean %>
+    <%= f.input :price, placeholder: '價格', input_html: { class: 'input-small' } %>
+    <%= f.input :status, collection: Product.human_attribute_enum('status'), label_method: :last, value_method: :first, input_html: { class: 'input-small' } %>
+    <%= f.input :remain, placeholder: '數量', readonly: (current_object.specs.present?), input_html: { class: 'input-small', type: 'number', min: 1 }  %>
+    <%= react_component("specs", { items: current_object.specs, errors: @specs_mseeages || [] }) %>
+    <%= f.input :description, placeholder: '商品描述', input_html: { class: "wysihtml5", rows: 10 } %>
+  </div>
+  <%= render partial: 'shares/save', locals: { f: f, cancel_path: admin_products_path } %>
 <% end %>
+
 <script type="text/javascript" charset="utf-8">
   function disableRemain() {
     $("#product_remain").prop('readonly', true);
@@ -24,5 +25,8 @@ function enableRemain() {
 function updateRemain(num) {
   $("#product_remain").val(num)
 }
+
+jQuery(document).ready(function() {
+});
 
 </script>

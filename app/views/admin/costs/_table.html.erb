@@ -20,7 +20,7 @@
         data-size="mini">
       <td> <%= during_of_open rule %> </td>
       <td>
-        <%= link_to(admin_cost_path(rule),  method: :delete, class: 'btn btn-sm blue', data: { confirm: 'Are you sure?' }) do %>
+        <%= link_to(admin_cost_path(rule),  method: :delete, class: 'btn btn-sm blue', data: { "confirm-swal" => 'Are you sure?' }) do %>
         <i class="fa fa-trash"></i>
         <% end %>
       </td>

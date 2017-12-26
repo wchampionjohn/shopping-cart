@@ -3,15 +3,23 @@
 
   <div class="row">
     <div class="col-md-4">
-
-      <a data-toggle="modal" href="#long">
-      <%= image(current_object, 380, 250, false)  %>
-      </a>
+      <% if current_object.image_path.file.try(:exists?) %>
+        <a data-toggle="modal" href="#long">
+          <%= image(current_object, 380, 250, false)  %>
+        </a>
+      <% else %>
+          <%= image(current_object, 380, 250, false)  %>
+      <% end %>
       <hr />
       <%= link_to("回商品頁", products_path ,class: "btn default") %>
     </div>
     <div class="col-md-7 profile-info">
-      <h1 class="font-red sbold">$ <%= current_object.price %></h1>
+      <h1>
+        <%= special_hint(current_object, false) if current_object.special.try(:active?) %>
+        <span class="font-red sbold">
+          <%= currency current_object.real_price %>
+        </span>
+      </h1>
       <p class="block">
         <strong>商品保存狀況:</strong>
         <%= Product.human_attribute_enum('status')[current_object.status] %>
@@ -42,10 +50,15 @@
         </a>
         </li>
       </ul>
+    </div>
+
+    <div class="col-md-12">
       <p> <%= current_object.description.html_safe %></p>
     </div>
   </div>
+  </div>
 </div>
+
 <div id="long" class="modal fade modal-scroll" tabindex="-1" data-replace="true">
   <div class="modal-dialog modal-full">
     <div class="modal-content">
@@ -53,7 +66,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
       </div>
       <div class="modal-body" align="center">
-        <%= image_tag(current_object.image_path.url) %>
+        <%= image_tag(current_object.image_path.url) if current_object.image_path.file.try(:exists?)%>
         </div>
       <div class="modal-footer">
         <button type="button" data-dismiss="modal" class="btn dark btn-outline">Close</button>

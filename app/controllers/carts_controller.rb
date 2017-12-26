@@ -10,8 +10,9 @@ class CartsController < ApplicationController
   end
 
   def add
-    current_cart.add_item params[:id]
-    @title = Product.find(params[:id]).title
+    id = params[:id]
+    current_cart.add_item id
+    @title = Product.find(id).title
     save_to_session
     render :layout => false
   end
@@ -20,6 +21,13 @@ class CartsController < ApplicationController
     current_cart.remove_item params[:id]
     flash[:notice] = '已從購物車移除'
     save_to_session
+    redirect_to checkout_cart_path
+  end
+
+  def clear
+    current_cart.clear
+    save_to_session
+    flash[:notice] = '已從清空購物車內所有商品'
     redirect_to checkout_cart_path
   end
 
@@ -37,7 +45,7 @@ class CartsController < ApplicationController
     cart.update_quantity(params[:id], params[:quantity])
     item = cart.items.find { |item| item.id.to_i == params[:id].to_i }
     save_to_session
-    amount = item.product.price * item.quantity
+    amount = item.product.real_price * item.quantity
 
     render json: {
       origin: currency(cart.get_total.origin),

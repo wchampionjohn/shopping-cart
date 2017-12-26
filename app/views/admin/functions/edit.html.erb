@@ -1,0 +1,12 @@
+<div class="portlet light bordered">
+  <%= render partial: 'shares/form_title', locals: { icon: 'fa-dollar', title: @function.title } %>
+  <div class="portlet-body form">
+    <%= simple_form_for [:admin, @function], url: admin_discount_setting_path(@function), method: :patch, html: {class: 'form-horizontal'} do |f| %>
+    <%= render partial: 'form', locals: { f: f, function: @function } %>
+    <%= render partial: 'shares/save', locals: { f: f, cancel_path: admin_functions_path } %>
+    <hr />
+    <%= render partial: "#{@function.name}_detail" %>
+  </div>
+  </div>
+  <% end %>
+</div>

@@ -1,0 +1,20 @@
+<div class="page-bar">
+  <%= breadcrumb('指定商品特價') %>
+</div>
+<h1 class="page-title">指定商品特價</h1>
+
+<%= render partial: 'toolbar' %>
+<%= render partial: 'table' %>
+
+<script type="text/javascript" charset="utf-8">
+	$('#special-type-select').change(function(){
+    var type = $(this).val()
+    var keyword = $("#keyword").val()
+    location.replace( 'special_products?type=' + type + '&title='  + keyword)
+	});
+  $('#search-btn').click(function(){
+    var keyword = $("#keyword").val()
+    var type = $('#special-type-select').val()
+    location.replace( 'special_products?type=' + type + '&title='  + keyword)
+  });
+</script>

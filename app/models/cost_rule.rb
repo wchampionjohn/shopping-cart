@@ -5,7 +5,6 @@ class CostRule < ApplicationRecord
   validates :reach, :cost,
     presence: true,
     numericality: { only_integer: true }
-  validate :cost_is_less_than_reach
 
   belongs_to :cart_function
 
@@ -17,11 +16,6 @@ class CostRule < ApplicationRecord
     cart_function.is_open && # 運費功能開放
       is_open && # 規則開放
       !is_limiting?(date) # 不在限制時間內
-  end
-
-private
-  def cost_is_less_than_reach
-    errors.add(:cost, "運費不能高於滿額條件") if cost > reach
   end
 
 end

@@ -41,7 +41,7 @@ RSpec.describe CartPluginSpecial, type: :model do
 
     it "指定商品X元" do
       # set special offer rule : proudct 1 120 dollar
-      cart.set_special(p2.id, 120, :offer)
+      cart.set_special(p2.id, 120, :specific)
 
       5.times { cart.add_item(p1.id) } # 100 * 5 = 500
       3.times { cart.add_item(p2.id) } # 120 * 3 = 360

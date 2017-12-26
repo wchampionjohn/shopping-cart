@@ -7,7 +7,7 @@ module Limitable
   end
 
   # date(日期)正被限制開放中
-  def is_limiting? date
+  def is_limiting? date = Date.today
     is_limited && !is_limited_period?(date) # 是限時開放且date不在開放期間
   end
 

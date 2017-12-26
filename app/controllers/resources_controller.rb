@@ -32,8 +32,9 @@ class ResourcesController < ApplicationController
         flash[:success] = '刪除成功'
         redirect_to url_after_destroy
       end
-      f.json
-      head :no_content
+      f.json do
+        head :no_content
+      end
     end
   end
 

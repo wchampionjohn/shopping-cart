@@ -18,15 +18,15 @@ class Admin::DiscountSettingsController < ApplicationController
 
   def stronge_params
     params.require(:cart_function)
-      .permit(:is_open, :memo,
-                setting_attributes: [:id,
-                                     :condition,
-                                     :discount_type,
-                                     :percent_off,
-                                     :offer,
-                                     :is_limited,
-                                     :limited_start_date,
-                                     :limited_end_date]
-             )
+          .permit(:is_open, :memo,
+                   setting_attributes: [:id,
+                                        :condition,
+                                        :discount_type,
+                                        :percent_off,
+                                        :offer,
+                                        :is_limited,
+                                        :limited_start_date,
+                                        :limited_end_date]
+                 )
   end
 end

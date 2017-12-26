@@ -19,7 +19,7 @@ class CartPluginSpecial < CartPlugin
                 product.price - setting[:discount]
               when :percent
                 product.price - (product.price * ((setting[:discount] / 100.0).round(2))).to_i
-              when :offer
+              when :specific
                 setting[:discount]
               end
 
@@ -37,7 +37,7 @@ class CartPluginSpecial < CartPlugin
 
   def set_value(*args)
     @settings.push({
-      id: args.first,
+      id: args.first.to_s,
       discount: args.second,
       type: args.last
     })
@@ -49,6 +49,6 @@ private
   end
 
   def find_product id
-    @cart.items.map(&:product).find { |product| product.id == id}
+    @cart.items.map(&:product).find { |product| product.id.to_s == id}
   end
 end

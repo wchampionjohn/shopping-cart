@@ -47,20 +47,20 @@ class Cart
     @plugins[name].present?
   end
 
-  def add_item(product_id, quantity = 1)
-
-    raise ArgumentError.new("找不到此商品") unless @dao.exists? product_id
+  def add_item(item_key, quantity = 1)
+    item_key = item_key.to_s
+    raise ArgumentError.new("找不到此商品") unless @dao.exists? item_key
 
     @plugins.values.each do |plugin|
-      plugin.before_add_item product_id
-      plugin.before_refresh_item product_id
+      plugin.before_add_item item_key
+      plugin.before_refresh_item item_key
     end
 
-    new_item = { id: product_id, quantity: quantity }
+    new_item = { id: item_key, quantity: quantity }
 
-    item = @storage[product_id]
+    item = @storage[item_key]
 
-    @storage[product_id] = if item.nil?
+    @storage[item_key] = if item.nil?
                              new_item
                            else
                              item[:quantity] += new_item[:quantity]
@@ -68,37 +68,39 @@ class Cart
                            end
 
     @plugins.values.each do |plugin|
-      plugin.after_add_item product_id # triggle plugins after_add_item event
-      plugin.after_refresh_item product_id # triggle plugins after_refresh_item event
+      plugin.after_add_item item_key # triggle plugins after_add_item event
+      plugin.after_refresh_item item_key # triggle plugins after_refresh_item event
     end
   end
 
-  def update_quantity(product_id, quantity)
+  def update_quantity(item_key, quantity)
+    item_key = item_key.to_s
     @plugins.values.each do |plugin|
-      plugin.before_update_item product_id
-      plugin.before_refresh_item product_id
+      plugin.before_update_item item_key
+      plugin.before_refresh_item item_key
     end
 
-    item = @storage[product_id]
+    item = @storage[item_key]
     item[:quantity] = quantity
 
     @plugins.values.each do |plugin|
-      plugin.after_update_item product_id
-      plugin.after_refresh_item product_id
+      plugin.after_update_item item_key
+      plugin.after_refresh_item item_key
     end
   end
 
-  def remove_item product_id
+  def remove_item item_key
+    item_key = item_key.to_s
     @plugins.values.each do |plugin|
-      plugin.before_remove_item product_id
-      plugin.before_refresh_item product_id
+      plugin.before_remove_item item_key
+      plugin.before_refresh_item item_key
     end
 
-    @storage.delete product_id
+    @storage.delete item_key
 
     @plugins.values.each do |plugin|
-      plugin.after_remove_item product_id
-      plugin.after_refresh_item product_id
+      plugin.after_remove_item item_key
+      plugin.after_refresh_item item_key
     end
   end
 
@@ -114,6 +116,10 @@ class Cart
 
   def empty?
     @storage.empty?
+  end
+
+  def clear
+    @storage = ::CartStorage.new
   end
 
 end
