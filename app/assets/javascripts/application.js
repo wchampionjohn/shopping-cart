@@ -14,6 +14,7 @@
 //= require jquery-ui
 //= require_tree ./metronic/
 //= require_tree ../../../vendor/assets/javascripts/
+//= require ./confirmbox
 //= require rails-ujs
 //
 
@@ -86,6 +87,11 @@ $(document).on('ready page:load', function() {
             });
         }
     });
+
+  if ($('.wysihtml5').size() > 0) {
+    $('.wysihtml5').wysihtml5();
+  }
+
 });
 
 var modalAjax = function(modal_id, form_id) {
