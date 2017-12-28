@@ -1,0 +1,8 @@
+<p class="block">
+  <i class="fa fa-gift"></i> 免費贈品
+</p>
+<% gift.products.each do |product| %>
+<p class="block">
+  <span class="label label-success"> <%= product.title %> </span>
+</p>
+<% end  %>

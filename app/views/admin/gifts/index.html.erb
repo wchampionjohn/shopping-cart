@@ -1,0 +1,20 @@
+<div class="page-bar">
+  <%= breadcrumb('買A送B') %>
+</div>
+<h1 class="page-title">買A送B</h1>
+
+<%= render partial: 'toolbar' %>
+<%= render partial: 'table' %>
+
+<script type="text/javascript" charset="utf-8">
+	$('#special-type-select').change(function(){
+    var type = $(this).val()
+    var keyword = $("#keyword").val()
+    location.replace( 'special_products?type=' + type + '&title='  + keyword)
+	});
+  $('#search-btn').click(function(){
+    var keyword = $("#keyword").val()
+    var type = $('#special-type-select').val()
+    location.replace( 'special_products?type=' + type + '&title='  + keyword)
+  });
+</script>

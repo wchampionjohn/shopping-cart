@@ -13,6 +13,11 @@
             <font class="font-red-haze">$
               <%= product.real_price %>
             </font>
+            <% if product.has_gift_product && !product.has_gift_product.is_limiting? %>
+            <span style="padding-left:20px;">
+              <i class="fa fa-gift"></i>
+            </span>
+            <% end %>
           </span>
         </h5>
         <%= link_to add_cart_path(product.id), method: "post", :remote => true, class:'btn btn-danger add-item'  do %>

@@ -70,6 +70,11 @@
                   <% end %>
                 </td>
               </tr>
+              <% if @currnet_gifts.present? && @currnet_gifts.keys.include?(item.id) %>
+                <% @currnet_gifts[item.id].each do |title| %>
+                  <%= render partial: 'gift_item', locals: { title: title , item: item } %>
+                <% end %>
+              <% end %>
               <% end %>
               <% if @cart.empty? %>
               <tr>
@@ -179,6 +184,7 @@
         $("#discount").html(data.discount)
         $("#origin").html(data.origin)
         $("#amount-" + id).html(data.amount)
+        $(".gift-quantity-" + id).html(quantity)
 
       })
       .fail(function(xhr, status, error) {

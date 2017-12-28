@@ -1,0 +1,50 @@
+<h4>
+  <i class="fa fa-cog"></i> 開放中的商品
+  <%= link_to(admin_gifts_path, target: "_blank") do%>
+  <span class="badge badge-primary badge-roundless">
+    more <i class="fa fa-external-link"></i>
+  </span>
+  <% end%>
+</h4>
+<br />
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th> 購買商品 </th>
+      <th> 贈送商品 </th>
+      <th> 開放時間 </th>
+      <th>  </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% records.each do |gift| %>
+      <tr>
+        <td>
+          <%= link_to(
+          gift.purchase_product.title,
+          edit_admin_product_path(gift.purchase_product),
+          target: "_blank"
+          ) %>
+        </td>
+        <td>
+        <% gift.products.each do |product| %>
+          <p class="form-control-static">
+            <span class="label label-sm label-success"> <%= product.title %> </span>
+          </p> <br />
+        <% end %>
+        </td>
+        <td>
+          <%= during_of_open gift %>
+        </td>
+        <td>
+          <%= link_to(edit_admin_gift_path(gift), class: 'btn btn-sm blue') do %>
+          <i class="fa fa-pencil"></i>
+          <% end %>
+          <%= link_to(admin_gift_path(gift),  method: :delete, class: 'btn btn-sm blue', data: { 'confirm-swal': '確定刪除嗎 ?' }) do %>
+          <i class="fa fa-trash"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

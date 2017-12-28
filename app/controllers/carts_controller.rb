@@ -5,6 +5,7 @@ class CartsController < ApplicationController
 
   def checkout
     @cart = current_cart
+    @currnet_gifts = format_gifts @cart.get_gift if CartFunction.find_by_name('gift').is_open
     @discount_setting = CartFunction.find_by_name('discount').setting
     @opening_rules = CostRule.opening_rules
   end
@@ -69,4 +70,12 @@ class CartsController < ApplicationController
       }
     end
   end
+
+  def format_gifts cart_gifts
+    cart_gifts.reduce({}) do |result, (key, id)|
+      result[key] = Product.select(:title).where(id: id).map(&:title)
+      result
+    end
+  end
+
 end

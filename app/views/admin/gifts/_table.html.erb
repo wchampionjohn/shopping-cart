@@ -1,0 +1,52 @@
+<div class="table-scrollable">
+  <table class="table table-hover">
+    <tr>
+      <th></th>
+      <th>購買商品</th>
+      <th>贈送商品</th>
+      <th>開放中</th>
+      <th>開放時間</th>
+      <th>建立時間</th>
+      <th>修改時間</th>
+    </tr>
+    <% current_collection.each do |gift| %>
+    <tr>
+      <td class="ui-helper-center">
+        <%= link_to(edit_admin_gift_path(gift), class: 'btn btn-default btn-xs') do %>
+        <i class="fa fa-pencil"></i>
+        <% end %>
+        <%= link_to(admin_gift_path(gift),  method: :delete, class: 'btn btn-default btn-xs', data: { "confirm-swal" =>  '確定刪除嗎 ?' }) do %>
+        <i class="fa fa-trash"></i>
+        <% end %>
+      </td>
+      <td>
+        <%= link_to(
+        gift.purchase_product.title,
+        edit_admin_product_path(gift.purchase_product),
+        target: "_blank"
+        ) %>
+      </td>
+      <td>
+        <% gift.products.each do |product| %>
+          <p class="form-control-static">
+            <span class="label label-sm label-success"> <%= product.title %> </span>
+          </p> <br />
+        <% end %>
+      </td>
+      </td>
+        <td class="ui-helper-center">
+          <%= check_icon !gift.is_limiting? %>
+        </td>
+      <td>
+        <%= during_of_open gift %>
+      </td>
+      <td>
+        <%= gift.created_at.strftime("%Y-%m-%d %H:%M") %>
+      </td>
+      <td>
+        <%= gift.updated_at.strftime("%Y-%m-%d %H:%M") %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+</div>

@@ -11,8 +11,12 @@ class Product < ApplicationRecord
     numericality: { only_integer: true },
     length: { maximum: 8 }
 
+
+  has_many :gift_products
+  has_many :gifts, through: :gift_products, source: :gift
   has_many :specs, validate: true
 
+  has_one :has_gift_product, class_name: 'Gift', foreign_key: :purchase_product_id
   has_one :special, class_name: 'SpecialProduct'
 
   accepts_nested_attributes_for :specs, allow_destroy: true
@@ -41,10 +45,6 @@ class Product < ApplicationRecord
     else
       price
     end
-  end
-
-  def full_title
-    "#{title} $ #{price}"
   end
 
   def extension_white_list

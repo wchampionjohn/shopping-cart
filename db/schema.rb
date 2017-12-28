@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171215093943) do
+ActiveRecord::Schema.define(version: 20171226080908) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "email", default: "", null: false
@@ -55,6 +55,23 @@ ActiveRecord::Schema.define(version: 20171215093943) do
     t.integer "offer"
     t.integer "percent_off"
     t.integer "discount_type"
+    t.boolean "is_limited"
+    t.date "limited_start_date"
+    t.date "limited_end_date"
+    t.integer "cart_function_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "gift_products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "gift_id"
+    t.integer "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "gifts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "purchase_product_id"
     t.boolean "is_limited"
     t.date "limited_start_date"
     t.date "limited_end_date"

@@ -1,0 +1,58 @@
+<%= simple_form_for [:admin, current_object], html: { class: 'form-horizontal' } do |f| %>
+  <%= render partial: 'shares/save', locals: { f: f, cancel_path: admin_gifts_path } %>
+  <div class="form-body">
+    <%= f.association :purchase_product,
+    collection: available_products,
+    label_method: :last,
+    value_method: :first,
+    include_blank: true,
+    selected: current_object.purchase_product_id,
+    input_html: { class: 'bootstrap-select bs-select', 'data-live-search': true } %>
+    <%= f.association :products,
+    collection: available_products,
+    label_method: :last,
+    value_method: :first,
+    include_blank: true,
+    input_html: { class: 'bootstrap-select bs-select select2-multiple', multiple: true, 'data-live-search': true } %>
+    <%= f.input :is_limited, as: :boolean %>
+    <%= f.input :limited_start_date,
+      label: '開放期間',
+      input_html: {class: 'form-control'},
+      wrapper_html: {class: current_object.is_limited ? 'form-group': 'form-group hide'} do %>
+    <div class="input-group input-large date-picker input-daterange" data-date-format="yyyy-mm-dd" data-date-start-date="+0d">
+      <%= f.input :limited_start_date,
+        as: :string,
+        input_html: {class: 'form-control'},
+        class: 'form-control',
+        label: false,
+        wrapper: :date_range %>
+      <span class="input-group-addon"> 至 </span>
+      <%= f.input :limited_end_date,
+        as: :string,
+        input_html: {class: 'form-control'},
+        class: 'form-control',
+        label: false,
+        wrapper: :date_range %>
+      </div>
+    <% end %>
+  </div>
+  <%= render partial: 'shares/save', locals: { f: f, cancel_path: admin_gifts_path } %>
+<% end %>
+
+<script type="text/javascript" charset="utf-8">
+$("#gift_is_limited").change(function(){
+
+    var limited_date = $(".gift_limited_start_date")
+
+    if($(this).prop("checked")) {
+      limited_date.removeClass('hide')
+    } else {
+      limited_date.addClass('hide')
+    }
+})
+
+  $('.bs-select').selectpicker({
+    iconBase: 'fa',
+    tickIcon: 'fa-check'
+  });
+</script>

@@ -1,0 +1,9 @@
+zh-TW:
+  activerecord:
+    models:
+      gift: '買A送B'
+    attributes:
+      gift:
+        purchase_product: '購買商品'
+        products: '贈送商品'
+        is_limited: '限時開放'

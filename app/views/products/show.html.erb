@@ -1,15 +1,11 @@
 <h1 class="page-title"> <%= current_object.title %></h1>
-<div class="profile">
 
+<div class="profile">
   <div class="row">
     <div class="col-md-4">
-      <% if current_object.image_path.file.try(:exists?) %>
-        <a data-toggle="modal" href="#long">
+        <a data-toggle="modal" href=" <%= current_object.image_path.file.try(:exists?) ? '#long' : 'javascript:void(0)' %>">
           <%= image(current_object, 380, 250, false)  %>
         </a>
-      <% else %>
-          <%= image(current_object, 380, 250, false)  %>
-      <% end %>
       <hr />
       <%= link_to("回商品頁", products_path ,class: "btn default") %>
     </div>
@@ -38,6 +34,7 @@
         <strong>數量:</strong>
         <%= current_object.remain %>
       </p>
+      <%= render partial: 'gifts', locals: { gift: current_object.has_gift_product } if current_object.has_gift_product %>
       <ul class="list-inline">
         <li>
           <a href="javascript:;" class="btn red">

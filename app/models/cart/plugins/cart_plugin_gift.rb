@@ -8,6 +8,7 @@ class CartPluginGift < CartPlugin
   end
 
   def after_add_item item_key
+    item_key = item_key.to_s
     if @gift_table.keys.include? item_key
       set_gifts item_key
     end
@@ -24,15 +25,14 @@ class CartPluginGift < CartPlugin
   end
 
   def set_value(*args)
-    @gift_table[args.first] = args.last
+    item_key = args.first.to_s
+    @gift_table[item_key] ||= []
+    @gift_table[item_key] << args.last
   end
 
   private
   def set_gifts item_key
     item = @cart.items.find { |item| item.id == item_key }
-    @current_gifts[item_key] = {
-      id: @gift_table[item_key],
-      amount: item.quantity
-    }
+    @current_gifts[item_key] = @gift_table[item_key]
   end
 end

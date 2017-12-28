@@ -4,6 +4,6 @@ class Admin::FunctionsController < ApplicationController
   end
   def edit
     @function = CartFunction.find params[:id]
-    @detail = @function.special_products
+    @detail = @function.detail
   end
 end

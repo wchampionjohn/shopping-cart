@@ -1,22 +1,21 @@
 module CartsHelper
   def current_cart
-    if @cart
-      @cart
-    else
-      cart = Cart.new
-      cart.set_dao CartDaoProduct.new # 從db找product
-      cart.register_plugin('total')
+    return @cart if @cart
 
-      CartFunction.all.each do |function|
-        function.stuff cart if function.is_open
-      end
+    cart = Cart.new
+    cart.set_dao CartDaoProduct.new # 從db找product
+    cart.register_plugin('total')
 
-      current_items.each do |item|
-        cart.add_item(item['id'], item['quantity'])
-      end
-
-      @cart = cart
+    # 設定其他功能
+    CartFunction.all.each do |function|
+      function.stuff cart if function.is_open
     end
+
+    current_items.each do |item|
+      cart.add_item(item['id'], item['quantity'])
+    end
+
+    @cart = cart
   end
 
   def current_items

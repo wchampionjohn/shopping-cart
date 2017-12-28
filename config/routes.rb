@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     resources :functions
     resources :discount_settings
     resources :special_products
+    resources :gifts
     resources :costs, only:[:index, :update, :destroy] do
       member do
         post :switch, path: 'switch'

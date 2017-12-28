@@ -5,7 +5,7 @@
     <%= render partial: 'form', locals: { f: f, function: @function } %>
     <%= render partial: 'shares/save', locals: { f: f, cancel_path: admin_functions_path } %>
     <hr />
-    <%= render partial: "#{@function.name}_detail" %>
+    <%= render partial: "#{@function.name}_detail", locals: { records: @detail} %>
   </div>
   </div>
   <% end %>
