@@ -5,7 +5,7 @@ class CartsController < ApplicationController
 
   def checkout
     @cart = current_cart
-    @currnet_gifts = format_gifts @cart.get_gift if CartFunction.find_by_name('gift').is_open
+    @currnet_gifts = format_gifts @cart.get_gift if @cart.plugin_exists? 'gift'
     @discount_setting = CartFunction.find_by_name('discount').setting
     @opening_rules = CostRule.opening_rules
   end
@@ -13,6 +13,7 @@ class CartsController < ApplicationController
   def add
     id = params[:id]
     current_cart.add_item id
+    params[:addition_ids].each { |id| current_cart.add_item(id) } if params[:addition_ids].present?
     @title = Product.find(id).title
     save_to_session
     render :layout => false
@@ -33,6 +34,7 @@ class CartsController < ApplicationController
   end
 
   def update_quantity
+    # TODO 試看看用service object 重構
     product = Product.find params[:id]
     quantity = params[:quantity].to_i
     cart = current_cart
@@ -45,13 +47,15 @@ class CartsController < ApplicationController
 
     cart.update_quantity(params[:id], params[:quantity])
     item = cart.items.find { |item| item.id.to_i == params[:id].to_i }
+    amount = calculate_amount(cart, item)
+    additions_amount = recalculate_additions(cart, item)
     save_to_session
-    amount = item.product.real_price * item.quantity
 
     render json: {
       origin: currency(cart.get_total.origin),
       total: currency(cart.get_total.special),
-      amount: currency(amount) ,
+      amount: currency(amount),
+      additions_amount: additions_amount,
       costs: currency(cart.get_costs),
       discount: cart.get_discount
     }, status: :ok

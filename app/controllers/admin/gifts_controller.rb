@@ -6,7 +6,11 @@ class Admin::GiftsController < ResourcesController
   helper_method :available_products
 
   def collection_scope
-    Gift.all
+    if with_any_condition?
+      Gift.for_search.filter_search_conditions(conditions)
+    else
+      Gift.all
+    end
   end
 
   def object_params
@@ -21,6 +25,10 @@ class Admin::GiftsController < ResourcesController
     end
   end
 
+  def url_after_create
+    edit_admin_gift_path Gift.last
+  end
+
 private
   def search_params
     params.permit(:title, :page)
@@ -29,10 +37,6 @@ private
 
   def condition_params_mapping
     {
-      type: {
-        column: 'special_type',
-        operator: '='
-      },
       title: {
         column: 'products.title',
         operator: 'LIKE'

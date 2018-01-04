@@ -13,8 +13,10 @@
           <div class="caption">
             <i class="fa fa-cogs"></i>購物車</div>
           <div class="actions">
-            <%= link_to(clear_cart_path, method: "delete", class: "btn btn-default add-item", data: { "confirm-swal" => '確定清空購物車嗎 ?' } ) do%>
-              <i class="fa fa-trash-o"></i> 清空 </a>
+            <% unless @cart.empty? %>
+              <%= link_to(clear_cart_path, method: "delete", class: "btn btn-default", data: { "confirm-swal" => '確定清空購物車嗎 ?' } ) do%>
+                <i class="fa fa-trash-o"></i> 清空 </a>
+              <% end %>
             <% end %>
           </div>
         </div>
@@ -23,6 +25,7 @@
             <table class="table table-hover table-bordered table-striped">
               <thead>
                 <tr>
+                  <th align="center">  </th>
                   <th> 名稱 </th>
                   <th> 數量 </th>
                   <th> 備註 </th>
@@ -32,50 +35,59 @@
                 </tr>
               </thead>
               <tbody>
-                <% @cart.items.each do |item| %>
-                <tr>
+                <% @cart.items.each_with_index do |item, index| %>
+
+                  <tr>
+                    <td align="center">
+                      <p class="form-control-static">
+                        <%= index + 1 %>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="form-control-static">
+                        <%= item.product.title %>
+                      </p>
+                    </td>
+                    <td width="130px">
+                      <input
+                      class="touchspin quantity form-control input-xs hide"
+                      onChange="updateQuantity(this)" data-id="<%= item.id %>"
+                      type="text" value="<%= item.quantity %>"
+                      data-max="<%= item.product.remain %>"
+                      max="<%= item.product.remain %>"
+                      data-title="<%= item.product.title %>"
+                      name="product[]" > </div>
+                  </td>
                   <td>
                     <p class="form-control-static">
-                      <%= item.product.title %>
+                      <%= memo(@cart, item)%>
                     </p>
                   </td>
-                  <td width="130px">
-                    <input
-                    class="touchspin quantity form-control input-xs hide"
-                    onChange="updateQuantity(this)" data-id="<%= item.id %>"
-                    type="text" value="<%= item.quantity %>"
-                    data-max="<%= item.product.remain %>"
-                    max="<%= item.product.remain %>"
-                    data-title="<%= item.product.title %>"
-                    name="product[]" > </div>
-                </td>
-                <td>
-                  <p class="form-control-static">
-                  </p>
-                </td>
-                <td>
-                  <p class="form-control-static">
-                    <%= special_hint(item.product, false)  if item.product.special.try(:active?) %>
-                    <%= currency(item.product.real_price) %>
-                  </p>
-                </td>
-                <td>
-                  <p id="amount-<%= item.id %>" class="form-control-static">
-                    <%= currency(item.product.real_price * item.quantity) %>
-                  </p>
-                </td>
-                <td align="center">
-                  <%= link_to 'javascript:void(0)', class:'btn btn-danger', onClick:"showRemoveModal('#{h(item.product.title)}', #{item.id})" do %>
-                  <i class="fa fa-trash-o"></i>
+                  <td>
+                    <p class="form-control-static">
+                      <%= special_hint(item.product, false)  if item.product.special.try(:active?) %>
+                      <%= currency(item.product.real_price) %>
+                    </p>
+                  </td>
+                  <td>
+                    <p id="amount-<%= item.id %>" class="form-control-static">
+                      <%= currency(calculate_amount(@cart, item)) %>
+                    </p>
+                  </td>
+                  <td align="center">
+                    <%= link_to 'javascript:void(0)', class:'btn btn-danger', onClick:"showRemoveModal('#{h(item.product.title)}', #{item.id})" do %>
+                    <i class="fa fa-trash-o"></i>
+                    <% end %>
+                  </td>
+                </tr>
+                <% if @currnet_gifts.present? && @currnet_gifts.keys.include?(item.id) %>
+                  <% @currnet_gifts[item.id].each do |title| %>
+                    <%= render partial: 'gift_item', locals: { title: title , item: item, index: index } %>
                   <% end %>
-                </td>
-              </tr>
-              <% if @currnet_gifts.present? && @currnet_gifts.keys.include?(item.id) %>
-                <% @currnet_gifts[item.id].each do |title| %>
-                  <%= render partial: 'gift_item', locals: { title: title , item: item } %>
                 <% end %>
+
               <% end %>
-              <% end %>
+
               <% if @cart.empty? %>
               <tr>
                 <td align="center" colspan="5">目前沒任何商品</td>
@@ -185,6 +197,11 @@
         $("#origin").html(data.origin)
         $("#amount-" + id).html(data.amount)
         $(".gift-quantity-" + id).html(quantity)
+
+        $.each( data.additions_amount, function( key, value ) {
+          $("#amount-" + key).html(value)
+        });
+
 
       })
       .fail(function(xhr, status, error) {

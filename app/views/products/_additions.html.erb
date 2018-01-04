@@ -1,0 +1,21 @@
+<p class="block">
+  <h3><strong>加購商品:</strong></h3>
+</p>
+
+<div class="mt-checkbox-list">
+<% addition.addition_products.each do |addition_product| %>
+  <label>
+    <input name="addition_ids[]"class="addition_ids" type="checkbox" value="<%= addition_product.product_id %>"> <%= addition_product.product.title %>
+    <del><%= currency addition_product.product.price %></del>
+    <font class="font-red-haze"> <%= currency addition_product.price %> </font>
+    <span></span>
+  </label>
+
+  <%= link_to(product_path(addition_product.product), target: "_blank") do %>
+  <span class="badge badge-default badge-roundless">
+    <i class="fa fa-external-link"></i>
+  </span>
+  <% end  %>
+  <br />
+<% end  %>
+</div>

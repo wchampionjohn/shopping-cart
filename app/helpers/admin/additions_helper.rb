@@ -1,0 +1,2 @@
+module Admin::AdditionsHelper
+end

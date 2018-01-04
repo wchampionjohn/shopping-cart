@@ -1,0 +1,53 @@
+<div class="table-scrollable">
+  <table class="table table-hover">
+    <tr>
+      <th></th>
+      <th>購買商品</th>
+      <th>加購商品</th>
+      <th>開放中</th>
+      <th>開放時間</th>
+      <th>建立時間</th>
+      <th>修改時間</th>
+    </tr>
+    <% current_collection.each do |addition| %>
+    <tr>
+      <td class="ui-helper-center">
+        <%= link_to(edit_admin_addition_path(addition), class: 'btn btn-default btn-xs') do %>
+        <i class="fa fa-pencil"></i>
+        <% end %>
+        <%= link_to(admin_addition_path(addition),  method: :delete, class: 'btn btn-default btn-xs', data: { "confirm-swal" =>  '確定刪除嗎 ?' }) do %>
+        <i class="fa fa-trash"></i>
+        <% end %>
+      </td>
+      <td>
+        <%= link_to(
+        addition.purchase_product.title,
+        edit_admin_product_path(addition.purchase_product),
+        target: "_blank"
+        ) %>
+      </td>
+      <td>
+        <% addition.addition_products.each do |addition_product| %>
+          <p class="form-control-static">
+            <span class="label label-sm label-success" style="margin-right: 5px;"> <%= addition_product.product.title %></span>
+            <span class="label label-sm label-danger"> <%= currency addition_product.price %> </span>
+          </p> <br />
+        <% end %>
+      </td>
+      </td>
+        <td class="ui-helper-center">
+          <%= check_icon !addition.is_limiting? %>
+        </td>
+      <td>
+        <%= during_of_open addition %>
+      </td>
+      <td>
+        <%= addition.created_at.strftime("%Y-%m-%d %H:%M") %>
+      </td>
+      <td>
+        <%= addition.updated_at.strftime("%Y-%m-%d %H:%M") %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+</div>

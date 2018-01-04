@@ -1,0 +1,51 @@
+<h4>
+  <i class="fa fa-cog"></i> 開放中的商品
+  <%= link_to(admin_additions_path, target: "_blank") do%>
+  <span class="badge badge-primary badge-roundless">
+    more <i class="fa fa-external-link"></i>
+  </span>
+  <% end%>
+</h4>
+<br />
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th> 購買商品 </th>
+      <th> 加購商品 </th>
+      <th> 開放時間 </th>
+      <th>  </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% records.each do |addition| %>
+      <tr>
+        <td>
+          <%= link_to(
+            addition.purchase_product.title,
+            edit_admin_product_path(addition.purchase_product),
+            target: "_blank"
+          ) %>
+        </td>
+        <td>
+        <% addition.addition_products.each do |addition_product| %>
+          <p class="form-control-static">
+            <span class="label label-sm label-success" style="margin-right: 5px;"> <%= addition_product.product.title %></span>
+            <span class="label label-sm label-danger"> <%= currency addition_product.price %> </span>
+          </p> <br />
+        <% end %>
+        </td>
+        <td>
+          <%= during_of_open addition %>
+        </td>
+        <td>
+          <%= link_to(edit_admin_addition_path(addition), class: 'btn btn-sm blue') do %>
+          <i class="fa fa-pencil"></i>
+          <% end %>
+          <%= link_to(admin_addition_path(addition),  method: :delete, class: 'btn btn-sm blue', data: { 'confirm-swal': '確定刪除嗎 ?' }) do %>
+          <i class="fa fa-trash"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -8,6 +8,7 @@ class CartPluginAdditional < CartPlugin
   end
 
   def after_add_item item_key
+    item_key = item_key.to_s
     # 加入的商品如果是A或B名單內
     if addition_ids.include?(item_key) || purchase_ids.include?(item_key)
       set_additions item_key # 設定加購價表，如果符合加價購條件
@@ -17,6 +18,7 @@ class CartPluginAdditional < CartPlugin
   alias after_update_item after_add_item
 
   def after_remove_item item_key
+    item_key = item_key.to_s
     if addition_ids.include? item_key # 移除的商品是B
       addition_id = item_key
       @current_additions.delete(addition_id)
@@ -37,10 +39,12 @@ class CartPluginAdditional < CartPlugin
   #   { addition: B, price: 加購價 },
   #   { addition: B, price: 加購價 },
   # ]
+  #
   def set_value(*args)
-    additions = @additions_table[args.first] || []
-    additions << { addition: args.second, price: args.last }
-    @additions_table[args.first] = additions
+    item_key = args.first.to_s
+    additions = @additions_table[item_key] || []
+    additions << { addition: args.second.to_s, price: args.last }
+    @additions_table[item_key] = additions
   end
 
 private
@@ -53,6 +57,7 @@ private
   end
 
   def set_additions item_key
+    item_key = item_key.to_s
     items = @cart.items
 
     if addition_ids.include? item_key # 加入的商品是B
@@ -63,7 +68,7 @@ private
       end
       purchase_id = addition.keys.first
 
-      addition_ids_of_purchase = [item_key]
+     addition_ids_of_purchase = [item_key]
     elsif purchase_ids.include? item_key # 加入的商品是A
       # 找到對應的所有B
       addition_ids_of_purchase = @additions_table[item_key].map { |addition| addition[:addition] }
@@ -81,6 +86,7 @@ private
         addition = @additions_table[purchase_id].find { |addition| addition[:addition] == item.id }
         # 設定加購表
         @current_additions[addition[:addition]] = {
+          purchase: purchase_id,
           amount: purchase_item.quantity, # 買B有加購價的商品數量
           price: addition[:price]
         }

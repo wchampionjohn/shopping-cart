@@ -1,7 +1,7 @@
 <div class="page-bar">
-  <%= breadcrumb('買A送B') %>
+  <%= breadcrumb('商品加購') %>
 </div>
-<h1 class="page-title">買A送B</h1>
+<h1 class="page-title">商品加購</h1>
 
 <%= render partial: 'toolbar' %>
 <%= render partial: 'table' %>
@@ -10,6 +10,6 @@
   $('#search-btn').click(function(){
     var keyword = $("#keyword").val()
     var type = $('#special-type-select').val()
-    location.replace( 'gifts?title='  + keyword)
+    location.replace( 'additions?title='  + keyword)
   });
 </script>

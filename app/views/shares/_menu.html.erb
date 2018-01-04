@@ -31,11 +31,11 @@
         <li class="<%='active' if current_controller_in? admin_special_products_path %>">
           <%= link_to("指定商品特價", admin_special_products_path) %>
         </li>
-        <li>
+        <li class="<%='active' if current_controller_in? admin_gifts_path %>">
           <%= link_to("買A送B", admin_gifts_path) %>
         </li>
-        <li>
-          <%= link_to("商品加購", "javascript:void(0);") %>
+        <li class="<%='active' if current_controller_in? admin_additions_path %>">
+          <%= link_to("商品加購", admin_additions_path) %>
         </li>
       </ul>
     </li>

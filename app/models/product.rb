@@ -5,7 +5,6 @@ class Product < ApplicationRecord
   mount_uploader :image_path, ::ProductImageUploader
 
   validates :title, :status, presence: true
-
   validates :price, :remain,
     presence: true,
     numericality: { only_integer: true },
@@ -14,9 +13,12 @@ class Product < ApplicationRecord
 
   has_many :gift_products
   has_many :gifts, through: :gift_products, source: :gift
+  has_many :addition_products
+  has_many :additions, through: :addition_products, source: :addition
   has_many :specs, validate: true
 
   has_one :has_gift_product, class_name: 'Gift', foreign_key: :purchase_product_id
+  has_one :has_addition_product, class_name: 'Addition', foreign_key: :purchase_product_id
   has_one :special, class_name: 'SpecialProduct'
 
   accepts_nested_attributes_for :specs, allow_destroy: true
@@ -26,7 +28,6 @@ class Product < ApplicationRecord
   scope :filter_with, -> (keyword) do
     where("title LIKE ? OR description LIKE ?", "%#{keyword}%", "%#{keyword}%")
   end
-
   scope :available, -> { where(is_launched: 1) }
 
   after_save :update_calculate

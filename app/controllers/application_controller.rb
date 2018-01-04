@@ -16,7 +16,9 @@ class ApplicationController < ActionController::Base
       'admin/discount_settings',
       'admin/functions',
       'admin/costs',
-      'admin/special_products'
+      'admin/special_products',
+      'admin/gifts',
+      'admin/additions'
     ].include?(params[:controller])
   end
 
@@ -36,13 +38,11 @@ class ApplicationController < ActionController::Base
   end
 
   def layout_by_resource
-
     if request.xhr?
       false
     else
       devise_controller? ? 'devise' : 'application'
     end
-
   end
 
 end

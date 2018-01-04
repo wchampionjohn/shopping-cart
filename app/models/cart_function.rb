@@ -3,7 +3,8 @@ class CartFunction < ApplicationRecord
   has_many :special_products, class_name: 'SpecialProduct'
   has_many :rules, class_name: 'CostRule'
   has_one :setting, class_name: 'DiscountSetting'
-  has_many :gifts, class_name: 'Gift'
+  has_many :gifts
+  has_many :additions
 
   accepts_nested_attributes_for :setting
   accepts_nested_attributes_for :rules
@@ -14,6 +15,8 @@ class CartFunction < ApplicationRecord
       special_products
     when 'gift'
       gifts
+    when 'additional'
+      additions
     end
   end
 
@@ -53,6 +56,16 @@ class CartFunction < ApplicationRecord
       if !gift.is_limiting?
         gift.products.each do |product|
           cart.set_gift(gift.purchase_product_id, product.id)
+        end
+      end
+    end
+  end
+
+  def stuff_additional cart
+    additions.each do |addition|
+      if !addition.is_limiting?
+        addition.addition_products.each do |addition_product|
+          cart.set_additional(addition.purchase_product_id, addition_product.product_id, addition_product.price)
         end
       end
     end

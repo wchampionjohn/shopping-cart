@@ -81,11 +81,15 @@ SimpleForm.setup do |config|
     b.optional :readonly
 
     b.use :label, class: 'col-md-2 control-label'
-
     b.wrapper tag: 'div', class: 'col-md-10' do |ba|
-      ba.wrapper tag: 'div', class: 'checkbox-list' do |bc|
-        bc.wrapper tag: 'label', class: 'checkbox-inline' do |bd|
-          bd.use :input
+    ba.wrapper tag: 'div', class: 'checkbox-list' do |bc|
+      bc.wrapper tag: 'label', class: 'checkbox-inline' do |bd|
+        bd.use :input
+      #ba.wrapper tag: 'div', class: 'mt-checkbox-list' do |bc|
+        #bc.wrapper tag: 'div', class: 'mt-checkbox-inline' do |bd|
+          #bd.wrapper tag: 'label', class: 'mt-checkbox' do |be|
+            #bd.use :input
+          #end
         end
       end
     end

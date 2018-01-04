@@ -1,0 +1,12 @@
+zh-TW:
+  activerecord:
+    models:
+      addition: '商品加購'
+    attributes:
+      addition:
+        purchase_product: '購買商品'
+        products: '加購商品'
+        is_limited: '限時開放'
+        addition_products:
+          product_id:
+            blank: 'no!!!'
