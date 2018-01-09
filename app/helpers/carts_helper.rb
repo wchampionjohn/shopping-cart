@@ -4,22 +4,37 @@ module CartsHelper
 
     cart = Cart.new
     cart.set_dao CartDaoProduct.new # 從db找product
-    cart.register_plugin('total')
+
+    available_functions = CartFunction.select { |function| function.is_open }
+    available_plugins_name = available_functions.map(&:name)
+    available_plugins_name << 'total'
+
+    order = {
+      'special' => 1,
+      'total'   => 2,
+      'discount' => 3,
+      'costs' => 4,
+      'additional' => 4,
+      'gift' => 5
+    }
+
+    available_plugins_name = available_plugins_name.sort { |name1, name2| order[name1] <=> order[name2] }
+    available_plugins_name.each { |plugin| cart.register_plugin plugin }
 
     # 設定其他功能
-    CartFunction.all.each do |function|
+    CartFunction.all.each do |function| { }
       function.stuff cart if function.is_open
     end
 
     current_items.each do |item|
-      cart.add_item(item['id'], item['quantity'])
+      cart.add_item(item['key'], item['quantity'])
     end
 
     @cart = cart
   end
 
   def current_items
-    session['cart'] || {}
+    session['cart'] || []
   end
 
   def memo(cart, current_item)
@@ -34,7 +49,7 @@ module CartsHelper
     if cart.plugin_exists?('additional') && cart.get_additional.keys.include?(item.id)
       # 購買數量大於加購價數量
       if item.quantity > cart.get_additional[item.id][:amount]
-        origin_price = (item.quantity - cart.get_additional[item.id][:amount]) * item.product.real_price
+        origin_price = (item.quantity - cart.get_additional[item.product.id.to_s][:amount]) * item.product.real_price
         additional_price = cart.get_additional[item.id][:price] * cart.get_additional[item.id][:amount]
 
         origin_price + additional_price

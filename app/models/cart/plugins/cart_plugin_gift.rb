@@ -7,17 +7,17 @@ class CartPluginGift < CartPlugin
     @current_gifts = {} # 目前購買清單有贈送哪些商品
   end
 
-  def after_add_item item_key
-    item_key = item_key.to_s
-    if @gift_table.keys.include? item_key
-      set_gifts item_key
+  def after_add_item id
+    id = id.to_s
+    if @gift_table.keys.include? id
+      set_gifts id
     end
   end
 
   alias after_update_item after_add_item
 
-  def after_remove_item item_key
-    @current_gifts.delete item_key
+  def after_remove_item id
+    @current_gifts.delete id
   end
 
   def get_value
@@ -25,14 +25,14 @@ class CartPluginGift < CartPlugin
   end
 
   def set_value(*args)
-    item_key = args.first.to_s
-    @gift_table[item_key] ||= []
-    @gift_table[item_key] << args.last
+    id = args.first.to_s
+    @gift_table[id] ||= []
+    @gift_table[id] << args.last
   end
 
   private
-  def set_gifts item_key
-    item = @cart.items.find { |item| item.id == item_key }
-    @current_gifts[item_key] = @gift_table[item_key]
+  def set_gifts id
+    item = @cart.items.find { |item| item.id == id }
+    @current_gifts[id] = @gift_table[id]
   end
 end

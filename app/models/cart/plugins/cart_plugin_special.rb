@@ -7,12 +7,12 @@ class CartPluginSpecial < CartPlugin
     @offer_table = {}
   end
 
-  def after_add_item item_key
+  def after_add_item id
     ids = @settings.map { |setting| setting[:id] }
 
-    if ids.include? item_key
-      setting = find_setting item_key
-      product = find_product item_key
+    if ids.include? id
+      setting = find_setting id
+      product = find_product id
 
       price = case setting[:type]
               when :cut
@@ -23,12 +23,12 @@ class CartPluginSpecial < CartPlugin
                 setting[:discount]
               end
 
-      @offer_table[item_key] = { price: price }
+      @offer_table[id] = { price: price }
     end
   end
 
-  def after_remove_item item_key
-    @offer_table.delete(item_key)
+  def after_remove_item id
+    @offer_table.delete(id)
   end
 
   def get_value

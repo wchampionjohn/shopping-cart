@@ -7,7 +7,7 @@ class Cart
     @plugins = {}
 
     init_items.each do |item|
-      add_item(item['id'], item['quantity'])
+      add_item(item['key'], item['quantity'])
     end
   end
 
@@ -47,20 +47,22 @@ class Cart
     @plugins[name].present?
   end
 
-  def add_item(item_key, quantity = 1)
-    item_key = item_key.to_s
-    raise ArgumentError.new("找不到此商品") unless @dao.exists? item_key
+  def add_item(key, quantity = 1)
+    key = key.to_s
+    id =  key.split('-')[0]
+
+    raise ArgumentError.new("找不到此商品") unless @dao.exists? key
 
     @plugins.values.each do |plugin|
-      plugin.before_add_item item_key
-      plugin.before_refresh_item item_key
+      plugin.before_add_item id
+      plugin.before_refresh_item id
     end
 
-    new_item = { id: item_key, quantity: quantity }
+    new_item = { id: id, key: key, quantity: quantity }
 
-    item = @storage[item_key]
+    item = @storage[key]
 
-    @storage[item_key] = if item.nil?
+    @storage[key] = if item.nil?
                              new_item
                            else
                              item[:quantity] += new_item[:quantity]
@@ -68,48 +70,53 @@ class Cart
                            end
 
     @plugins.values.each do |plugin|
-      plugin.after_add_item item_key # triggle plugins after_add_item event
-      plugin.after_refresh_item item_key # triggle plugins after_refresh_item event
+      plugin.after_add_item id # triggle plugins after_add_item event
+      plugin.after_refresh_item id # triggle plugins after_refresh_item event
     end
   end
 
-  def update_quantity(item_key, quantity)
-    item_key = item_key.to_s
+  def update_quantity(key, quantity)
+    key = key.to_s
+    id =  key.split('-')[0]
+
     @plugins.values.each do |plugin|
-      plugin.before_update_item item_key
-      plugin.before_refresh_item item_key
+      plugin.before_update_item id
+      plugin.before_refresh_item id
     end
 
-    item = @storage[item_key]
+    item = @storage[key]
     item[:quantity] = quantity
 
     @plugins.values.each do |plugin|
-      plugin.after_update_item item_key
-      plugin.after_refresh_item item_key
+      plugin.after_update_item id
+      plugin.after_refresh_item id
     end
   end
 
-  def remove_item item_key
-    item_key = item_key.to_s
+  def remove_item key
+    key = key.to_s
+    id =  key.split('-')[0]
+
     @plugins.values.each do |plugin|
-      plugin.before_remove_item item_key
-      plugin.before_refresh_item item_key
+      plugin.before_remove_item id
+      plugin.before_refresh_item id
     end
 
-    @storage.delete item_key
+    @storage.delete key
 
     @plugins.values.each do |plugin|
-      plugin.after_remove_item item_key
-      plugin.after_refresh_item item_key
+      plugin.after_remove_item id
+      plugin.after_refresh_item id
     end
   end
 
   def items
     @storage.items.map do |item|
       OpenStruct.new(
-        id: item[:id],
+        key: item[:key],
+        id: item[:key].split('-')[0],
         quantity: item[:quantity].to_i,
-        product: @dao.find(item[:id])
+        product: @dao.find(item[:key])
       )
     end
   end

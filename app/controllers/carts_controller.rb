@@ -4,6 +4,7 @@ class CartsController < ApplicationController
   include ActionView::Helpers::NumberHelper
 
   def checkout
+    current_cart.get_total
     @cart = current_cart
     @currnet_gifts = format_gifts @cart.get_gift if @cart.plugin_exists? 'gift'
     @discount_setting = CartFunction.find_by_name('discount').setting
@@ -11,12 +12,30 @@ class CartsController < ApplicationController
   end
 
   def add
-    id = params[:id]
-    current_cart.add_item id
+    key = params[:id]
+    product_id = key.split('-')[0]
+    product = Product.find(product_id)
+    quantity = params[:quantity] || 1
+    quantity = quantity.to_i
+
+    remain = if key.split('-').size > 1
+               spec_id = key.split('-')[1]
+               product.specs.find(spec_id).quantity
+             else
+               product.remain
+             end
+
+    item = current_cart.items.find { |item| item.key == key}
+
+    raise '數量不足' if item.try(:quantity).to_i + quantity > remain
+
+
+    current_cart.add_item(key, quantity)
     params[:addition_ids].each { |id| current_cart.add_item(id) } if params[:addition_ids].present?
-    @title = Product.find(id).title
     save_to_session
-    render :layout => false
+    render json: { }, status: :ok
+  rescue Exception => msg
+    render json: { message: msg }, status: 400
   end
 
   def remove
@@ -52,12 +71,12 @@ class CartsController < ApplicationController
     save_to_session
 
     render json: {
-      origin: currency(cart.get_total.origin),
       total: currency(cart.get_total.special),
       amount: currency(amount),
       additions_amount: additions_amount,
       costs: currency(cart.get_costs),
-      discount: cart.get_discount
+      discount: currency(cart.get_discount),
+      sum: currency(cart.get_total.special + cart.get_costs)
     }, status: :ok
 
   rescue Exception => msg
@@ -69,7 +88,7 @@ class CartsController < ApplicationController
   def save_to_session
     session[:cart] = current_cart.items.map do |item|
       {
-        id: item.id,
+        key: item.key,
         quantity: item.quantity
       }
     end

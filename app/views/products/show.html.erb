@@ -1,6 +1,5 @@
 <h1 class="page-title"> <%= current_object.title %></h1>
 
-<div class="profile">
   <div class="row">
     <div class="col-md-4">
         <a data-toggle="modal" href=" <%= current_object.image_path.file.try(:exists?) ? '#long' : 'javascript:void(0)' %>">
@@ -9,39 +8,93 @@
       <hr />
       <%= link_to("回商品頁", products_path ,class: "btn default") %>
     </div>
-    <div class="col-md-7 profile-info">
-      <h1>
-        <%= special_hint(current_object, false) if current_object.special.try(:active?) %>
-        <span class="font-red sbold">
-          <%= currency current_object.real_price %>
-        </span>
-      </h1>
-      <p class="block">
-        <strong>商品保存狀況:</strong>
-        <%= Product.human_attribute_enum('status')[current_object.status] %>
-      </p>
-      <p class="block">
-        <strong>規格:</strong>
-      </p>
-        <% current_object.specs.each do | spec| %>
-          <button type="button" class="btn btn-default" data-toggle="button" aria-pressed="true"> <%= spec.name %> </button>
-        <% end %>
-      <p class="block">
-        <strong>數量:</strong>
-        <%= current_object.remain %>
-      </p>
 
-      <%= render partial: 'gifts', locals: { gift: current_object.has_gift_product } if current_object.has_gift_product %>
+    <div class="col-md-7 portlet-body form">
+      <form action="#" class="form-horizontal">
+        <div class="form-body">
+          <div class="form-group">
+          <label class="control-label col-md-3"><strong>價格:</strong></label>
+            <div class="col-md-7">
+                <h4>
+              <%= special_hint(current_object, false) if current_object.special.try(:active?) %>
+              <span class="font-red sbold">
+                <%= currency current_object.real_price %>
+              </span></h4>
+          </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3"><strong>商品保存狀況:</strong></label>
+            <div class="col-md-7">
+              <p class="form-control-static">
+                <%= Product.human_attribute_enum('status')[current_object.status] %>
+              </p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3"><strong>規格</strong></label>
+            <div class="col-md-7">
+              <% if current_object.specs.size > 0 %>
+                <div id="spec" class="btn-group" data-toggle="buttons">
+                  <p id="spec-warning" class="hide">請選擇規格</p>
+                  <% current_object.specs.each do | spec| %>
+                  <label class="btn btn-default" style="margin-right:5px;">
+                    <input type="radio" name="spec" data-quantity="<%= spec.quantity %>" value="<%= spec.id %>" class="toggle"> <%= spec.name %>
+                  </label>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3"><strong>數量:</strong></label>
+            <div class="col-md-3">
+              <span>
+                <input
+                  id="current-quantity"
+                  class="touchspin quantity form-control input-xs"
+                  type="text" value="1"
+                  data-max="<%= current_object.remain %>">
+              </span>
+              </div>
+              <div class="col-md-3">
+              <p class="form-control-static">
+                剩餘：<span id="remain"><%= current_object.remain %></span>
+              </p>
+              </div>
+            </div>
 
-        <button type="button" class="btn btn-danger" onClick="addItem(<%= current_object.id %>)">
-          <i class="fa fa-cart-plus"></i> 加入購物車
-        </button>
-          <a href="javascript:;" class="btn red">
-            <i class="fa fa-credit-card"></i> 直接購買
-        </a>
+          <div class="form-group">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-7">
+              <%= render partial: 'gifts', locals: { gift: current_object.has_gift_product } if current_object.has_gift_product %>
+            </div>
+          </div>
 
-      <%= render partial: 'additions', locals: { addition: current_object.has_addition_product } if current_object.has_addition_product %>
+          <div class="form-group">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-7">
+              <%= render partial: 'additions', locals: { addition: current_object.has_addition_product } if current_object.has_addition_product %>
+            </div>
+          </div>
 
+          <div class="form-group">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-7">
+              <button type="button" class="btn btn-danger" onClick="addItem(<%= current_object.id %>)">
+                <i class="fa fa-cart-plus"></i> 加入購物車
+              </button>
+              <a href="javascript:;" class="btn red">
+                <i class="fa fa-credit-card"></i> 直接購買
+              </a>
+            </div>
+          </div>
+
+
+        </div>
+      </form>
     </div>
   </div>
 
@@ -51,8 +104,6 @@
       <p> <%= current_object.description.html_safe %></p>
     </div>
   </div>
-
-</div>
 
 <div id="long" class="modal fade modal-scroll" tabindex="-1" data-replace="true">
   <div class="modal-dialog modal-full">
@@ -70,14 +121,51 @@
   </div>
 </div>
 <script type="text/javascript" charset="utf-8">
+
+$(function(){
+  $('input[name="spec"]').change(function(){
+    $("#spec-warning").addClass('hide')
+    $("#spec").removeClass('alert alert-danger')
+    var quantity = $(this).data('quantity')
+    $("#remain").html(quantity)
+
+    $("#current-quantity").trigger("touchspin.updatesettings", {max: quantity});
+    $("#current-quantity").val(1)
+  })
+
+  $("#current-quantity").TouchSpin({
+      min: 1,
+      max: $(this).data('max')
+      }).change(function(){
+        $("#current-quantity").val($(this).val())
+      })
+  })
 function addItem(id)
 {
-  url = "/cart/add/" + id
+  if($("#spec").length) {
+    if(!$('input[name="spec"]').is(':checked')) {
+      $("#spec-warning").removeClass('hide')
+      $("#spec").addClass('alert alert-danger')
+      return false
+    }
+
+    var specId = $('input[name="spec"]:checked').val()
+    id = id + '-' + specId
+  }
+
+  var quantity = $('#current-quantity').val()
+  url = "/cart/add/" + id + "/" + quantity
 
   $.ajax({
     url: url,
     type: "post",
     data: $('.addition_ids:checked').serialize()
-  });
+    })
+    .done(function( data ) {
+      toastr.success("已加入購物車", 'Success');
+    })
+    .fail(function(xhr, status, error) {
+      toastr.error(xhr.responseJSON.message, 'Error');
+    })
 }
 </script>

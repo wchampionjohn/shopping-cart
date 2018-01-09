@@ -10,7 +10,12 @@ class CartPluginTotal < CartPlugin
 
       if additional? item.id
         addition = @cart.get_additional[item.id]
-        result += addition[:amount] * addition[:price] + (item.quantity - addition[:amount]) * price
+        result += if addition[:amount] > item.quantity
+                    item.quantity * addition[:price]
+                  else
+                    # 加購價數量 * 加購價 + 扣除可加購價的數量 * 原價
+                    addition[:amount] * addition[:price] + (item.quantity - addition[:amount]) * price
+                  end
       else
         result += price * item.quantity
       end

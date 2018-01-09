@@ -5,11 +5,11 @@ class CartPluginDiscount < CartPlugin
     @discount  = 0 # 折扣的金額
   end
 
-  def before_refresh_item item_key
+  def before_refresh_item id
     @discount  = 0
   end
 
-  def after_refresh_item item_key
+  def after_refresh_item id
     total_price = @cart.get_total.origin
 
     if above_condition?

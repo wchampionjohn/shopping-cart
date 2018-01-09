@@ -26,7 +26,7 @@
               <thead>
                 <tr>
                   <th align="center">  </th>
-                  <th> 名稱 </th>
+                  <th width="40%"> 名稱 </th>
                   <th> 數量 </th>
                   <th> 備註 </th>
                   <th> 單價 </th>
@@ -51,12 +51,12 @@
                     <td width="130px">
                       <input
                       class="touchspin quantity form-control input-xs hide"
-                      onChange="updateQuantity(this)" data-id="<%= item.id %>"
+                      onChange="updateQuantity(this)" data-id="<%= item.key %>"
                       type="text" value="<%= item.quantity %>"
                       data-max="<%= item.product.remain %>"
                       max="<%= item.product.remain %>"
                       data-title="<%= item.product.title %>"
-                      name="product[]" > </div>
+                      name="product[]" >
                   </td>
                   <td>
                     <p class="form-control-static">
@@ -70,12 +70,13 @@
                     </p>
                   </td>
                   <td>
-                    <p id="amount-<%= item.id %>" class="form-control-static">
+                    <p id="amount-<%= item.key %>" class="form-control-static">
                       <%= currency(calculate_amount(@cart, item)) %>
                     </p>
                   </td>
                   <td align="center">
-                    <%= link_to 'javascript:void(0)', class:'btn btn-danger', onClick:"showRemoveModal('#{h(item.product.title)}', #{item.id})" do %>
+
+                    <%= link_to(remove_cart_path(item.key), method: "delete", class:'btn btn-danger', data: { "confirm-swal" => "確定將商品：#{item.product.title} 從購物車移除嗎 ?" }) do %>
                     <i class="fa fa-trash-o"></i>
                     <% end %>
                   </td>
@@ -90,7 +91,7 @@
 
               <% if @cart.empty? %>
               <tr>
-                <td align="center" colspan="5">目前沒任何商品</td>
+                <td align="center" colspan="7">目前沒任何商品</td>
               </tr>
               <% end %>
             </tbody>
@@ -109,7 +110,7 @@
       <div class="well">
         <div class="row static-info align-reverse">
           <div class="col-md-8 name"> 消費金額: </div>
-          <div id="origin" class="col-md-3 value"> <%= currency(@cart.get_total.origin) %> </div>
+          <div id="total" class="col-md-3 value"> <%= currency(@cart.get_total.origin) %> </div>
         </div>
         <div class="row static-info align-reverse">
           <div class="col-md-8 name">
@@ -139,7 +140,7 @@
         </div>
         <div class="row static-info align-reverse">
           <div class="col-md-8 name"> 小記: </div>
-          <div class="col-md-3 value"> <font id="total" class="font-red"><%= currency(@cart.get_total.special + @cart.get_costs) unless @cart.empty? %></font> </div>
+          <div class="col-md-3 value"> <font id="sum" class="font-red"><%= currency(@cart.get_total.special + @cart.get_costs) unless @cart.empty? %></font> </div>
         </div>
       </div>
     </div>
@@ -194,7 +195,7 @@
         $("#total").html(data.total)
         $("#costs").html(data.costs)
         $("#discount").html(data.discount)
-        $("#origin").html(data.origin)
+        $("#sum").html(data.sum)
         $("#amount-" + id).html(data.amount)
         $(".gift-quantity-" + id).html(quantity)
 

@@ -19,8 +19,8 @@ class CartStorage
     @contanier.empty?
   end
 
-  def delete id
-    @contanier.delete id
+  def delete key
+    @contanier.delete key
   end
 
   def [] key

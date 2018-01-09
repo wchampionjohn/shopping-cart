@@ -21,7 +21,6 @@ class CartFunction < ApplicationRecord
   end
 
   def stuff cart
-    cart.register_plugin(name)
     send("stuff_#{name}".to_sym, cart)
   end
 

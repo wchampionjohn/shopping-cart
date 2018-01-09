@@ -6,7 +6,7 @@ class CartPluginCosts < CartPlugin
     @rules = []
   end
 
-  def after_refresh_item item_key
+  def after_refresh_item id
     if @cart.items.size > 0
       total_price = @cart.get_total.special
 

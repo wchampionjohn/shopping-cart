@@ -1,8 +1,10 @@
-<p class="block">
+<p class="form-control-static">
   <i class="fa fa-gift"></i> 免費贈品
 </p>
 <% gift.products.each do |product| %>
-<p class="block">
+<div>
+<%= link_to(product_path(product), target: "_blank", class: "btn xs-btn") do %>
   <span class="label label-success"> <%= product.title %> </span>
-</p>
+<% end  %>
+</div>
 <% end  %>

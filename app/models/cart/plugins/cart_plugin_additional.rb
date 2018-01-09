@@ -7,23 +7,21 @@ class CartPluginAdditional < CartPlugin
     @current_additions = {}
   end
 
-  def after_add_item item_key
-    item_key = item_key.to_s
+  def after_add_item id
     # 加入的商品如果是A或B名單內
-    if addition_ids.include?(item_key) || purchase_ids.include?(item_key)
-      set_additions item_key # 設定加購價表，如果符合加價購條件
+    if addition_ids.include?(id) || purchase_ids.include?(id)
+      set_additions id # 設定加購價表，如果符合加價購條件
     end
   end
 
   alias after_update_item after_add_item
 
-  def after_remove_item item_key
-    item_key = item_key.to_s
-    if addition_ids.include? item_key # 移除的商品是B
-      addition_id = item_key
+  def after_remove_item id
+    if addition_ids.include? id # 移除的商品是B
+      addition_id = id
       @current_additions.delete(addition_id)
-    elsif purchase_ids.include? item_key # 移除的商品是A
-      additions = @additions_table[item_key]
+    elsif purchase_ids.include? id # 移除的商品是A
+      additions = @additions_table[id]
       additions.each { |addition| @current_additions.delete(addition[:addition])}
     end
   end
@@ -41,10 +39,10 @@ class CartPluginAdditional < CartPlugin
   # ]
   #
   def set_value(*args)
-    item_key = args.first.to_s
-    additions = @additions_table[item_key] || []
+    id = args.first.to_s.split('-')[0]
+    additions = @additions_table[id] || []
     additions << { addition: args.second.to_s, price: args.last }
-    @additions_table[item_key] = additions
+    @additions_table[id] = additions
   end
 
 private
@@ -56,23 +54,22 @@ private
     @additions_table.keys
   end
 
-  def set_additions item_key
-    item_key = item_key.to_s
+  def set_additions id
     items = @cart.items
 
-    if addition_ids.include? item_key # 加入的商品是B
+    if addition_ids.include? id # 加入的商品是B
       # 找到對應的A
-      addition = @additions_table.select do |id, ads|
+      addition = @additions_table.select do |purchase_id, ads|
         ads_id = ads.map { |ad| ad[:addition] }
-        ads_id.include? item_key
+        ads_id.include? id
       end
       purchase_id = addition.keys.first
 
-     addition_ids_of_purchase = [item_key]
-    elsif purchase_ids.include? item_key # 加入的商品是A
+     addition_ids_of_purchase = [id]
+    elsif purchase_ids.include? id # 加入的商品是A
       # 找到對應的所有B
-      addition_ids_of_purchase = @additions_table[item_key].map { |addition| addition[:addition] }
-      purchase_id = item_key
+      addition_ids_of_purchase = @additions_table[id].map { |addition| addition[:addition] }
+      purchase_id = id
     end
 
     # 購物車裡的A
@@ -84,10 +81,14 @@ private
       addition_items.each do |item|
         # 找到加購設定
         addition = @additions_table[purchase_id].find { |addition| addition[:addition] == item.id }
+        quantity = items.reduce(0) do |result, item|
+          result += item.quantity if item.id == purchase_id
+          result
+        end
         # 設定加購表
         @current_additions[addition[:addition]] = {
           purchase: purchase_id,
-          amount: purchase_item.quantity, # 買B有加購價的商品數量
+          amount: quantity, # 買B有加購價的商品數量
           price: addition[:price]
         }
       end
