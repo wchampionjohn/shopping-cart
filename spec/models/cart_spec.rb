@@ -18,8 +18,8 @@ RSpec.describe Cart, type: :model do
         cart.add_item(iphone.id)
         cart.add_item(ipad.id)
 
-        expect(cart.items.first.id).to eq iphone.id
-        expect(cart.items.last.id).to eq ipad.id
+        expect(cart.items.first.id).to eq iphone.id.to_s
+        expect(cart.items.last.id).to eq ipad.id.to_s
       end
 
       it "Add more same items to cart, but item count won't change" do
@@ -74,9 +74,9 @@ RSpec.describe Cart, type: :model do
       it "rebuild cart from items structure" do
         cart = Cart.new(build(:session_struct))
 
-        expect(cart.items.first.id).to be 2
+        expect(cart.items.first.id).to eq '2'
         expect(cart.items.first.quantity).to be 3
-        expect(cart.items.second.id).to be 5
+        expect(cart.items.second.id).to eq '5'
         expect(cart.items.second.quantity).to be 4
       end
     end

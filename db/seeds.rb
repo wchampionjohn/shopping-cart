@@ -16,7 +16,7 @@ unless CartFunction.exists?
   ]
 end
 
-unless Admin.find_by_email('vhitotoyouv@gmail.com').presence?
+unless Admin.find_by_email('vhitotoyouv@gmail.com').present?
   Admin.create email: 'vhitotoyouv@gmail.com', password: 'yoyorock@0505'
 end
 
