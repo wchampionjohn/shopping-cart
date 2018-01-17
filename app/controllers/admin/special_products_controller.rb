@@ -46,6 +46,6 @@ private
   end
 
   def url_after_create
-    edit_admin_product_path(SpecialProduct.last)
+    edit_admin_special_product_path(SpecialProduct.last)
   end
 end
