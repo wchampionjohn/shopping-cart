@@ -9,7 +9,7 @@
       <%= link_to("回商品頁", products_path ,class: "btn default") %>
     </div>
 
-    <div class="col-md-7 portlet-body form">
+    <div class="col-md-8 portlet-body form">
       <form action="#" class="form-horizontal">
         <div class="form-body">
           <div class="form-group">
@@ -30,21 +30,21 @@
               </p>
             </div>
           </div>
+          <% if current_object.specs.size > 0 %>
           <div class="form-group">
-            <label class="control-label col-md-3"><strong>規格</strong></label>
+            <label class="control-label col-md-3"><strong>規格:</strong></label>
             <div class="col-md-7">
-              <% if current_object.specs.size > 0 %>
                 <div id="spec" class="btn-group" data-toggle="buttons">
                   <p id="spec-warning" class="hide">請選擇規格</p>
                   <% current_object.specs.each do | spec| %>
-                  <label class="btn btn-default" style="margin-right:5px;">
+                  <label class="btn btn-default" style="margin:5px; min-width: 70px" <%= 'disabled' if spec.quantity == 0 %>>
                     <input type="radio" name="spec" data-quantity="<%= spec.quantity %>" value="<%= spec.id %>" class="toggle"> <%= spec.name %>
                   </label>
                   <% end %>
                 </div>
-              <% end %>
             </div>
           </div>
+          <% end %>
           <div class="form-group">
             <label class="control-label col-md-3"><strong>數量:</strong></label>
             <div class="col-md-3">
@@ -60,13 +60,13 @@
               <p class="form-control-static">
                 剩餘：<span id="remain"><%= current_object.remain %></span>
               </p>
-              </div>
             </div>
+          </div>
 
           <div class="form-group">
             <div class="col-md-2">
             </div>
-            <div class="col-md-7">
+            <div class="col-md-9">
               <%= render partial: 'gifts', locals: { gift: current_object.has_gift_product } if current_object.has_gift_product %>
             </div>
           </div>
@@ -74,7 +74,7 @@
           <div class="form-group">
             <div class="col-md-2">
             </div>
-            <div class="col-md-7">
+            <div class="col-md-9">
               <%= render partial: 'additions', locals: { addition: current_object.has_addition_product } if current_object.has_addition_product %>
             </div>
           </div>
@@ -86,7 +86,7 @@
               <button type="button" class="btn btn-danger" onClick="addItem(<%= current_object.id %>)">
                 <i class="fa fa-cart-plus"></i> 加入購物車
               </button>
-              <a href="javascript:;" class="btn red">
+              <button type="button" class="btn btn-danger" onClick="purchaseNow(<%= current_object.id %>)">
                 <i class="fa fa-credit-card"></i> 直接購買
               </a>
             </div>
@@ -124,9 +124,14 @@
 
 $(function(){
   $('input[name="spec"]').change(function(){
+    var quantity = $(this).data('quantity')
+
+    if(quantity == 0) {
+      return false
+    }
+
     $("#spec-warning").addClass('hide')
     $("#spec").removeClass('alert alert-danger')
-    var quantity = $(this).data('quantity')
     $("#remain").html(quantity)
 
     $("#current-quantity").trigger("touchspin.updatesettings", {max: quantity});
@@ -140,15 +145,14 @@ $(function(){
         $("#current-quantity").val($(this).val())
       })
   })
+
 function addItem(id)
 {
-  if($("#spec").length) {
-    if(!$('input[name="spec"]').is(':checked')) {
-      $("#spec-warning").removeClass('hide')
-      $("#spec").addClass('alert alert-danger')
-      return false
-    }
+  if(!checkSpec(id)) {
+    return false
+  }
 
+  if($("#spec").length) {
     var specId = $('input[name="spec"]:checked').val()
     id = id + '-' + specId
   }
@@ -160,12 +164,53 @@ function addItem(id)
     url: url,
     type: "post",
     data: $('.addition_ids:checked').serialize()
-    })
-    .done(function( data ) {
-      toastr.success("已加入購物車", 'Success');
-    })
-    .fail(function(xhr, status, error) {
-      toastr.error(xhr.responseJSON.message, 'Error');
-    })
+  })
+  .done(function( data ) {
+    toastr.success("已加入購物車", 'Success');
+  })
+  .fail(function(xhr, status, error) {
+    toastr.error(xhr.responseJSON.message, 'Error');
+  })
+}
+
+function checkSpec(id)
+{
+  if($("#spec").length) {
+    if(!$('input[name="spec"]').is(':checked')) {
+      $("#spec-warning").removeClass('hide')
+      $("#spec").addClass('alert alert-danger')
+      return false
+    }
+  }
+
+  return true
+}
+
+
+function purchaseNow(id)
+{
+  if(!checkSpec(id)) {
+    return false
+  }
+
+  if($("#spec").length) {
+    var specId = $('input[name="spec"]:checked').val()
+    id = id + '-' + specId
+  }
+
+  var quantity = $('#current-quantity').val()
+  url = "/cart/add/" + id + "/" + quantity
+
+  $.ajax({
+    url: url,
+    type: "post",
+    data: $('.addition_ids:checked').serialize()
+  })
+  .done(function( data ) {
+      window.location="/cart/checkout"
+  })
+  .fail(function(xhr, status, error) {
+    toastr.error(xhr.responseJSON.message, 'Error');
+  })
 }
 </script>

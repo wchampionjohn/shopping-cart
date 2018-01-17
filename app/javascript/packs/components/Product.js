@@ -110,18 +110,9 @@ export default class Product extends Component {
                 name="title"
                 value={this.state.product.title}
                 onChange={this.handleChange}
-                size="36" />
+                className="form-control"
+                size="108" />
             : this.renderKeywordColumn(product.title, keyword)}
-        </td>
-        <td>
-          {this.isEditing(product.id)
-            ? <input
-              type="text"
-              name="description"
-              value={this.state.product.description}
-              onChange={this.handleChange}
-              size="72" />
-            : this.renderKeywordColumn(product.description, keyword)}
         </td>
         <td>
           {this.isEditing(product.id)
@@ -145,6 +136,7 @@ export default class Product extends Component {
               name="remain"
               value={this.state.product.remain}
               onChange={this.handleChange}
+              className="form-control"
               size="6" />
             : product.remain}
         </td>

@@ -8,7 +8,7 @@ class ProductsController < ResourcesController
 
     Product.includes(includes_associate)
       .available.order(:created_at)
-      .page(params[:page]).per(8)
+      .page(params[:page]).per(12)
   end
 
   alias current_collection collection_scope

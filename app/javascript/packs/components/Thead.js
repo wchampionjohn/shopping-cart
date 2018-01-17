@@ -24,7 +24,6 @@ export default class Thead extends Component {
           <th>名稱
             { isEditMode && <span>*</span> }
           </th>
-          <th>商品描述</th>
           <th>價格
             { isEditMode && <span>*</span> }
           </th>

@@ -63,7 +63,7 @@ class Admin::ProductsController < ResourcesController
   def batch_update
     product_ids = products_params.pluck(:id)
     update_params = products_params.map do |product|
-      product.permit(:id, :title, :description, :price, :remain, :status)
+      product.permit(:id, :title, :price, :remain, :status)
     end
 
     products = Product.update(product_ids, update_params)
@@ -97,7 +97,9 @@ class Admin::ProductsController < ResourcesController
 
   def object_params
     params.require(:product)
-      .permit(:title, :price, :status, :remain, :description, :is_launched, :image_path, {specs_attributes: [:id, :name, :quantity, :_destroy]} )
+      .permit(:title, :price, :status, :remain,
+              :description, :is_launched, :image_path,
+              {specs_attributes: [:id, :name, :quantity, :_destroy]} )
   end
 
   def url_after_update

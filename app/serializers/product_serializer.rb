@@ -5,14 +5,6 @@ class ProductSerializer < ActiveModel::Serializer
   attributes :id, :title, :description, :price,
              :status, :remain, :created_at, :updated_at
 
-  def title
-    truncate(object.title, :length => 22)
-  end
-
-  def description
-    truncate(object.description, :length => 25)
-  end
-
   def created_at
     object.created_at.strftime("%Y-%m-%d %H:%M:%S")
   end

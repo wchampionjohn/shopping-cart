@@ -4,11 +4,12 @@ class CartsController < ApplicationController
   include ActionView::Helpers::NumberHelper
 
   def checkout
-    current_cart.get_total
     @cart = current_cart
+    @items = current_cart.items.sort { |item1, item2| item1.key <=> item2.key }
     @currnet_gifts = format_gifts @cart.get_gift if @cart.plugin_exists? 'gift'
-    @discount_setting = CartFunction.find_by_name('discount').setting
-    @opening_rules = CostRule.opening_rules
+    @discount_setting = CartFunction.find_by_name('discount').setting if @cart.plugin_exists? 'discount'
+    @opening_rules = CostRule.opening_rules if @cart.plugin_exists? 'costs'
+    @sum = @cart.plugin_exists?('costs') ? @cart.get_total.special + @cart.get_costs.to_i : @cart.get_total.special
   end
 
   def add
@@ -65,19 +66,30 @@ class CartsController < ApplicationController
     end
 
     cart.update_quantity(params[:id], params[:quantity])
+
     item = cart.items.find { |item| item.id.to_i == params[:id].to_i }
     amount = calculate_amount(cart, item)
-    additions_amount = recalculate_additions(cart, item)
+
+    result = {
+      total: currency(cart.get_total.origin),
+      amount: currency(amount)
+    }
+
+    result[:additions_amount] = recalculate_additions(cart, item) if cart.plugin_exists? 'additional'
+
+    if cart.plugin_exists? 'costs'
+      result[:costs] = currency(cart.get_costs)
+      result[:sum] = currency(cart.get_total.special + cart.get_costs)
+    else
+      result[:sum] = currency(cart.get_total.special)
+    end
+
+    result[:discount] = currency(cart.get_discount) if cart.plugin_exists? 'discount'
+
+
     save_to_session
 
-    render json: {
-      total: currency(cart.get_total.special),
-      amount: currency(amount),
-      additions_amount: additions_amount,
-      costs: currency(cart.get_costs),
-      discount: currency(cart.get_discount),
-      sum: currency(cart.get_total.special + cart.get_costs)
-    }, status: :ok
+    render json: result, status: :ok
 
   rescue Exception => msg
     item = cart.items.find { |item| item.id.to_i == params[:id].to_i }

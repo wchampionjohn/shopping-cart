@@ -35,7 +35,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% @cart.items.each_with_index do |item, index| %>
+                <% @items.each_with_index do |item, index| %>
 
                   <tr>
                     <td align="center">
@@ -112,18 +112,21 @@
           <div class="col-md-8 name"> 消費金額: </div>
           <div id="total" class="col-md-3 value"> <%= currency(@cart.get_total.origin) %> </div>
         </div>
-        <div class="row static-info align-reverse">
-          <div class="col-md-8 name">
-            <i
-              class="fa fa-info-circle popovers"
-              data-container="body"
-              data-trigger="hover"
-              data-placement="left"
-              data-content="<%= summary @discount_setting %>" ></i>
-            折扣:
+        <% if @cart.plugin_exists? 'discount' %>
+          <div class="row static-info align-reverse">
+            <div class="col-md-8 name">
+              <i
+                class="fa fa-info-circle popovers"
+                data-container="body"
+                data-trigger="hover"
+                data-placement="left"
+                data-content="<%= summary @discount_setting %>" ></i>
+              折扣:
+            </div>
+            <div id="discount" class="col-md-3 value"> <%= currency(@cart.get_discount) %> </div>
           </div>
-          <div id="discount" class="col-md-3 value"> <%= currency(@cart.get_discount) %> </div>
-        </div>
+        <% end %>
+        <% if @cart.plugin_exists? 'costs' %>
         <div class="row static-info align-reverse">
           <div class="col-md-8 name">
            <i class="fa fa-info-circle popovers"
@@ -135,12 +138,13 @@
             運費:
           </div>
           <div id="costs" class="col-md-3 value">
-            <%= currency(@cart.get_costs) %>
+            <%= currency(@cart.get_costs.to_i) %>
           </div>
         </div>
+        <% end %>
         <div class="row static-info align-reverse">
           <div class="col-md-8 name"> 小記: </div>
-          <div class="col-md-3 value"> <font id="sum" class="font-red"><%= currency(@cart.get_total.special + @cart.get_costs) unless @cart.empty? %></font> </div>
+          <div class="col-md-3 value"> <font id="sum" class="font-red"><%= currency(@sum.to_i) %></font> </div>
         </div>
       </div>
     </div>
@@ -197,7 +201,7 @@
         $("#discount").html(data.discount)
         $("#sum").html(data.sum)
         $("#amount-" + id).html(data.amount)
-        $(".gift-quantity-" + id).html(quantity)
+        $(".gift-quantity-" + id.split('-')[0]).html(quantity)
 
         $.each( data.additions_amount, function( key, value ) {
           $("#amount-" + key).html(value)

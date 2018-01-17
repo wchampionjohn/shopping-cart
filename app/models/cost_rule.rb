@@ -8,6 +8,12 @@ class CostRule < ApplicationRecord
 
   belongs_to :cart_function
 
+  after_initialize :default_values
+
+  def default_values
+    self.cart_function = CartFunction.find_by_name('costs')
+  end
+
   def self.opening_rules date = Date.today
     order("cost DESC").select{ |rule| rule.is_opening? date }
   end

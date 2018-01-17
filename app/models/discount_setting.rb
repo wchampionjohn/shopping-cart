@@ -14,13 +14,19 @@ class DiscountSetting < ApplicationRecord
 
   enum discount_type: [:cut, :percent]
 
+  after_initialize :default_values
+
+  def default_values
+    self.cart_function = CartFunction.find_by_name('discount')
+  end
+
   def is_opening? date = Date.today
     cart_function.is_open && !is_limiting?(date) # 功能開放且設定不在限制中
   end
 
 private
   def offer_is_less_than_condition
-    errors.add(:offer, "折除金額不能大於滿額條件") if offer > condition
+    errors.add(:offer, "折除金額不能大於滿額條件") if offer.present? && offer > condition
   end
 
 end
